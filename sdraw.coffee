@@ -4,19 +4,17 @@
 # Toshiyuki Masui 2015/01/08 21:02:36
 #
 
-# SVG枠を定義
-body = d3
-  .select "body"
-  .style
-    margin:  0
-    padding: 0
-  
-svg = body
-  .append "svg"
-  .attr
-    width:  640
-    height: 480
+body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
+svg = d3.select "svg"
 
+#
+# Math functions
+#
+rand = (n) -> Math.round Math.random() * n
+hypot = (x, y) -> Math.sqrt(x * x + y * y)
+dist = (p1, p2) ->
+  hypot p1[0]-p2[0], p1[1]-p2[1]
+  
 # pathデータを生成するline関数を定義
 # .interpolate 'basis'
 # スタイルはhttps://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate に説明あり
@@ -27,11 +25,11 @@ line = d3.svg
   .x (d) -> d[0]
   .y (d) -> d[1]
 
-# Math functions
-rand = (n) -> Math.round Math.random() * n
-hypot = (x, y) -> Math.sqrt(x * x + y * y)
-dist = (p1, p2) ->
-  hypot p1[0]-p2[0], p1[1]-p2[1]
+# # Math functions
+# rand = (n) -> Math.round Math.random() * n
+# hypot = (x, y) -> Math.sqrt(x * x + y * y)
+# dist = (p1, p2) ->
+#   hypot p1[0]-p2[0], p1[1]-p2[1]
 
 #
 # テンプレート
@@ -59,7 +57,7 @@ drawkare = (p1, p2, p3) ->
 
 for x in [0..6]
   for y in [0..4]
-    p2 = [x * 100, y * 100]
+    p2 = [x * 80, y * 80]
     p1 = [rand(640), rand(480)]
     while dist(p1,p2) < 50 || dist(p1,p2) > 150
       p1 = [rand(640), rand(480)]
