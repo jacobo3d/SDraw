@@ -60,10 +60,24 @@ window.drawline = (x1, y1, x2, y2) ->
       stroke: "#d0d0d0"
       fill: "none"
       "stroke-width": "4"
-          
+
+pointx = 0
+pointy = 0
+mousedown = false
 setTemplate = (id, template) ->
-  $("##{id}").on 'click', ->
+  d3.select("##{id}").on 'click', ->
     template.draw()
+  d3.select("##{id}").on 'mousedown', ->
+    mousedown = true
+    d3.event.preventDefault()
+    pointx = d3.event.clientX
+    pointy = d3.event.clientY
+  d3.select("##{id}").on 'mousemove', ->
+    if mousedown
+      d3.event.preventDefault()
+      template.change d3.event.clientX - pointx, d3.event.clientY - pointy
+  d3.select("##{id}").on 'mouseup', ->
+    mousedown = false
 
 setTemplate("meshTemplate", meshTemplate)
 setTemplate("perseTemplate", parseTemplate)
@@ -89,20 +103,20 @@ draw = ->
 
 drawing = false
 
-body.on 'mousedown', ->
+svg.on 'mousedown', ->
   d3.event.preventDefault()
   drawing = true
   path = svg.append 'path'
   drawpoints = [{x: d3.event.clientX, y: d3.event.clientY}]
 
-body.on 'mouseup', ->
+svg.on 'mouseup', ->
   d3.event.preventDefault()
   if drawing
     drawpoints.push  {x: d3.event.clientX, y: d3.event.clientY}
     draw()
     drawing = false
 
-body.on 'mousemove', ->
+svg.on 'mousemove', ->
   d3.event.preventDefault()
   if drawing
     drawpoints.push  {x: d3.event.clientX, y: d3.event.clientY}
