@@ -8,33 +8,38 @@ body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}),
 svg =  d3.select "svg"
 
 browserWidth = ->
-  if window.innerWidth
-    window.innerWidth
-  else
-    document.body.clientWidth
+  window.innerWidth || document.body.clientWidth
 
 browserHeight = ->
-  if window.innerHeight
-    window.innerHeight
-  else
-    document.body.clientHeight
+  window.innerHeight || document.body.clientHeight
 
-drawWidth = Math.round browserWidth() * 0.69
-drawHeight = Math.round browserHeight()
-svg
-  .attr
-    width: drawWidth
-    height: drawHeight
-  .style
-    'background-color': "#ffff00"
+resize = ->
+  drawWidth = browserWidth() * 0.69
+  drawHeight = browserHeight()
 
-#
-# Math functions
-#
-rand = (n) -> Math.round Math.random() * n
-hypot = (x, y) -> Math.sqrt(x * x + y * y)
-dist = (p1, p2) ->
-  hypot p1[0]-p2[0], p1[1]-p2[1]
+  svg
+    .attr
+      width: drawWidth
+      height: drawHeight
+    .style
+      'background-color': "#ffffff"
+
+  $('#candidates')
+    .css 'height', drawHeight/2
+  $('#suggestions')
+    .css 'height', drawHeight/2
+
+resize()
+
+$(window).resize resize
+
+# #
+# # Math functions
+# #
+# rand = (n) -> Math.round Math.random() * n
+# hypot = (x, y) -> Math.sqrt(x * x + y * y)
+# dist = (p1, p2) ->
+#   hypot p1[0]-p2[0], p1[1]-p2[1]
   
 # pathデータを生成するline関数を定義
 # .interpolate 'basis'
@@ -48,18 +53,34 @@ line = d3.svg.line()
 #
 # テンプレート
 #
-## 透視図法サポート
-## linetemplate = (x1, y1, x2, y2) ->
-##   svg.append "polyline"
-##   .attr
-##     points: [[x1, y1], [x2, y2]]
-##     stroke: "#d0d0d0"
-##     fill: "none"
-##     "stroke-width": "10"
-## 
-## for i in [0..10]
-##   linetemplate 10, 10, 600, 10 + i * 50
 
+# 方眼紙
+# linetemplate = (x1, y1, x2, y2) ->
+#   svg.append "polyline"
+#   .attr
+#     points: [[x1, y1], [x2, y2]]
+#     stroke: "#d0d0d0"
+#     fill: "none"
+#     "stroke-width": "10"
+# 
+# for i in [0..20]
+#   linetemplate i * 40, 0, i * 40, browserHeight()
+# for i in [0..20]
+#   linetemplate 0, i * 40, browserWidth(), i * 40
+
+# 透視図法サポート
+# linetemplate = (x1, y1, x2, y2) ->
+#   svg.append "polyline"
+#   .attr
+#     points: [[x1, y1], [x2, y2]]
+#     stroke: "#d0d0d0"
+#     fill: "none"
+#     "stroke-width": "10"
+# 
+# for i in [0..10]
+#   linetemplate 10, 10, 600, 10 + i * 50
+
+# 枯尾花
 drawkare = (p1, p2, p3) ->
   drawpoints = [[p1[0], p1[1]], [p2[0], p2[1]], [p3[0], p3[1]]]
   path = svg.append 'path'
@@ -68,7 +89,8 @@ drawkare = (p1, p2, p3) ->
     'stroke-width': 3
     fill:           "none"
     d:              line drawpoints
-
+    
+# ランダム曲線1
 for x in [0..6]
   for y in [0..4]
     p2 = [x * 80, y * 80]
@@ -80,6 +102,7 @@ for x in [0..6]
       p3 = [rand(640), rand(480)]
     drawkare p1, p2, p3
 
+# ランダム曲線2
 #for i in [0..40]
 #  p1 = [rand(640), rand(480)]
 #  p2 = [rand(640), rand(480)]
