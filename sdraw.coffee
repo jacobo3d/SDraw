@@ -7,10 +7,10 @@
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
 
-browserWidth = ->
+window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
 
-browserHeight = ->
+window.browserHeight = ->
   window.innerHeight || document.body.clientHeight
 
 resize = ->
@@ -37,7 +37,7 @@ $(window).resize resize
 # .interpolate 'basis'
 # スタイルはhttps://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate に説明あり
 #
-line = d3.svg.line()
+window.line = d3.svg.line()
   .interpolate 'cardinal'  # 指定した点を通る
   .x (d) -> d.x
   .y (d) -> d.y
@@ -49,13 +49,13 @@ line = d3.svg.line()
 #
 # 背景テンプレートはグループでまとめる
 #
-template = svg.append "g"
+window.template = svg.append "g"
 
 setTemplate = (id, template) ->
   $("##{id}").on 'click', ->
     template.draw()
 
-linetemplate = (x1, y1, x2, y2) ->
+window.drawline = (x1, y1, x2, y2) ->
   template.append "polyline"
     .attr
       points: [[x1, y1], [x2, y2]]
@@ -63,76 +63,16 @@ linetemplate = (x1, y1, x2, y2) ->
       fill: "none"
       "stroke-width": "4"
           
-# 方眼紙テンプレート
-meshTemplate =
-  draw: ->
-    template.selectAll "polyline"
-      .remove()
-    template.selectAll "path"
-      .remove()
-    for i in [0..20]
-      linetemplate i * 40, 0, i * 40, browserHeight()
-    for i in [0..20]
-      linetemplate 0, i * 40, browserWidth(), i * 40
-
 setTemplate("meshTemplate", meshTemplate)
-
-# 透視図法テンプレート
-parseTemplate =
-  draw: ->
-    template.selectAll "polyline"
-      .remove()
-    template.selectAll "path"
-      .remove()
-    for i in [0..10]
-      linetemplate 10, 10, browserWidth(), 10 + i * 50
-
 setTemplate("perseTemplate", parseTemplate)
-
-# 枯尾花テンプレート
-drawkare = (p1, p2, p3) ->
-  drawpoints = [p1, p2, p3]
-  path = template.append 'path'
-  path.attr
-    stroke:         '#d0d0d0'
-    'stroke-width': 3
-    fill:           "none"
-    d:              line drawpoints
-    
-kareobanaTemplate =
-  draw: ->
-    template.selectAll "polyline"
-      .remove()
-    template.selectAll "path"
-      .remove()
-    drawWidth = browserWidth() * 0.69
-    drawHeight = browserHeight()
-    for x in [0..drawWidth / 80]
-      for y in [0..drawHeight / 80]
-        p2 = {x: x * 80, y: y * 80}
-        p1 = {x: rand(drawWidth), y: rand(drawHeight)}
-        while dist(p1,p2) < 50 || dist(p1,p2) > 150
-          p1 = {x: rand(drawWidth), y: rand(drawHeight)}
-        p3 = {x: rand(drawWidth), y: rand(drawHeight)}
-        while dist(p3,p2) < 50 || dist(p3,p2) > 150 || dist(p1,p3) < 50 || dist(p1,p3) > 150
-          p3 = {x: rand(drawWidth), y: rand(drawHeight)}
-        drawkare p1, p2, p3
-
 setTemplate("kareobanaTemplate", kareobanaTemplate)
+setTemplate("kareobanaTemplate2", kareobanaTemplate2)
 
-# # ランダム曲線2
-# #for i in [0..40]
-# #  p1 = [rand(640), rand(480)]
-# #  p2 = [rand(640), rand(480)]
-# #  while dist(p1,p2) < 50 || dist(p1,p2) > 150
-# #    p2 = [rand(640), rand(480)]
-# #  p3 = [rand(640), rand(480)]
-# #  while dist(p1,p3) < 50 || dist(p1,p3) > 150 || dist(p2,p3) < 50 || dist(p2,p3) > 150
-# #    p3 = [rand(640), rand(480)]
-# #  drawkare p1, p2, p3
 
-#################################
+#################
+#
 # お絵書き
+# 
   
 drawpoints = []
 
