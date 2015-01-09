@@ -23,5 +23,5 @@ window.kareobanaTemplate =
             'stroke-width': 3
             fill:           "none"
             d:              line drawpoints
-    
-
+  change: (deltax, deltay) ->
+    this.draw()

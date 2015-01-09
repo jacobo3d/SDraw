@@ -20,4 +20,3 @@ window.meshTemplate =
     this.params.offset.x = deltax
     this.params.offset.y = deltay
     this.draw()
-    

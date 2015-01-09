@@ -21,3 +21,5 @@ window.kareobanaTemplate2 =
           'stroke-width': 3
           fill:           "none"
           d:              line [p1, p2, p3]
+  change: (deltax, deltay) ->
+    this.draw()
