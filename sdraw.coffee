@@ -46,21 +46,42 @@ line = d3.svg.line()
 # テンプレート
 #
 
-# 方眼紙
-# linetemplate = (x1, y1, x2, y2) ->
-#   svg.append "polyline"
-#   .attr
-#     points: [[x1, y1], [x2, y2]]
-#     stroke: "#d0d0d0"
-#     fill: "none"
-#     "stroke-width": "10"
-# 
-# for i in [0..20]
-#   linetemplate i * 40, 0, i * 40, browserHeight()
-# for i in [0..20]
-#   linetemplate 0, i * 40, browserWidth(), i * 40
+template = svg.append "g"
 
-# 透視図法サポート
+setTemplate = (id, template) ->
+  $("##{id}").on 'click', ->
+    template.draw()
+
+linetemplate = (x1, y1, x2, y2) ->
+  template.append "polyline"
+    .attr
+      points: [[x1, y1], [x2, y2]]
+      stroke: "#d0d0d0"
+      fill: "none"
+      "stroke-width": "4"
+          
+# 方眼紙テンプレート
+meshTemplate =
+  draw: ->
+    template.selectAll "polyline"
+      .remove
+    for i in [0..20]
+      linetemplate i * 40, 0, i * 40, browserHeight()
+    for i in [0..20]
+      linetemplate 0, i * 40, browserWidth(), i * 40
+
+setTemplate("meshTemplate", meshTemplate)
+
+# 透視図法テンプレート
+parseTemplate =
+  draw: ->
+    template.selectAll "polyline"
+      .remove
+    for i in [0..10]
+      linetemplate 10, 10, 600, 10 + i * 50
+
+setTemplate("perseTemplate", parseTemplate)
+
 # linetemplate = (x1, y1, x2, y2) ->
 #   svg.append "polyline"
 #   .attr
@@ -72,38 +93,38 @@ line = d3.svg.line()
 # for i in [0..10]
 #   linetemplate 10, 10, 600, 10 + i * 50
 
-# 枯尾花
-drawkare = (p1, p2, p3) ->
-  drawpoints = [p1, p2, p3]
-  path = svg.append 'path'
-  path.attr
-    stroke:         '#d0d0d0'
-    'stroke-width': 3
-    fill:           "none"
-    d:              line drawpoints
-    
-# ランダム曲線1
-for x in [0..6]
-  for y in [0..4]
-    p2 = {x: x * 80, y: y * 80}
-    p1 = {x: rand(640), y: rand(480)}
-    while dist(p1,p2) < 50 || dist(p1,p2) > 150
-      p1 = {x: rand(640), y: rand(480)}
-    p3 = {x: rand(640), y: rand(480)}
-    while dist(p3,p2) < 50 || dist(p3,p2) > 150 || dist(p1,p3) < 50 || dist(p1,p3) > 150
-      p3 = {x: rand(640), y: rand(480)}
-    drawkare p1, p2, p3
-
-# ランダム曲線2
-#for i in [0..40]
-#  p1 = [rand(640), rand(480)]
-#  p2 = [rand(640), rand(480)]
-#  while dist(p1,p2) < 50 || dist(p1,p2) > 150
-#    p2 = [rand(640), rand(480)]
-#  p3 = [rand(640), rand(480)]
-#  while dist(p1,p3) < 50 || dist(p1,p3) > 150 || dist(p2,p3) < 50 || dist(p2,p3) > 150
-#    p3 = [rand(640), rand(480)]
-#  drawkare p1, p2, p3
+# # 枯尾花
+# drawkare = (p1, p2, p3) ->
+#   drawpoints = [p1, p2, p3]
+#   path = svg.append 'path'
+#   path.attr
+#     stroke:         '#d0d0d0'
+#     'stroke-width': 3
+#     fill:           "none"
+#     d:              line drawpoints
+#     
+# # ランダム曲線1
+# for x in [0..6]
+#   for y in [0..4]
+#     p2 = {x: x * 80, y: y * 80}
+#     p1 = {x: rand(640), y: rand(480)}
+#     while dist(p1,p2) < 50 || dist(p1,p2) > 150
+#       p1 = {x: rand(640), y: rand(480)}
+#     p3 = {x: rand(640), y: rand(480)}
+#     while dist(p3,p2) < 50 || dist(p3,p2) > 150 || dist(p1,p3) < 50 || dist(p1,p3) > 150
+#       p3 = {x: rand(640), y: rand(480)}
+#     drawkare p1, p2, p3
+# 
+# # ランダム曲線2
+# #for i in [0..40]
+# #  p1 = [rand(640), rand(480)]
+# #  p2 = [rand(640), rand(480)]
+# #  while dist(p1,p2) < 50 || dist(p1,p2) > 150
+# #    p2 = [rand(640), rand(480)]
+# #  p3 = [rand(640), rand(480)]
+# #  while dist(p1,p3) < 50 || dist(p1,p3) > 150 || dist(p2,p3) < 50 || dist(p2,p3) > 150
+# #    p3 = [rand(640), rand(480)]
+# #  drawkare p1, p2, p3
 
 #################################
 # お絵書き
