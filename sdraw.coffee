@@ -46,6 +46,9 @@ line = d3.svg.line()
 # テンプレート
 #
 
+#
+# 背景テンプレートはグループでまとめる
+#
 template = svg.append "g"
 
 setTemplate = (id, template) ->
@@ -64,7 +67,7 @@ linetemplate = (x1, y1, x2, y2) ->
 meshTemplate =
   draw: ->
     template.selectAll "polyline"
-      .remove
+      .remove()
     for i in [0..20]
       linetemplate i * 40, 0, i * 40, browserHeight()
     for i in [0..20]
@@ -76,7 +79,7 @@ setTemplate("meshTemplate", meshTemplate)
 parseTemplate =
   draw: ->
     template.selectAll "polyline"
-      .remove
+      .remove()
     for i in [0..10]
       linetemplate 10, 10, 600, 10 + i * 50
 
