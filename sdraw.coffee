@@ -1,8 +1,8 @@
-#
-# S-Draw: Suggestive-Supportive-Snapping Drawing
-#
-# Toshiyuki Masui 2015/01/08 21:02:36
-#
+##
+## S-Draw: Suggestive-Supportive-Snapping Drawing
+##
+## Toshiyuki Masui 2015/01/08 21:02:36
+##
 
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
@@ -14,8 +14,8 @@ window.browserHeight = ->
   window.innerHeight || document.body.clientHeight
 
 resize = ->
-  drawWidth = browserWidth() * 0.69
-  drawHeight = browserHeight()
+  window.drawWidth = browserWidth() * 0.69
+  window.drawHeight = browserHeight()
 
   svg
     .attr
@@ -30,10 +30,11 @@ resize = ->
     .css 'height', drawHeight/2
 
 resize()
-
 $(window).resize resize
 
-# pathデータを生成するline関数を定義
+############################################################################
+#
+# pathデータを生成するD3のline関数を定義
 # .interpolate 'basis'
 # スタイルはhttps://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate に説明あり
 #
@@ -42,18 +43,15 @@ window.line = d3.svg.line()
   .x (d) -> d.x
   .y (d) -> d.y
 
-#
-# テンプレート
-#
+##
+## テンプレート
+##
 
 #
 # 背景テンプレートはグループでまとめる
+# このグループのtemplateを書きかえるとバックグラウンドが書き変わる
 #
 window.template = svg.append "g"
-
-setTemplate = (id, template) ->
-  $("##{id}").on 'click', ->
-    template.draw()
 
 window.drawline = (x1, y1, x2, y2) ->
   template.append "polyline"
@@ -63,16 +61,19 @@ window.drawline = (x1, y1, x2, y2) ->
       fill: "none"
       "stroke-width": "4"
           
+setTemplate = (id, template) ->
+  $("##{id}").on 'click', ->
+    template.draw()
+
 setTemplate("meshTemplate", meshTemplate)
 setTemplate("perseTemplate", parseTemplate)
 setTemplate("kareobanaTemplate", kareobanaTemplate)
 setTemplate("kareobanaTemplate2", kareobanaTemplate2)
 
-
-#################
-#
-# お絵書き
-# 
+############################################################################
+##
+## ユーザによるお絵書き
+## 
   
 drawpoints = []
 
@@ -106,4 +107,3 @@ body.on 'mousemove', ->
   if drawing
     drawpoints.push  {x: d3.event.clientX, y: d3.event.clientY}
     draw()
-
