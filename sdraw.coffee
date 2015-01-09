@@ -5,7 +5,29 @@
 #
 
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
-svg = d3.select "svg"
+svg =  d3.select "svg"
+alert svg
+
+browserWidth = ->
+  if window.innerWidth
+    window.innerWidth
+  else
+    document.body.clientWidth
+
+browserHeight = ->
+  if window.innerHeight
+    window.innerHeight
+  else
+    document.body.clientHeight
+
+drawWidth = Math.round browserWidth() * 0.7
+drawHeight = Math.round browserHeight()
+svg
+  .attr
+    width: drawWidth
+    height: drawHeight
+  .style
+    'background-color': "#ffff00"
 
 #
 # Math functions
@@ -19,17 +41,10 @@ dist = (p1, p2) ->
 # .interpolate 'basis'
 # スタイルはhttps://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate に説明あり
 #
-line = d3.svg
-  .line()
+line = d3.svg.line()
   .interpolate 'cardinal'  # 指定した点を通る
   .x (d) -> d[0]
   .y (d) -> d[1]
-
-# # Math functions
-# rand = (n) -> Math.round Math.random() * n
-# hypot = (x, y) -> Math.sqrt(x * x + y * y)
-# dist = (p1, p2) ->
-#   hypot p1[0]-p2[0], p1[1]-p2[1]
 
 #
 # テンプレート
