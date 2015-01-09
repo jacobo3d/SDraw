@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
+<!--
+  Suggestive-Supportive-Snapping Drawing Editor
+  Toshiyuki Masui 2015/01/09 09:15:48
+-->
 <head>
   <meta charset="utf-8">
   <title>S-Draw</title>
@@ -15,9 +19,15 @@
   </style>
 </head>
 <body style="padding:0; margin:0; background-color:#dddddd">
-  <div style="float:left;width:60%">
+  <div style="float:left;width:70%">
     <svg height=300 width=300 style="background-color:#ffff00">
     </svg>
+  </div>
+  <div style="float:left;width:30%;height:300px;background-color:#80ff80">
+    <div id="candidates" style="float:left;width:100%;height:300px;background-color:#8080ff">
+    </div>
+    <div id="suggestions" style="float:left;width:100%;height:300px;background-color:#ff8080">
+    </div>
   </div>
 </body>
 </html>

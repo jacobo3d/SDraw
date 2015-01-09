@@ -6,7 +6,6 @@
 
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
-alert svg
 
 browserWidth = ->
   if window.innerWidth
@@ -20,7 +19,7 @@ browserHeight = ->
   else
     document.body.clientHeight
 
-drawWidth = Math.round browserWidth() * 0.7
+drawWidth = Math.round browserWidth() * 0.69
 drawHeight = Math.round browserHeight()
 svg
   .attr
