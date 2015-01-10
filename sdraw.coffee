@@ -36,19 +36,16 @@ $(window).resize resize
 #
 # 候補領域
 #
-$('#searchbutton').on 'click', ->
+candsearch = ->
   query = $('#searchtext').val()
   if query.length > 0
     # flickr_search query, (data) ->
     bing_search query, (data) ->
-      $('#cand0').attr 'src', data[0]
-      $('#cand1').attr 'src', data[1]
-      $('#cand2').attr 'src', data[2]
-      $('#cand3').attr 'src', data[3]
-      $('#cand4').attr 'src', data[4]
-      $('#cand5').attr 'src', data[5]
-      $('#cand6').attr 'src', data[6]
-      $('#cand7').attr 'src', data[7]
+      data.map (url, i) ->
+        $("#cand#{i}").attr 'src', url
+$('#searchbutton').on 'click', candsearch
+$('#searchtext').on 'keydown', (e) ->
+  candsearch() if e.keyCode == 13
 
 ############################################################################
 #
@@ -97,10 +94,10 @@ setTemplate = (id, template) ->
   d3.select("##{id}").on 'mouseup', ->
     mousedown = false
 
-setTemplate("meshTemplate", meshTemplate)
-setTemplate("perseTemplate", parseTemplate)
-setTemplate("kareobanaTemplate", kareobanaTemplate)
-setTemplate("kareobanaTemplate2", kareobanaTemplate2)
+setTemplate("template0", meshTemplate)
+setTemplate("template1", parseTemplate)
+setTemplate("template2", kareobanaTemplate)
+setTemplate("template3", kareobanaTemplate2)
 
 ############################################################################
 ##
