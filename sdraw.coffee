@@ -39,7 +39,8 @@ $(window).resize resize
 $('#searchbutton').on 'click', ->
   query = $('#searchtext').val()
   if query.length > 0
-    flickr_search query, (data) ->
+    # flickr_search query, (data) ->
+    bing_search query, (data) ->
       $('#cand0').attr 'src', data[0]
       $('#cand1').attr 'src', data[1]
       $('#cand2').attr 'src', data[2]
