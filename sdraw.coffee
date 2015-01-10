@@ -56,8 +56,8 @@ $('#searchtext').on 'keydown', (e) ->
 
 # jQueryかD3かわからなくなってきてるが...
 for i in [0..10]
-  $("#cand#{i}").on 'click', (e) ->
-    image = e.target.src
+  d3.select("#cand#{i}").on 'click', ->
+    image = d3.event.target.src
     template.selectAll "*"
       .remove()
     template.append 'image'
