@@ -6,9 +6,13 @@ window.meshTemplate =
       x: 0
       y: 0
   draw: ->
-    template.selectAll "polyline"
-      .remove()
-    template.selectAll "path"
+    #template.selectAll "polyline"
+    #  .remove()
+    #template.selectAll "path"
+    #  .remove()
+    #template.selectAll "image"
+    #  .remove()
+    template.selectAll "*"
       .remove()
     xsize = this.params.meshsize + this.params.offset.x
     if xsize > 1

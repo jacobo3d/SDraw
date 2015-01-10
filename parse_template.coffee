@@ -8,9 +8,13 @@ window.parseTemplate =
       x: 0
       y: 0
   draw: ->
-    template.selectAll "polyline"
-      .remove()
-    template.selectAll "path"
+    #template.selectAll "polyline"
+    #  .remove()
+    #template.selectAll "path"
+    #  .remove()
+    #template.selectAll "image"
+    #  .remove()
+    template.selectAll "*"
       .remove()
     for i in [0..72]
       degree = i * 5

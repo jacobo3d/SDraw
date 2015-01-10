@@ -34,6 +34,13 @@ $(window).resize resize
 
 ############################################################################
 #
+# 背景テンプレートはグループでまとめる
+# このグループのtemplateを書きかえるとバックグラウンドが書き変わる
+#
+window.template = svg.append "g"
+
+############################################################################
+#
 # 候補領域
 #
 candsearch = ->
@@ -47,6 +54,23 @@ $('#searchbutton').on 'click', candsearch
 $('#searchtext').on 'keydown', (e) ->
   candsearch() if e.keyCode == 13
 
+# jQueryかD3かわからなくなってきてるが...
+for i in [0..10]
+  $("#cand#{i}").on 'click', (e) ->
+    image = e.target.src
+    template.selectAll "*"
+      .remove()
+    #template.selectAll "image"
+    #  .remove()
+    template.append 'image'
+      .attr
+        'xlink:href': image
+        x: 0
+        y: 0
+        width: 400
+        height: 400
+        preserveAspectRatio: "meet"
+
 ############################################################################
 #
 # pathデータを生成するD3のline関数を定義
@@ -59,14 +83,8 @@ window.line = d3.svg.line()
   .y (d) -> d.y
 
 ##
-## テンプレート
+## テンプレート領域
 ##
-
-#
-# 背景テンプレートはグループでまとめる
-# このグループのtemplateを書きかえるとバックグラウンドが書き変わる
-#
-window.template = svg.append "g"
 
 window.drawline = (x1, y1, x2, y2) ->
   template.append "polyline"

@@ -3,9 +3,11 @@
 #
 window.kareobanaTemplate =
   draw: ->
-    template.selectAll "polyline"
-      .remove()
-    template.selectAll "path"
+    #template.selectAll "polyline"
+    #  .remove()
+    #template.selectAll "path"
+    #  .remove()
+    template.selectAll "*"
       .remove()
     for x in [0..drawWidth / 80]
       for y in [0..drawHeight / 80]
