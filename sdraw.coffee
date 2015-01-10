@@ -60,8 +60,6 @@ for i in [0..10]
     image = e.target.src
     template.selectAll "*"
       .remove()
-    #template.selectAll "image"
-    #  .remove()
     template.append 'image'
       .attr
         'xlink:href': image
