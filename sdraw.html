@@ -19,28 +19,55 @@
   <script type="text/coffeescript" src="./parse_template.coffee"></script>
   <script type="text/coffeescript" src="./kareobana_template.coffee"></script>
   <script type="text/coffeescript" src="./kareobana_template2.coffee"></script>
+  <script type="text/coffeescript" src="./flickr_search.coffee"></script>
   <script type="text/coffeescript" src="./sdraw.coffee"></script>
   <style type="text/css">
+  img {
+    margin:  2pt;
+    padding: 0pt;
+    border:  0pt;
+  }
+  .candimage {
+    width: 240px;
+    height:240px;
+  }
+  .templateimage {
+    width: 130px;
+    height:130px;
+  }
   </style>
 </head>
-<body style="padding:0; margin:0; background-color:#dddddd">
+<body style="padding:0; margin:0; background-color:#ffffff">
   <div style="float:left;width:70%">
-    <svg height=300 width=300 style="background-color:#ffffff">
-    </svg>
+    <svg></svg>
+  </div>
+  <div style="float:left;width:30%;">
+    <input id="searchtext" type="text">
+    <input id="searchbutton" type="submit" value="検索">
   </div>
   <div style="float:left;width:30%;height:300px;background-color:#80ff80">
-    <div id="candidates" style="float:left;width:100%;height:300px;background-color:#8080ff">
+    <div id="candidates" style="float:left;width:100%;height:300px;background-color:#8080ff;overflow:scroll">
+      <img class="candimage" id="cand0">
+      <img class="candimage" id="cand1">
+      <img class="candimage" id="cand2">
+      <img class="candimage" id="cand3">
+      <img class="candimage" id="cand4">
+      <img class="candimage" id="cand5">
+      <img class="candimage" id="cand6">
+      <img class="candimage" id="cand7">
+      <img class="candimage" id="cand8">
+      <img class="candimage" id="cand9">
     </div>
-    <div id="suggestions" style="float:left;width:100%;height:300px;background-color:#ff8080;overflow:scroll">
-      <img id="meshTemplate" src="images/080cec1a0fa50cba14462707e3acb7d9.png" width=130 height=130>
-      <img id="perseTemplate" src="images/060929b94ab574b09a87d81f39b7cf3f.png" width=130 height=130>
-      <img id="kareobanaTemplate" src="images/b820896cfee85a1604a4fbfefdb726f3.png" width=130 height=130>
-      <img id="kareobanaTemplate2" src="images/b820896cfee85a1604a4fbfefdb726f3.png" width=130 height=130>
-      <img src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png" width=130>
-      <img src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png" width=130>
-      <img src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png" width=130>
-      <img src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png" width=130>
-      <img src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png" width=130>
+    <div id="suggestions" style="float:left;width:100%;height:300px;background-color:#cccccc;overflow:scroll">
+      <img class="templateimage" id="meshTemplate" src="images/080cec1a0fa50cba14462707e3acb7d9.png">
+      <img class="templateimage" id="perseTemplate" src="images/060929b94ab574b09a87d81f39b7cf3f.png">
+      <img class="templateimage" id="kareobanaTemplate" src="images/b820896cfee85a1604a4fbfefdb726f3.png">
+      <img class="templateimage" id="kareobanaTemplate2" src="images/b820896cfee85a1604a4fbfefdb726f3.png">
+      <img class="templateimage" src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png">
+      <img class="templateimage" src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png">
+      <img class="templateimage" src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png">
+      <img class="templateimage" src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png">
+      <img class="templateimage" src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png">
     </div>
   </div>
 </body>

@@ -25,12 +25,29 @@ resize = ->
       'background-color': "#ffffff"
 
   $('#candidates')
-    .css 'height', drawHeight/2
+    .css 'height', drawHeight/2 - 30
   $('#suggestions')
-    .css 'height', drawHeight/2
+    .css 'height', drawHeight/2 - 30
 
 resize()
 $(window).resize resize
+
+############################################################################
+#
+# 候補領域
+#
+$('#searchbutton').on 'click', ->
+  query = $('#searchtext').val()
+  if query.length > 0
+    flickr_search query, (data) ->
+      $('#cand0').attr 'src', data[0]
+      $('#cand1').attr 'src', data[1]
+      $('#cand2').attr 'src', data[2]
+      $('#cand3').attr 'src', data[3]
+      $('#cand4').attr 'src', data[4]
+      $('#cand5').attr 'src', data[5]
+      $('#cand6').attr 'src', data[6]
+      $('#cand7').attr 'src', data[7]
 
 ############################################################################
 #
