@@ -54,9 +54,15 @@ $('#searchbutton').on 'click', candsearch
 $('#searchtext').on 'keydown', (e) ->
   candsearch() if e.keyCode == 13
 
-# jQueryかD3かわからなくなってきてるが...
+imagewidth = 400
+imageheight = 400
+mousedown = false
+pointx = 0
+pointy = 0
 for i in [0..10]
-  d3.select("#cand#{i}").on 'click', ->
+  #  d3.select("#cand#{i}").on 'click', ->
+  d3.select("#cand#{i}").on 'mousedown', ->
+    d3.event.preventDefault()
     image = d3.event.target.src
     template.selectAll "*"
       .remove()
@@ -68,6 +74,19 @@ for i in [0..10]
         width: 400
         height: 400
         preserveAspectRatio: "meet"
+    mousedown = true
+    pointx = d3.event.clientX
+    pointy = d3.event.clientY
+  d3.select("#cand#{i}").on 'mousemove', ->
+    if mousedown
+      d3.event.preventDefault()
+      d3.select("image")
+        .attr
+          x: d3.event.clientX - pointx
+          y: d3.event.clientY - pointy
+  d3.select("#cand#{i}").on 'mouseup', ->
+    d3.event.preventDefault()
+    mousedown = false
 
 ############################################################################
 #
@@ -95,25 +114,38 @@ window.drawline = (x1, y1, x2, y2) ->
 pointx = 0
 pointy = 0
 mousedown = false
+timeseed = 0           # 時刻とともに変わる数値
+randomTimeout = null
+
 setTemplate = (id, template) ->
   d3.select("##{id}").on 'click', ->
     template.draw()
   d3.select("##{id}").on 'mousedown', ->
     mousedown = true
     d3.event.preventDefault()
+    if randomTimeout
+      clearTimeout randomTimeout
     pointx = d3.event.clientX
     pointy = d3.event.clientY
+    srand(timeseed)
   d3.select("##{id}").on 'mousemove', ->
     if mousedown
       d3.event.preventDefault()
       template.change d3.event.clientX - pointx, d3.event.clientY - pointy
+      i = Math.floor((d3.event.clientX - pointx) / 10)
+      j = Math.floor((d3.event.clientY - pointy) / 10)
+      srand(timeseed + i * 100 + j)
   d3.select("##{id}").on 'mouseup', ->
     mousedown = false
+    randomTimeout = setTimeout ->
+      timeseed = Number(new Date()) # 3秒たつと値が変わる
+    , 3000
 
 setTemplate("template0", meshTemplate)
 setTemplate("template1", parseTemplate)
 setTemplate("template2", kareobanaTemplate)
-setTemplate("template3", kareobanaTemplate2)
+# setTemplate("template3", kareobanaTemplate2)
+setTemplate("template3", kareobanaTemplate3)
 
 ############################################################################
 ##

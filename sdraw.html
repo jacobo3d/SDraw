@@ -13,6 +13,7 @@
   -->
   <script src="javascripts/d3.v3.min.js" charset="utf-8"></script>
   <script src="javascripts/jquery-1.10.0.min.js"></script>
+  <script src="javascripts/mersenne-twister.js"></script>
   <script src="javascripts/coffee-script.js"></script>
   <script type="text/coffeescript" src="./config.coffee"></script>
   <script type="text/coffeescript" src="./math.coffee"></script>
@@ -20,6 +21,7 @@
   <script type="text/coffeescript" src="./parse_template.coffee"></script>
   <script type="text/coffeescript" src="./kareobana_template.coffee"></script>
   <script type="text/coffeescript" src="./kareobana_template2.coffee"></script>
+  <script type="text/coffeescript" src="./kareobana_template3.coffee"></script>
   <script type="text/coffeescript" src="./flickr_search.coffee"></script>
   <script type="text/coffeescript" src="./bing_search.coffee"></script>
   <script type="text/coffeescript" src="./sdraw.coffee"></script>
@@ -48,7 +50,7 @@
     <input id="searchbutton" type="submit" value="検索">
   </div>
   <div style="float:left;width:30%;height:300px;background-color:#80ff80">
-    <div id="candidates" style="float:left;width:100%;height:300px;background-color:#8080ff;overflow:scroll">
+    <div id="candidates" style="float:left;width:100%;height:300px;background-color:#f0f0f0;overflow:scroll">
       <img class="candimage" id="cand0">
       <img class="candimage" id="cand1">
       <img class="candimage" id="cand2">
@@ -64,7 +66,7 @@
       <img class="templateimage" id="template0" src="images/080cec1a0fa50cba14462707e3acb7d9.png">
       <img class="templateimage" id="template1" src="images/060929b94ab574b09a87d81f39b7cf3f.png">
       <img class="templateimage" id="template2" src="images/b820896cfee85a1604a4fbfefdb726f3.png">
-      <img class="templateimage" id="template3" src="images/b820896cfee85a1604a4fbfefdb726f3.png">
+      <img class="templateimage" id="template3" src="images/5a4c91bcd58bc3d0bc5bef210fb44784.png">
       <img class="templateimage" id="template4" src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png">
       <img class="templateimage" id="template5" src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png">
       <img class="templateimage" id="template6" src="http://gyazo.com/060929b94ab574b09a87d81f39b7cf3f.png">

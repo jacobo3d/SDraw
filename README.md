@@ -6,3 +6,11 @@
   - 写真をトレースする
 
 こういうことをサポートするお絵描きシステムを提案する
+
+「SampleDraw」でもいいか?
+
+* Suggest-base
+* Supportive
+* Sample-based
+* Sharp
+* Special

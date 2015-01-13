@@ -18,7 +18,6 @@ window.bing_search = (keyword, callback) ->
         Authorization: "Basic #{encoded}"
       dataType: "json"
       success: (data) ->
-        callback data['d']['results'].map (d) ->
-          d['MediaUrl']
+        callback data['d']['results'].map (d) -> d['MediaUrl']
       error: (xhr, textStatus, errorThrown) ->
         alert "Can't perform Bing search ... #{textStatus}"
