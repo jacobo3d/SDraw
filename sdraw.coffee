@@ -56,7 +56,33 @@ $('#delete').on 'click', ->
 
 $('#dup').on 'click', ->
   for element in selected
-    alert element
+    # alert element.node().attributes[0]
+    attr = element.node().attributes
+    length = attr.length
+    node_name = element.property "nodeName"
+    parent = d3.select element.node().parentNode
+
+    #for i in attr
+    #  alert i.nodeName
+
+    # cloned = parent.append node_name
+    #  .attr "id", element.attr("id") + i
+
+    cloned = parent.append node_name
+    for a in attr
+      cloned.attr a.nodeName, a.value 
+    cloned.on 'mousedown', ->
+      if mode == 'select'
+        downpoint =
+          x: d3.event.clientX - svgPos.left
+          y: d3.event.clientY - svgPos.top
+        move_mode()
+
+    #for (var j = 0; j < length; j++) { // Iterate on attributes and skip on "id"
+    #    if (attr[j].nodeName == "id") continue;
+    #    cloned.attr(attr[j].name,attr[j].value);
+    #}
+    #return cloned;
 
 ############################################################################
 #
@@ -144,9 +170,6 @@ window.drawline = (x1, y1, x2, y2) ->
       fill: "none"
       "stroke-width": "3"
 
-pointx = 0
-pointy = 0
-mousedown = false
 timeseed = 0           # 時刻とともに変わる数値
 randomTimeout = null
 
@@ -276,8 +299,6 @@ edit_mode = ->
 
 move_mode = ->
   mode = 'move'
-
-  # alert "downpoint=#{downpoint.x}, #{downpoint.y}"
 
   template.selectAll "*"
     .remove()

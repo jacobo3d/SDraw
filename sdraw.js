@@ -56,11 +56,29 @@ $('#delete').on('click', function() {
 });
 
 $('#dup').on('click', function() {
-  var element, _i, _len, _results;
+  var a, attr, cloned, element, length, node_name, parent, _i, _j, _len, _len1, _results;
   _results = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
-    _results.push(alert(element));
+    attr = element.node().attributes;
+    length = attr.length;
+    node_name = element.property("nodeName");
+    parent = d3.select(element.node().parentNode);
+    cloned = parent.append(node_name);
+    for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
+      a = attr[_j];
+      cloned.attr(a.nodeName, a.value);
+    }
+    _results.push(cloned.on('mousedown', function() {
+      var downpoint;
+      if (mode === 'select') {
+        downpoint = {
+          x: d3.event.clientX - svgPos.left,
+          y: d3.event.clientY - svgPos.top
+        };
+        return move_mode();
+      }
+    }));
   }
   return _results;
 });
@@ -144,12 +162,6 @@ window.drawline = function(x1, y1, x2, y2) {
     "stroke-width": "3"
   });
 };
-
-pointx = 0;
-
-pointy = 0;
-
-mousedown = false;
 
 timeseed = 0;
 
