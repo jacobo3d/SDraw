@@ -9,7 +9,39 @@
 
 Support/Suggest/Snap/Sharp/
 
-## 製品
+## シナリオ
+
+[Gyazz:SDraw](http://gyazz.masuilab.org/%E5%A2%97%E4%BA%95%E7%A0%94/SDraw) に書いてある
+
+ * トランジスタ回路
+  - トランジスタや抵抗を手書き描画
+  - 接続を手書き描画
+  - コピペ & スナッピング
+ * タイミング図
+  - 1クロック描く
+  - コピペ & スナッピング & 繰り返し
+ * ブロック図
+  - 四角や丸を候補から選択
+  - 手書き描画
+ * グラフ
+  - 縦線/横線描画
+  - XY軸の候補
+ * Excel的な表
+  - 四角を描画
+  - コピペ & 繰り返し
+ * 「簡単」という文字を入力
+  -「竹」などと描いてリアルタイム文字認識
+  - 候補から「簡単」を選択
+ * 自転車
+  - 絵から検索
+  - 部分描画から写真検索/候補提示
+  - 「自転車」という文字から検索
+  - 手書きトレース
+ * スケッチ
+  - 装置/風景/顔...
+  - 枯尾花+トレース
+
+## 関連製品
 
 * FireAlpaca
 
@@ -18,7 +50,7 @@ Support/Suggest/Snap/Sharp/
   - 漫画を書きやすいようだ
   - 集中線とかパースとか
 
-## 研究
+## 関連研究
 
 * [ShadowDraw](http://vision.cs.utexas.edu/projects/shadowdraw/shadowdraw.html "ShadowDraw")
 
@@ -28,7 +60,7 @@ Support/Suggest/Snap/Sharp/
 
   [http://cg.cs.tsinghua.edu.cn/montage/main.htm](http://cg.cs.tsinghua.edu.cn/montage/main.htm)
 
-  Sketch2Photoは商品にしようとしてるようです。
+  Sketch2Photoは商品にしようとしてるようだ
 
  [商品版?](http://www.mist.co.jp/product/sketch.html)
 
