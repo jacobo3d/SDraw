@@ -142,7 +142,7 @@ window.drawline = (x1, y1, x2, y2) ->
       points: [[x1, y1], [x2, y2]]
       stroke: "#d0d0d0"
       fill: "none"
-      "stroke-width": "4"
+      "stroke-width": "3"
 
 pointx = 0
 pointy = 0
@@ -194,7 +194,7 @@ draw = ->
   path.attr
     d:              line points
     stroke:         'blue'
-    'stroke-width': 3
+    'stroke-width': 8
     fill:           "none"
 
 selected = []
@@ -213,6 +213,8 @@ downpoint = {}
 draw_mode = ->
   mode = 'draw'
 
+  template.selectAll "*"
+    .remove()
   svg.selectAll "*"
     .attr
       stroke: 'blue'
@@ -258,6 +260,9 @@ edit_mode = ->
   selected = []
   mode = 'select'
 
+  template.selectAll "*"
+    .remove()
+
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     mousedown = true
@@ -273,6 +278,9 @@ move_mode = ->
   mode = 'move'
 
   # alert "downpoint=#{downpoint.x}, #{downpoint.y}"
+
+  template.selectAll "*"
+    .remove()
 
   svg.on 'mousedown', ->
     mousedown = true

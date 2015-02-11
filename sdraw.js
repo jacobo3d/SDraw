@@ -141,7 +141,7 @@ window.drawline = function(x1, y1, x2, y2) {
     points: [[x1, y1], [x2, y2]],
     stroke: "#d0d0d0",
     fill: "none",
-    "stroke-width": "4"
+    "stroke-width": "3"
   });
 };
 
@@ -203,7 +203,7 @@ draw = function() {
   return path.attr({
     d: line(points),
     stroke: 'blue',
-    'stroke-width': 3,
+    'stroke-width': 8,
     fill: "none"
   });
 };
@@ -230,6 +230,7 @@ downpoint = {};
 
 draw_mode = function() {
   mode = 'draw';
+  template.selectAll("*").remove();
   svg.selectAll("*").attr({
     stroke: 'blue'
   });
@@ -286,6 +287,7 @@ draw_mode = function() {
 edit_mode = function() {
   selected = [];
   mode = 'select';
+  template.selectAll("*").remove();
   svg.on('mousedown', function() {
     d3.event.preventDefault();
     return mousedown = true;
@@ -302,6 +304,7 @@ edit_mode = function() {
 
 move_mode = function() {
   mode = 'move';
+  template.selectAll("*").remove();
   svg.on('mousedown', function() {
     return mousedown = true;
   });
