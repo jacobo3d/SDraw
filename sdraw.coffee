@@ -4,6 +4,10 @@
 ## Toshiyuki Masui 2015/01/08 21:02:36
 ##
 
+# 
+# グローバル変数は window.xxxx みたいに指定する
+# 
+
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
 
@@ -35,6 +39,8 @@ $(window).resize resize
 ############################################################################
 #
 # 背景テンプレートはグループでまとめる
+# (SVGの機能で <g>....</g> でグループ化できるらしい)
+# まとめてtransformできたりする
 # このグループのtemplateを書きかえるとバックグラウンドが書き変わる
 #
 window.template = svg.append "g"
@@ -94,6 +100,11 @@ for i in [0..10]
 # .interpolate 'basis'
 # スタイルはhttps://github.com/mbostock/d3/wiki/SVG-Shapes#line_interpolate に説明あり
 #
+# d3.svg.line() というのはSVG用パス文字列生成関数を作成する関数
+# "M36,203L184,203L184,79L36,79" みたいな文字列を生成する関数を返す。
+# スプラインなどのときは便利みたい
+#
+
 window.line = d3.svg.line()
   .interpolate 'cardinal'  # 指定した点を通る
   .x (d) -> d.x
@@ -153,9 +164,9 @@ setTemplate("template3", kareobanaTemplate3)
 ## 
   
 drawpoints = []
-
-# SVGのpath要素を追加
-path = svg.append 'path'
+path = null
+# SVGElement.getScreenCTM() とか使うべきなのかも
+svgPos = $('svg').offset()
 
 draw = ->
   path.attr
@@ -164,30 +175,28 @@ draw = ->
     'stroke-width': 3
     fill:           "none"
 
-mousedown = false
-
 svg.on 'mousedown', ->
   d3.event.preventDefault()
   mousedown = true
-  path = svg.append 'path'
+  path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
   drawpoints = [
-    x: d3.event.clientX
-    y: d3.event.clientY
+    x: d3.event.clientX - svgPos.left
+    y: d3.event.clientY - svgPos.top
   ]
 
 svg.on 'mouseup', ->
+  return unless mousedown
   d3.event.preventDefault()
-  if mousedown
-    drawpoints.push
-      x: d3.event.clientX
-      y: d3.event.clientY
-    draw()
-    mousedown = false
+  drawpoints.push
+    x: d3.event.clientX - svgPos.left
+    y: d3.event.clientY - svgPos.top
+  draw()
+  mousedown = false
 
 svg.on 'mousemove', ->
   return unless mousedown
   d3.event.preventDefault()
   drawpoints.push
-    x: d3.event.clientX
-    y: d3.event.clientY
+    x: d3.event.clientX - svgPos.left
+    y: d3.event.clientY - svgPos.top
   draw()
