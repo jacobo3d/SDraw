@@ -43,7 +43,7 @@ $ ->
 #
 # 編集モード/描画モード
 # 
-editmode = 'draw' # または 'select' または 'move'
+mode = 'draw' # または 'select' または 'move'
 $('#draw').on 'click', ->
   draw_mode()
 
@@ -201,7 +201,7 @@ selected = []
 
 selfunc = (path) ->
   ->
-    if editmode == 'select'
+    if mode == 'select'
       return unless mousedown
       path.attr
         stroke: 'yellow'
@@ -214,6 +214,7 @@ draw_mode = ->
     mousedown = true
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
     path.on 'mousemove', selfunc path  # クロージャ
+    path.on 'mousedown', move_mode
     drawpoints = [
       x: d3.event.clientX - svgPos.left
       y: d3.event.clientY - svgPos.top
@@ -238,10 +239,21 @@ draw_mode = ->
 
 edit_mode = ->
   selected = []
-  editmode = 'select'
+  mode = 'select'
+
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     mousedown = true
+
+  svg.on 'mousemove', ->
+
+  svg.on 'mouseup', ->
+    return unless mousedown
+    d3.event.preventDefault()
+    mousedown = false
+
+move_mode = ->
+  mode = 'move'
 
   svg.on 'mousemove', ->
 
