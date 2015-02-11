@@ -47,6 +47,9 @@ $('#draw').on 'click', ->
   editmode = 'draw'
 $('#edit').on 'click', ->
   editmode = 'edit'
+$('#delete').on 'click', ->
+  for element in selected
+    element.remove()
 
 ############################################################################
 #
@@ -187,11 +190,15 @@ draw = ->
     'stroke-width': 3
     fill:           "none"
 
+selected = []
+
 selfunc = (path) ->
   ->
-    if editmode == 'edit' && mousedown
+    if editmode == 'edit'
+      return unless mousedown
       path.attr
         stroke: 'yellow'
+      selected.push path
 
 svg.on 'mousedown', ->
   d3.event.preventDefault()
