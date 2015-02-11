@@ -229,6 +229,10 @@ selfunc = function(path) {
 downpoint = {};
 
 draw_mode = function() {
+  mode = 'draw';
+  svg.selectAll("*").attr({
+    stroke: 'blue'
+  });
   svg.on('mousedown', function() {
     d3.event.preventDefault();
     mousedown = true;
@@ -245,11 +249,13 @@ draw_mode = function() {
     };
     path.on('mousemove', selfunc(path));
     return path.on('mousedown', function() {
-      downpoint = {
-        x: d3.event.clientX - svgPos.left,
-        y: d3.event.clientY - svgPos.top
-      };
-      return move_mode();
+      if (mode === 'select') {
+        downpoint = {
+          x: d3.event.clientX - svgPos.left,
+          y: d3.event.clientY - svgPos.top
+        };
+        return move_mode();
+      }
     });
   });
   svg.on('mouseup', function() {

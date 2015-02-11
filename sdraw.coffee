@@ -211,6 +211,12 @@ selfunc = (path) ->
 downpoint = {}
 
 draw_mode = ->
+  mode = 'draw'
+
+  svg.selectAll "*"
+    .attr
+      stroke: 'blue'
+
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     mousedown = true
@@ -225,10 +231,11 @@ draw_mode = ->
 
     path.on 'mousemove', selfunc path  # クロージャ
     path.on 'mousedown', ->
-      downpoint =
-        x: d3.event.clientX - svgPos.left
-        y: d3.event.clientY - svgPos.top
-      move_mode()
+      if mode == 'select'
+        downpoint =
+          x: d3.event.clientX - svgPos.left
+          y: d3.event.clientY - svgPos.top
+        move_mode()
 
   svg.on 'mouseup', ->
     return unless mousedown
@@ -274,10 +281,6 @@ move_mode = ->
     return unless mousedown
     x = d3.event.clientX - svgPos.left
     y = d3.event.clientY - svgPos.top
-    #alert "x=#{d3.event.clientX}, y=#{d3.event.clientY}"
-    #alert "points[0] = #{points[0].x}, #{points[0].y}"
-    #alert "downpoint=#{downpoint.x}, #{downpoint.y}"
-    #alert "x, y=#{x}, #{y}"
     for element in selected
       element.attr "transform", "translate(#{x-downpoint.x},#{y-downpoint.y})"
 
