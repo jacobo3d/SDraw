@@ -185,14 +185,14 @@ setTemplate("template3", kareobanaTemplate3)
 ## ユーザによるお絵書き
 ## 
   
-drawpoints = []
+points = []
 path = null
 # SVGElement.getScreenCTM() とか使うべきなのかも
 # svgPos = $('svg').offset()
 
 draw = ->
   path.attr
-    d:              line drawpoints
+    d:              line points
     stroke:         'blue'
     'stroke-width': 3
     fill:           "none"
@@ -208,22 +208,32 @@ selfunc = (path) ->
       if selected.indexOf(path) < 0
         selected.push path
 
+downpoint = {}
+
 draw_mode = ->
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     mousedown = true
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
-    path.on 'mousemove', selfunc path  # クロージャ
-    path.on 'mousedown', move_mode
-    drawpoints = [
+    points = [
       x: d3.event.clientX - svgPos.left
       y: d3.event.clientY - svgPos.top
     ]
+    downpoint =
+      x: d3.event.clientX - svgPos.left
+      y: d3.event.clientY - svgPos.top
+
+    path.on 'mousemove', selfunc path  # クロージャ
+    path.on 'mousedown', ->
+      downpoint =
+        x: d3.event.clientX - svgPos.left
+        y: d3.event.clientY - svgPos.top
+      move_mode()
 
   svg.on 'mouseup', ->
     return unless mousedown
     d3.event.preventDefault()
-    drawpoints.push
+    points.push
       x: d3.event.clientX - svgPos.left
       y: d3.event.clientY - svgPos.top
     draw()
@@ -232,7 +242,7 @@ draw_mode = ->
   svg.on 'mousemove', ->
     return unless mousedown
     d3.event.preventDefault()
-    drawpoints.push
+    points.push
       x: d3.event.clientX - svgPos.left
       y: d3.event.clientY - svgPos.top
     draw()
@@ -255,9 +265,24 @@ edit_mode = ->
 move_mode = ->
   mode = 'move'
 
+  # alert "downpoint=#{downpoint.x}, #{downpoint.y}"
+
+  svg.on 'mousedown', ->
+    mousedown = true
+
   svg.on 'mousemove', ->
+    return unless mousedown
+    x = d3.event.clientX - svgPos.left
+    y = d3.event.clientY - svgPos.top
+    #alert "x=#{d3.event.clientX}, y=#{d3.event.clientY}"
+    #alert "points[0] = #{points[0].x}, #{points[0].y}"
+    #alert "downpoint=#{downpoint.x}, #{downpoint.y}"
+    #alert "x, y=#{x}, #{y}"
+    for element in selected
+      element.attr "transform", "translate(#{x-downpoint.x},#{y-downpoint.y})"
 
   svg.on 'mouseup', ->
     return unless mousedown
     d3.event.preventDefault()
     mousedown = false
+    edit_mode()
