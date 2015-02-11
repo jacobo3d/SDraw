@@ -6,10 +6,11 @@
 
 # 
 # グローバル変数は window.xxxx みたいに指定する
+# このファイル中のみのグローバル変数は関数定義の外で初期化しておく
 # 
-
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
+svgPos = null
 
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
@@ -33,8 +34,19 @@ resize = ->
   $('#suggestions')
     .css 'height', drawHeight/2 - 30
 
-resize()
-$(window).resize resize
+$ ->
+  resize()
+  $(window).resize resize
+  svgPos = $('svg').offset()
+
+#
+# 編集モード/描画モード
+# 
+editmode = 'draw' # または 'edit'
+$('#draw').on 'click', ->
+  editmode = 'draw'
+$('#edit').on 'click', ->
+  editmode = 'edit'
 
 ############################################################################
 #
@@ -166,7 +178,7 @@ setTemplate("template3", kareobanaTemplate3)
 drawpoints = []
 path = null
 # SVGElement.getScreenCTM() とか使うべきなのかも
-svgPos = $('svg').offset()
+# svgPos = $('svg').offset()
 
 draw = ->
   path.attr
@@ -175,28 +187,41 @@ draw = ->
     'stroke-width': 3
     fill:           "none"
 
+selfunc = (path) ->
+  ->
+    if editmode == 'edit' && mousedown
+      path.attr
+        stroke: 'yellow'
+
 svg.on 'mousedown', ->
   d3.event.preventDefault()
   mousedown = true
-  path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
-  drawpoints = [
-    x: d3.event.clientX - svgPos.left
-    y: d3.event.clientY - svgPos.top
-  ]
+  if editmode == 'draw'
+    path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
+    path.on 'mousemove', selfunc path  # クロージャ
+    drawpoints = [
+      x: d3.event.clientX - svgPos.left
+      y: d3.event.clientY - svgPos.top
+    ]
+  else # editmode == 'edit'
 
 svg.on 'mouseup', ->
   return unless mousedown
   d3.event.preventDefault()
-  drawpoints.push
-    x: d3.event.clientX - svgPos.left
-    y: d3.event.clientY - svgPos.top
-  draw()
+  if editmode == 'draw'
+    drawpoints.push
+      x: d3.event.clientX - svgPos.left
+      y: d3.event.clientY - svgPos.top
+    draw()
+  else # editmode == 'edit'
   mousedown = false
 
 svg.on 'mousemove', ->
   return unless mousedown
   d3.event.preventDefault()
-  drawpoints.push
-    x: d3.event.clientX - svgPos.left
-    y: d3.event.clientY - svgPos.top
-  draw()
+  if editmode == 'draw'
+    drawpoints.push
+      x: d3.event.clientX - svgPos.left
+      y: d3.event.clientY - svgPos.top
+    draw()
+  else # editmode == 'edit'
