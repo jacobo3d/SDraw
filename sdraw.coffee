@@ -164,23 +164,30 @@ draw = ->
     'stroke-width': 3
     fill:           "none"
 
-drawing = false
+mousedown = false
 
 svg.on 'mousedown', ->
   d3.event.preventDefault()
-  drawing = true
+  mousedown = true
   path = svg.append 'path'
-  drawpoints = [{x: d3.event.clientX, y: d3.event.clientY}]
+  drawpoints = [
+    x: d3.event.clientX
+    y: d3.event.clientY
+  ]
 
 svg.on 'mouseup', ->
   d3.event.preventDefault()
-  if drawing
-    drawpoints.push  {x: d3.event.clientX, y: d3.event.clientY}
+  if mousedown
+    drawpoints.push
+      x: d3.event.clientX
+      y: d3.event.clientY
     draw()
-    drawing = false
+    mousedown = false
 
 svg.on 'mousemove', ->
+  return unless mousedown
   d3.event.preventDefault()
-  if drawing
-    drawpoints.push  {x: d3.event.clientX, y: d3.event.clientY}
-    draw()
+  drawpoints.push
+    x: d3.event.clientX
+    y: d3.event.clientY
+  draw()
