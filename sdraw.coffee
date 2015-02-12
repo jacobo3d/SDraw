@@ -12,6 +12,9 @@ body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}),
 svg =  d3.select "svg"
 svgPos = null
 
+kanjidata = null
+figuredata = null
+
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
 
@@ -39,6 +42,12 @@ $ ->
   $(window).resize resize
   svgPos = $('svg').offset()
   draw_mode()
+
+  $.getJSON "kanji/kanji.json", (data) ->
+    kanjidata = data
+
+  $.getJSON "figures.json", (data) ->
+    figuredata = data
 
 #
 # 編集モード/描画モード
@@ -83,6 +92,12 @@ $('#dup').on 'click', ->
     #    cloned.attr(attr[j].name,attr[j].value);
     #}
     #return cloned;
+
+$('#test').on 'click', ->
+#  g = svg.append "g"
+#  for item in data
+#    g.append item.type
+#      .attr item.attr
 
 ############################################################################
 #
@@ -213,6 +228,8 @@ path = null
 # SVGElement.getScreenCTM() とか使うべきなのかも
 # svgPos = $('svg').offset()
 
+strokes = []
+
 draw = ->
   path.attr
     d:              line points
@@ -236,6 +253,8 @@ downpoint = {}
 draw_mode = ->
   mode = 'draw'
 
+  strokes = []
+
   template.selectAll "*"
     .remove()
   svg.selectAll "*"
@@ -246,13 +265,10 @@ draw_mode = ->
     d3.event.preventDefault()
     mousedown = true
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
-    points = [
-      x: d3.event.clientX - svgPos.left
-      y: d3.event.clientY - svgPos.top
-    ]
     downpoint =
       x: d3.event.clientX - svgPos.left
       y: d3.event.clientY - svgPos.top
+    points = [ downpoint ]
 
     path.on 'mousemove', selfunc path  # クロージャ
     path.on 'mousedown', ->
@@ -265,11 +281,15 @@ draw_mode = ->
   svg.on 'mouseup', ->
     return unless mousedown
     d3.event.preventDefault()
-    points.push
+    uppoint =
       x: d3.event.clientX - svgPos.left
       y: d3.event.clientY - svgPos.top
+    points.push uppoint
     draw()
     mousedown = false
+    strokes.push [[downpoint.x, downpoint.y], [uppoint.x, uppoint.y]]
+
+    recognition() # !!!!!
 
   svg.on 'mousemove', ->
     return unless mousedown
@@ -282,6 +302,7 @@ draw_mode = ->
 edit_mode = ->
   selected = []
   mode = 'select'
+  strokes = []
 
   template.selectAll "*"
     .remove()
@@ -318,3 +339,88 @@ move_mode = ->
     d3.event.preventDefault()
     mousedown = false
     edit_mode()
+
+###############
+
+recognition = ->
+  #
+  # strokesを正規化する。
+  #
+  nstrokes = strokes.length
+  [minx, miny, maxx, maxy] = [1000, 1000, 0, 0]
+  for stroke in strokes
+    minx = Math.min minx, stroke[0][0]
+    maxx = Math.max maxx, stroke[0][0]
+    minx = Math.min minx, stroke[1][0]
+    maxx = Math.max maxx, stroke[1][0]
+    miny = Math.min miny, stroke[0][1]
+    maxy = Math.max maxy, stroke[0][1]
+    miny = Math.min miny, stroke[1][1]
+    maxy = Math.max maxy, stroke[1][1]
+  width = maxx - minx
+  height = maxy - miny
+  size = Math.max width, height
+  normalized_strokes = []
+  for stroke in strokes
+    x0 = (stroke[0][0]-minx) * 1000.0 / size
+    y0 = (stroke[0][1]-miny) * 1000.0 / size
+    x1 = (stroke[1][0]-minx) * 1000.0 / size
+    y1 = (stroke[1][1]-miny) * 1000.0 / size
+    normalized_strokes.push [[x0, y0], [x1, y1]]
+  #
+  # 漢字ストロークデータとマッチングをとる
+  #
+  d = []
+  for entry in kanjidata
+    kstrokes = entry.strokes
+    continue if kstrokes.length < nstrokes
+    [minx, miny, maxx, maxy] = [1000, 1000, 0, 0]
+    [0...nstrokes].forEach (i) ->
+      points = kstrokes[i]
+      stroke = []
+      stroke[0] = points[0]
+      stroke[1] = points[points.length-1]
+      minx = Math.min minx, stroke[0][0]
+      maxx = Math.max maxx, stroke[0][0]
+      minx = Math.min minx, stroke[1][0]
+      maxx = Math.max maxx, stroke[1][0]
+      miny = Math.min miny, stroke[0][1]
+      maxy = Math.max maxy, stroke[0][1]
+      miny = Math.min miny, stroke[1][1]
+      maxy = Math.max maxy, stroke[1][1]
+    width = maxx - minx
+    height = maxy - miny
+    size = Math.max width, height
+    kanji_strokes = []
+    [0...nstrokes].forEach (i) ->
+      points = kstrokes[i]
+      stroke = []
+      stroke[0] = points[0]
+      stroke[1] = points[points.length-1]
+      x0 = (stroke[0][0]-minx) * 1000.0 / size
+      y0 = (stroke[0][1]-miny) * 1000.0 / size
+      x1 = (stroke[1][0]-minx) * 1000.0 / size
+      y1 = (stroke[1][1]-miny) * 1000.0 / size
+      kanji_strokes.push [[x0, y0], [x1, y1]]
+    #
+    # normalized_strokes と kanji_strokes を比較する
+    #
+    totaldist = 0.0
+    [0...nstrokes].forEach (i) ->
+      dx = kanji_strokes[i][0][0] - normalized_strokes[i][0][0]
+      dy = kanji_strokes[i][0][1] - normalized_strokes[i][0][1]
+      totaldist += Math.sqrt(dx * dx + dy * dy)
+      dx = kanji_strokes[i][1][0] - normalized_strokes[i][1][0]
+      dy = kanji_strokes[i][1][1] - normalized_strokes[i][1][1]
+      totaldist += Math.sqrt(dx * dx + dy * dy)
+    d.push [entry, totaldist]
+  d = d.sort (a,b) ->
+    a[1] - b[1]
+  $('#searchtext').val(d[0][0].char)
+
+  
+  # alert "minx=#{minx}, miny=#{miny}, maxx=#{maxx}, maxy=#{maxy}"
+  #for entry in kanjidata
+  #  alert entry.char
+
+
