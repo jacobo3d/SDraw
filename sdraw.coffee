@@ -94,10 +94,12 @@ $('#dup').on 'click', ->
     #return cloned;
 
 $('#test').on 'click', ->
-#  g = svg.append "g"
-#  for item in data
-#    g.append item.type
-#      .attr item.attr
+  svg.append "text"
+    .attr "x", 50
+    .attr "y", 100
+    .attr "font-size", '60px'
+    .attr "fill", "blue"
+    .text "テキストを表示できます"
 
 ############################################################################
 #
@@ -118,7 +120,14 @@ candsearch = ->
     # flickr_search query, (data) ->
     bing_search query, (data) ->
       data.map (url, i) ->
-        $("#cand#{i}").attr 'src', url
+        cand = $("#cand#{i}")
+        cand.children().remove()
+        img = $("<img>")
+        img.attr 'class', 'candimage'
+        img.attr 'src', url
+        cand.append img
+
+        # $("#cand#{i}").attr 'src', url
 $('#searchbutton').on 'click', candsearch
 $('#searchtext').on 'keydown', (e) ->
   candsearch() if e.keyCode == 13
@@ -128,33 +137,33 @@ imageheight = 400
 mousedown = false
 pointx = 0
 pointy = 0
-for i in [0..10]
-  d3.select("#cand#{i}").on 'mousedown', ->
-    d3.event.preventDefault()
-    image = d3.event.target.src
-    template.selectAll "*"
-      .remove()
-    template.append 'image'
-      .attr
-        'xlink:href': image
-        x: 0
-        y: 0
-        width: 400
-        height: 400
-        preserveAspectRatio: "meet"
-    mousedown = true
-    pointx = d3.event.clientX
-    pointy = d3.event.clientY
-  d3.select("#cand#{i}").on 'mousemove', ->
-    if mousedown
-      d3.event.preventDefault()
-      d3.select("image")
-        .attr
-          x: d3.event.clientX - pointx
-          y: d3.event.clientY - pointy
-  d3.select("#cand#{i}").on 'mouseup', ->
-    d3.event.preventDefault()
-    mousedown = false
+#for i in [0..10]
+#  d3.select("#cand#{i}").on 'mousedown', ->
+#    d3.event.preventDefault()
+#    image = d3.event.target.src
+#    template.selectAll "*"
+#      .remove()
+#    template.append 'image'
+#      .attr
+#        'xlink:href': image
+#        x: 0
+#        y: 0
+#        width: 400
+#        height: 400
+#        preserveAspectRatio: "meet"
+#    mousedown = true
+#    pointx = d3.event.clientX
+#    pointy = d3.event.clientY
+#  d3.select("#cand#{i}").on 'mousemove', ->
+#    if mousedown
+#      d3.event.preventDefault()
+#      d3.select("image")
+#        .attr
+#          x: d3.event.clientX - pointx
+#          y: d3.event.clientY - pointy
+#  d3.select("#cand#{i}").on 'mouseup', ->
+#    d3.event.preventDefault()
+#    mousedown = false
 
 ############################################################################
 #
