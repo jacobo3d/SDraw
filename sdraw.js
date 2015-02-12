@@ -426,9 +426,14 @@ recognition = function() {
     return a[1] - b[1];
   });
   return [0, 1, 2, 3, 4, 5].forEach(function(i) {
-    var candsvg;
+    var c, cand, candsvg;
+    cand = cands[i][0];
     candsvg = d3.select("#cand" + i);
     candsvg.selectAll("*").remove();
-    return candsvg.append("text").attr("x", 10).attr("y", 80).attr("font-size", '60px').attr("fill", "blue").text(cands[i][0].string);
+    c = candsvg.append(cand.type);
+    c.attr(cand.attr);
+    if (cand.text) {
+      return c.text(cand.text);
+    }
   });
 };

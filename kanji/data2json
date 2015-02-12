@@ -17,9 +17,8 @@ Dir.open(".").each { |file|
     if file =~ /^K(.*)\-/ then
       entry = {}
       euc = $1
-      string = euc2char(euc)
-      entry['string'] = string
-      entry['type'] = 'text'
+      text = euc2char(euc)
+      entry['text'] = text
       strokes = []
       File.open(file){ |f|
         stroke = []
@@ -39,6 +38,14 @@ Dir.open(".").each { |file|
         }
       }
       entry['strokes'] = strokes
+      # SVG要素
+      entry['type'] = 'text'
+      attr = {}
+      attr['x'] = 10
+      attr['y'] = 80
+      attr['font-size'] = '60px'
+      attr['fill'] = "blue"
+      entry['attr'] = attr
       data.push entry
     end
   end

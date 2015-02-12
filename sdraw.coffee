@@ -422,19 +422,27 @@ recognition = ->
       dy = kanji_strokes[i][1][1] - normalized_strokes[i][1][1]
       totaldist += Math.sqrt(dx * dx + dy * dy)
     cands.push [entry, totaldist]
+
+  # スコア順にソート
   cands = cands.sort (a,b) ->
     a[1] - b[1]
-  # $('#searchtext').val(d[0][0].char)
+
+  # 候補表示
   [0..5].forEach (i) ->
+    cand = cands[i][0]
     candsvg = d3.select "#cand#{i}"
     candsvg.selectAll "*"
       .remove()
-    candsvg.append "text"
-      .attr "x", 10
-      .attr "y", 80
-      .attr "font-size", '60px'
-      .attr "fill", "blue"
-      .text cands[i][0].string
+    c = candsvg.append cand.type
+    c.attr cand.attr
+    c.text cand.text if cand.text
+
+#    candsvg.append "text"
+#      .attr "x", 10
+#      .attr "y", 80
+#      .attr "font-size", '60px'
+#      .attr "fill", "blue"
+#      .text cands[i][0].string
 
 #    div = $("#cand#{i}")
 #    div.children().remove();
