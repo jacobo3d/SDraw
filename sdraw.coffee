@@ -129,7 +129,6 @@ mousedown = false
 pointx = 0
 pointy = 0
 for i in [0..10]
-  #  d3.select("#cand#{i}").on 'click', ->
   d3.select("#cand#{i}").on 'mousedown', ->
     d3.event.preventDefault()
     image = d3.event.target.src
@@ -419,4 +418,7 @@ recognition = ->
   # $('#searchtext').val(d[0][0].char)
   [0..5].forEach (i) ->
     div = $("#cand#{i}")
-    div.text d[i][0].char
+    div.children().remove();
+    text = $('<span>').text d[i][0].char
+    text.css 'font-size', '70pt'
+    div.append text

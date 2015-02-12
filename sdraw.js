@@ -451,8 +451,11 @@ recognition = function() {
     return a[1] - b[1];
   });
   return [0, 1, 2, 3, 4, 5].forEach(function(i) {
-    var div;
+    var div, text;
     div = $("#cand" + i);
-    return div.text(d[i][0].char);
+    div.children().remove();
+    text = $('<span>').text(d[i][0].char);
+    text.css('font-size', '70pt');
+    return div.append(text);
   });
 };
