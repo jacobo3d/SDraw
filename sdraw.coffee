@@ -416,11 +416,7 @@ recognition = ->
     d.push [entry, totaldist]
   d = d.sort (a,b) ->
     a[1] - b[1]
-  $('#searchtext').val(d[0][0].char)
-
-  
-  # alert "minx=#{minx}, miny=#{miny}, maxx=#{maxx}, maxy=#{maxy}"
-  #for entry in kanjidata
-  #  alert entry.char
-
-
+  # $('#searchtext').val(d[0][0].char)
+  [0..5].forEach (i) ->
+    div = $("#cand#{i}")
+    div.text d[i][0].char

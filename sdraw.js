@@ -450,5 +450,9 @@ recognition = function() {
   d = d.sort(function(a, b) {
     return a[1] - b[1];
   });
-  return $('#searchtext').val(d[0][0].char);
+  return [0, 1, 2, 3, 4, 5].forEach(function(i) {
+    var div;
+    div = $("#cand" + i);
+    return div.text(d[i][0].char);
+  });
 };
