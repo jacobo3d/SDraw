@@ -1,0 +1,25 @@
+# -*- coding: utf-8 -*-
+require 'json'
+
+data = []
+
+#
+# バッテン
+#
+entry = {}
+entry['strokes'] = [
+  [[80,0], [80,160]]
+]
+entry['type'] = 'path'
+entry['attr'] = {
+  'd' => "M10,10L200,200M200,10L10,200",
+  'stroke' => 'red',
+  'fill' => 'none',
+  'stroke-width' => 3
+}
+
+
+data.push entry
+
+puts data.to_json
+
