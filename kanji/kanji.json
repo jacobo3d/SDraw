@@ -44,7 +44,8 @@
         ]
       ]
     ],
-    "char": "、"
+    "type": "text",
+    "string": "、"
   },
   {
     "strokes": [
@@ -115,7 +116,8 @@
         ]
       ]
     ],
-    "char": "。"
+    "type": "text",
+    "string": "。"
   },
   {
     "strokes": [
@@ -138,7 +140,8 @@
         ]
       ]
     ],
-    "char": "．"
+    "type": "text",
+    "string": "．"
   },
   {
     "strokes": [
@@ -179,7 +182,8 @@
         ]
       ]
     ],
-    "char": "："
+    "type": "text",
+    "string": "："
   },
   {
     "strokes": [
@@ -312,7 +316,8 @@
         ]
       ]
     ],
-    "char": "？"
+    "type": "text",
+    "string": "？"
   },
   {
     "strokes": [
@@ -459,7 +464,8 @@
         ]
       ]
     ],
-    "char": "々"
+    "type": "text",
+    "string": "々"
   },
   {
     "strokes": [
@@ -526,11 +532,13 @@
         ]
       ]
     ],
-    "char": "ー"
+    "type": "text",
+    "string": "ー"
   },
   {
     "strokes": [],
-    "char": "／"
+    "type": "text",
+    "string": "／"
   },
   {
     "strokes": [
@@ -609,27 +617,33 @@
         ]
       ]
     ],
-    "char": "〜"
+    "type": "text",
+    "string": "〜"
   },
   {
     "strokes": [],
-    "char": "（"
+    "type": "text",
+    "string": "（"
   },
   {
     "strokes": [],
-    "char": "）"
+    "type": "text",
+    "string": "）"
   },
   {
     "strokes": [],
-    "char": "「"
+    "type": "text",
+    "string": "「"
   },
   {
     "strokes": [],
-    "char": "」"
+    "type": "text",
+    "string": "」"
   },
   {
     "strokes": [],
-    "char": "−"
+    "type": "text",
+    "string": "−"
   },
   {
     "strokes": [
@@ -742,7 +756,8 @@
         ]
       ]
     ],
-    "char": "×"
+    "type": "text",
+    "string": "×"
   },
   {
     "strokes": [
@@ -831,7 +846,8 @@
         ]
       ]
     ],
-    "char": "＝"
+    "type": "text",
+    "string": "＝"
   },
   {
     "strokes": [
@@ -938,11 +954,13 @@
         ]
       ]
     ],
-    "char": "○"
+    "type": "text",
+    "string": "○"
   },
   {
     "strokes": [],
-    "char": "■"
+    "type": "text",
+    "string": "■"
   },
   {
     "strokes": [
@@ -1069,11 +1087,13 @@
         ]
       ]
     ],
-    "char": "〒"
+    "type": "text",
+    "string": "〒"
   },
   {
     "strokes": [],
-    "char": "１"
+    "type": "text",
+    "string": "１"
   },
   {
     "strokes": [
@@ -1200,7 +1220,8 @@
         ]
       ]
     ],
-    "char": "２"
+    "type": "text",
+    "string": "２"
   },
   {
     "strokes": [
@@ -1435,7 +1456,8 @@
         ]
       ]
     ],
-    "char": "あ"
+    "type": "text",
+    "string": "あ"
   },
   {
     "strokes": [
@@ -1540,7 +1562,8 @@
         ]
       ]
     ],
-    "char": "い"
+    "type": "text",
+    "string": "い"
   },
   {
     "strokes": [
@@ -1653,7 +1676,8 @@
         ]
       ]
     ],
-    "char": "う"
+    "type": "text",
+    "string": "う"
   },
   {
     "strokes": [
@@ -1858,7 +1882,8 @@
         ]
       ]
     ],
-    "char": "え"
+    "type": "text",
+    "string": "え"
   },
   {
     "strokes": [
@@ -2073,7 +2098,8 @@
         ]
       ]
     ],
-    "char": "お"
+    "type": "text",
+    "string": "お"
   },
   {
     "strokes": [
@@ -2232,7 +2258,8 @@
         ]
       ]
     ],
-    "char": "か"
+    "type": "text",
+    "string": "か"
   },
   {
     "strokes": [
@@ -2463,7 +2490,8 @@
         ]
       ]
     ],
-    "char": "が"
+    "type": "text",
+    "string": "が"
   },
   {
     "strokes": [
@@ -2648,7 +2676,8 @@
         ]
       ]
     ],
-    "char": "き"
+    "type": "text",
+    "string": "き"
   },
   {
     "strokes": [
@@ -2759,7 +2788,8 @@
         ]
       ]
     ],
-    "char": "く"
+    "type": "text",
+    "string": "く"
   },
   {
     "strokes": [
@@ -2918,7 +2948,8 @@
         ]
       ]
     ],
-    "char": "け"
+    "type": "text",
+    "string": "け"
   },
   {
     "strokes": [
@@ -3113,7 +3144,8 @@
         ]
       ]
     ],
-    "char": "げ"
+    "type": "text",
+    "string": "げ"
   },
   {
     "strokes": [
@@ -3214,7 +3246,8 @@
         ]
       ]
     ],
-    "char": "こ"
+    "type": "text",
+    "string": "こ"
   },
   {
     "strokes": [
@@ -3347,7 +3380,8 @@
         ]
       ]
     ],
-    "char": "ご"
+    "type": "text",
+    "string": "ご"
   },
   {
     "strokes": [
@@ -3490,7 +3524,8 @@
         ]
       ]
     ],
-    "char": "さ"
+    "type": "text",
+    "string": "さ"
   },
   {
     "strokes": [
@@ -3577,7 +3612,8 @@
         ]
       ]
     ],
-    "char": "し"
+    "type": "text",
+    "string": "し"
   },
   {
     "strokes": [
@@ -3712,7 +3748,8 @@
         ]
       ]
     ],
-    "char": "じ"
+    "type": "text",
+    "string": "じ"
   },
   {
     "strokes": [
@@ -3893,7 +3930,8 @@
         ]
       ]
     ],
-    "char": "す"
+    "type": "text",
+    "string": "す"
   },
   {
     "strokes": [
@@ -4082,7 +4120,8 @@
         ]
       ]
     ],
-    "char": "ず"
+    "type": "text",
+    "string": "ず"
   },
   {
     "strokes": [
@@ -4245,7 +4284,8 @@
         ]
       ]
     ],
-    "char": "せ"
+    "type": "text",
+    "string": "せ"
   },
   {
     "strokes": [
@@ -4428,7 +4468,8 @@
         ]
       ]
     ],
-    "char": "そ"
+    "type": "text",
+    "string": "そ"
   },
   {
     "strokes": [
@@ -4617,7 +4658,8 @@
         ]
       ]
     ],
-    "char": "た"
+    "type": "text",
+    "string": "た"
   },
   {
     "strokes": [
@@ -4850,7 +4892,8 @@
         ]
       ]
     ],
-    "char": "だ"
+    "type": "text",
+    "string": "だ"
   },
   {
     "strokes": [
@@ -4995,7 +5038,8 @@
         ]
       ]
     ],
-    "char": "ち"
+    "type": "text",
+    "string": "ち"
   },
   {
     "strokes": [
@@ -5074,7 +5118,8 @@
         ]
       ]
     ],
-    "char": "っ"
+    "type": "text",
+    "string": "っ"
   },
   {
     "strokes": [
@@ -5181,7 +5226,8 @@
         ]
       ]
     ],
-    "char": "つ"
+    "type": "text",
+    "string": "つ"
   },
   {
     "strokes": [
@@ -5312,7 +5358,8 @@
         ]
       ]
     ],
-    "char": "て"
+    "type": "text",
+    "string": "て"
   },
   {
     "strokes": [
@@ -5515,7 +5562,8 @@
         ]
       ]
     ],
-    "char": "で"
+    "type": "text",
+    "string": "で"
   },
   {
     "strokes": [
@@ -5644,7 +5692,8 @@
         ]
       ]
     ],
-    "char": "と"
+    "type": "text",
+    "string": "と"
   },
   {
     "strokes": [
@@ -5845,7 +5894,8 @@
         ]
       ]
     ],
-    "char": "ど"
+    "type": "text",
+    "string": "ど"
   },
   {
     "strokes": [
@@ -6054,7 +6104,8 @@
         ]
       ]
     ],
-    "char": "な"
+    "type": "text",
+    "string": "な"
   },
   {
     "strokes": [
@@ -6193,7 +6244,8 @@
         ]
       ]
     ],
-    "char": "に"
+    "type": "text",
+    "string": "に"
   },
   {
     "strokes": [
@@ -6390,7 +6442,8 @@
         ]
       ]
     ],
-    "char": "ね"
+    "type": "text",
+    "string": "ね"
   },
   {
     "strokes": [
@@ -6553,7 +6606,8 @@
         ]
       ]
     ],
-    "char": "の"
+    "type": "text",
+    "string": "の"
   },
   {
     "strokes": [
@@ -6764,7 +6818,8 @@
         ]
       ]
     ],
-    "char": "は"
+    "type": "text",
+    "string": "は"
   },
   {
     "strokes": [
@@ -7003,7 +7058,8 @@
         ]
       ]
     ],
-    "char": "ば"
+    "type": "text",
+    "string": "ば"
   },
   {
     "strokes": [
@@ -7154,7 +7210,8 @@
         ]
       ]
     ],
-    "char": "ひ"
+    "type": "text",
+    "string": "ひ"
   },
   {
     "strokes": [
@@ -7377,7 +7434,8 @@
         ]
       ]
     ],
-    "char": "び"
+    "type": "text",
+    "string": "び"
   },
   {
     "strokes": [
@@ -7464,7 +7522,8 @@
         ]
       ]
     ],
-    "char": "へ"
+    "type": "text",
+    "string": "へ"
   },
   {
     "strokes": [
@@ -7615,7 +7674,8 @@
         ]
       ]
     ],
-    "char": "べ"
+    "type": "text",
+    "string": "べ"
   },
   {
     "strokes": [
@@ -7816,7 +7876,8 @@
         ]
       ]
     ],
-    "char": "ほ"
+    "type": "text",
+    "string": "ほ"
   },
   {
     "strokes": [
@@ -8015,7 +8076,8 @@
         ]
       ]
     ],
-    "char": "ま"
+    "type": "text",
+    "string": "ま"
   },
   {
     "strokes": [
@@ -8196,7 +8258,8 @@
         ]
       ]
     ],
-    "char": "み"
+    "type": "text",
+    "string": "み"
   },
   {
     "strokes": [
@@ -8391,7 +8454,8 @@
         ]
       ]
     ],
-    "char": "む"
+    "type": "text",
+    "string": "む"
   },
   {
     "strokes": [
@@ -8588,7 +8652,8 @@
         ]
       ]
     ],
-    "char": "め"
+    "type": "text",
+    "string": "め"
   },
   {
     "strokes": [
@@ -8755,7 +8820,8 @@
         ]
       ]
     ],
-    "char": "も"
+    "type": "text",
+    "string": "も"
   },
   {
     "strokes": [
@@ -8866,7 +8932,8 @@
         ]
       ]
     ],
-    "char": "ゃ"
+    "type": "text",
+    "string": "ゃ"
   },
   {
     "strokes": [
@@ -9029,7 +9096,8 @@
         ]
       ]
     ],
-    "char": "や"
+    "type": "text",
+    "string": "や"
   },
   {
     "strokes": [
@@ -9138,7 +9206,8 @@
         ]
       ]
     ],
-    "char": "ょ"
+    "type": "text",
+    "string": "ょ"
   },
   {
     "strokes": [
@@ -9287,7 +9356,8 @@
         ]
       ]
     ],
-    "char": "よ"
+    "type": "text",
+    "string": "よ"
   },
   {
     "strokes": [
@@ -9428,7 +9498,8 @@
         ]
       ]
     ],
-    "char": "ら"
+    "type": "text",
+    "string": "ら"
   },
   {
     "strokes": [
@@ -9533,7 +9604,8 @@
         ]
       ]
     ],
-    "char": "り"
+    "type": "text",
+    "string": "り"
   },
   {
     "strokes": [
@@ -9748,7 +9820,8 @@
         ]
       ]
     ],
-    "char": "る"
+    "type": "text",
+    "string": "る"
   },
   {
     "strokes": [
@@ -9949,7 +10022,8 @@
         ]
       ]
     ],
-    "char": "れ"
+    "type": "text",
+    "string": "れ"
   },
   {
     "strokes": [
@@ -10142,7 +10216,8 @@
         ]
       ]
     ],
-    "char": "わ"
+    "type": "text",
+    "string": "わ"
   },
   {
     "strokes": [
@@ -10353,7 +10428,8 @@
         ]
       ]
     ],
-    "char": "を"
+    "type": "text",
+    "string": "を"
   },
   {
     "strokes": [
@@ -10454,7 +10530,8 @@
         ]
       ]
     ],
-    "char": "ァ"
+    "type": "text",
+    "string": "ァ"
   },
   {
     "strokes": [
@@ -10627,7 +10704,8 @@
         ]
       ]
     ],
-    "char": "ア"
+    "type": "text",
+    "string": "ア"
   },
   {
     "strokes": [
@@ -10712,7 +10790,8 @@
         ]
       ]
     ],
-    "char": "ィ"
+    "type": "text",
+    "string": "ィ"
   },
   {
     "strokes": [
@@ -10829,7 +10908,8 @@
         ]
       ]
     ],
-    "char": "イ"
+    "type": "text",
+    "string": "イ"
   },
   {
     "strokes": [
@@ -11000,7 +11080,8 @@
         ]
       ]
     ],
-    "char": "ウ"
+    "type": "text",
+    "string": "ウ"
   },
   {
     "strokes": [
@@ -11139,7 +11220,8 @@
         ]
       ]
     ],
-    "char": "ェ"
+    "type": "text",
+    "string": "ェ"
   },
   {
     "strokes": [
@@ -11286,7 +11368,8 @@
         ]
       ]
     ],
-    "char": "エ"
+    "type": "text",
+    "string": "エ"
   },
   {
     "strokes": [
@@ -11405,7 +11488,8 @@
         ]
       ]
     ],
-    "char": "オ"
+    "type": "text",
+    "string": "オ"
   },
   {
     "strokes": [
@@ -11550,7 +11634,8 @@
         ]
       ]
     ],
-    "char": "カ"
+    "type": "text",
+    "string": "カ"
   },
   {
     "strokes": [
@@ -11701,7 +11786,8 @@
         ]
       ]
     ],
-    "char": "キ"
+    "type": "text",
+    "string": "キ"
   },
   {
     "strokes": [
@@ -11866,7 +11952,8 @@
         ]
       ]
     ],
-    "char": "ク"
+    "type": "text",
+    "string": "ク"
   },
   {
     "strokes": [
@@ -12075,7 +12162,8 @@
         ]
       ]
     ],
-    "char": "グ"
+    "type": "text",
+    "string": "グ"
   },
   {
     "strokes": [
@@ -12206,7 +12294,8 @@
         ]
       ]
     ],
-    "char": "ケ"
+    "type": "text",
+    "string": "ケ"
   },
   {
     "strokes": [
@@ -12351,7 +12440,8 @@
         ]
       ]
     ],
-    "char": "コ"
+    "type": "text",
+    "string": "コ"
   },
   {
     "strokes": [
@@ -12524,7 +12614,8 @@
         ]
       ]
     ],
-    "char": "ゴ"
+    "type": "text",
+    "string": "ゴ"
   },
   {
     "strokes": [
@@ -12639,7 +12730,8 @@
         ]
       ]
     ],
-    "char": "サ"
+    "type": "text",
+    "string": "サ"
   },
   {
     "strokes": [
@@ -12798,7 +12890,8 @@
         ]
       ]
     ],
-    "char": "ザ"
+    "type": "text",
+    "string": "ザ"
   },
   {
     "strokes": [
@@ -12925,7 +13018,8 @@
         ]
       ]
     ],
-    "char": "シ"
+    "type": "text",
+    "string": "シ"
   },
   {
     "strokes": [
@@ -13074,7 +13168,8 @@
         ]
       ]
     ],
-    "char": "ス"
+    "type": "text",
+    "string": "ス"
   },
   {
     "strokes": [
@@ -13263,7 +13358,8 @@
         ]
       ]
     ],
-    "char": "ズ"
+    "type": "text",
+    "string": "ズ"
   },
   {
     "strokes": [
@@ -13416,7 +13512,8 @@
         ]
       ]
     ],
-    "char": "セ"
+    "type": "text",
+    "string": "セ"
   },
   {
     "strokes": [
@@ -13513,7 +13610,8 @@
         ]
       ]
     ],
-    "char": "ソ"
+    "type": "text",
+    "string": "ソ"
   },
   {
     "strokes": [
@@ -13712,7 +13810,8 @@
         ]
       ]
     ],
-    "char": "タ"
+    "type": "text",
+    "string": "タ"
   },
   {
     "strokes": [
@@ -13923,7 +14022,8 @@
         ]
       ]
     ],
-    "char": "ダ"
+    "type": "text",
+    "string": "ダ"
   },
   {
     "strokes": [
@@ -14038,7 +14138,8 @@
         ]
       ]
     ],
-    "char": "チ"
+    "type": "text",
+    "string": "チ"
   },
   {
     "strokes": [
@@ -14141,7 +14242,8 @@
         ]
       ]
     ],
-    "char": "ッ"
+    "type": "text",
+    "string": "ッ"
   },
   {
     "strokes": [
@@ -14240,7 +14342,8 @@
         ]
       ]
     ],
-    "char": "ツ"
+    "type": "text",
+    "string": "ツ"
   },
   {
     "strokes": [
@@ -14391,7 +14494,8 @@
         ]
       ]
     ],
-    "char": "テ"
+    "type": "text",
+    "string": "テ"
   },
   {
     "strokes": [
@@ -14610,7 +14714,8 @@
         ]
       ]
     ],
-    "char": "デ"
+    "type": "text",
+    "string": "デ"
   },
   {
     "strokes": [
@@ -14719,7 +14824,8 @@
         ]
       ]
     ],
-    "char": "ト"
+    "type": "text",
+    "string": "ト"
   },
   {
     "strokes": [
@@ -14878,7 +14984,8 @@
         ]
       ]
     ],
-    "char": "ド"
+    "type": "text",
+    "string": "ド"
   },
   {
     "strokes": [
@@ -14975,7 +15082,8 @@
         ]
       ]
     ],
-    "char": "ナ"
+    "type": "text",
+    "string": "ナ"
   },
   {
     "strokes": [
@@ -15052,7 +15160,8 @@
         ]
       ]
     ],
-    "char": "ニ"
+    "type": "text",
+    "string": "ニ"
   },
   {
     "strokes": [
@@ -15261,7 +15370,8 @@
         ]
       ]
     ],
-    "char": "ネ"
+    "type": "text",
+    "string": "ネ"
   },
   {
     "strokes": [
@@ -15316,7 +15426,8 @@
         ]
       ]
     ],
-    "char": "ノ"
+    "type": "text",
+    "string": "ノ"
   },
   {
     "strokes": [
@@ -15405,7 +15516,8 @@
         ]
       ]
     ],
-    "char": "ハ"
+    "type": "text",
+    "string": "ハ"
   },
   {
     "strokes": [
@@ -15534,7 +15646,8 @@
         ]
       ]
     ],
-    "char": "バ"
+    "type": "text",
+    "string": "バ"
   },
   {
     "strokes": [
@@ -15673,7 +15786,8 @@
         ]
       ]
     ],
-    "char": "パ"
+    "type": "text",
+    "string": "パ"
   },
   {
     "strokes": [
@@ -15838,7 +15952,8 @@
         ]
       ]
     ],
-    "char": "ビ"
+    "type": "text",
+    "string": "ビ"
   },
   {
     "strokes": [
@@ -16001,7 +16116,8 @@
         ]
       ]
     ],
-    "char": "ピ"
+    "type": "text",
+    "string": "ピ"
   },
   {
     "strokes": [
@@ -16128,7 +16244,8 @@
         ]
       ]
     ],
-    "char": "フ"
+    "type": "text",
+    "string": "フ"
   },
   {
     "strokes": [
@@ -16255,7 +16372,8 @@
         ]
       ]
     ],
-    "char": "ブ"
+    "type": "text",
+    "string": "ブ"
   },
   {
     "strokes": [
@@ -16440,7 +16558,8 @@
         ]
       ]
     ],
-    "char": "プ"
+    "type": "text",
+    "string": "プ"
   },
   {
     "strokes": [
@@ -16587,7 +16706,8 @@
         ]
       ]
     ],
-    "char": "ベ"
+    "type": "text",
+    "string": "ベ"
   },
   {
     "strokes": [
@@ -16716,7 +16836,8 @@
         ]
       ]
     ],
-    "char": "ペ"
+    "type": "text",
+    "string": "ペ"
   },
   {
     "strokes": [
@@ -16921,7 +17042,8 @@
         ]
       ]
     ],
-    "char": "ボ"
+    "type": "text",
+    "string": "ボ"
   },
   {
     "strokes": [
@@ -17140,7 +17262,8 @@
         ]
       ]
     ],
-    "char": "ポ"
+    "type": "text",
+    "string": "ポ"
   },
   {
     "strokes": [
@@ -17293,7 +17416,8 @@
         ]
       ]
     ],
-    "char": "マ"
+    "type": "text",
+    "string": "マ"
   },
   {
     "strokes": [
@@ -17388,7 +17512,8 @@
         ]
       ]
     ],
-    "char": "ミ"
+    "type": "text",
+    "string": "ミ"
   },
   {
     "strokes": [
@@ -17541,7 +17666,8 @@
         ]
       ]
     ],
-    "char": "ム"
+    "type": "text",
+    "string": "ム"
   },
   {
     "strokes": [
@@ -17642,7 +17768,8 @@
         ]
       ]
     ],
-    "char": "メ"
+    "type": "text",
+    "string": "メ"
   },
   {
     "strokes": [
@@ -17785,7 +17912,8 @@
         ]
       ]
     ],
-    "char": "モ"
+    "type": "text",
+    "string": "モ"
   },
   {
     "strokes": [
@@ -17894,7 +18022,8 @@
         ]
       ]
     ],
-    "char": "ャ"
+    "type": "text",
+    "string": "ャ"
   },
   {
     "strokes": [
@@ -17991,7 +18120,8 @@
         ]
       ]
     ],
-    "char": "ュ"
+    "type": "text",
+    "string": "ュ"
   },
   {
     "strokes": [
@@ -18104,7 +18234,8 @@
         ]
       ]
     ],
-    "char": "ユ"
+    "type": "text",
+    "string": "ユ"
   },
   {
     "strokes": [
@@ -18223,7 +18354,8 @@
         ]
       ]
     ],
-    "char": "ョ"
+    "type": "text",
+    "string": "ョ"
   },
   {
     "strokes": [
@@ -18380,7 +18512,8 @@
         ]
       ]
     ],
-    "char": "ラ"
+    "type": "text",
+    "string": "ラ"
   },
   {
     "strokes": [
@@ -18489,7 +18622,8 @@
         ]
       ]
     ],
-    "char": "リ"
+    "type": "text",
+    "string": "リ"
   },
   {
     "strokes": [
@@ -18626,7 +18760,8 @@
         ]
       ]
     ],
-    "char": "ル"
+    "type": "text",
+    "string": "ル"
   },
   {
     "strokes": [
@@ -18717,7 +18852,8 @@
         ]
       ]
     ],
-    "char": "レ"
+    "type": "text",
+    "string": "レ"
   },
   {
     "strokes": [
@@ -18952,7 +19088,8 @@
         ]
       ]
     ],
-    "char": "ロ"
+    "type": "text",
+    "string": "ロ"
   },
   {
     "strokes": [
@@ -19101,7 +19238,8 @@
         ]
       ]
     ],
-    "char": "ワ"
+    "type": "text",
+    "string": "ワ"
   },
   {
     "strokes": [
@@ -19206,11 +19344,13 @@
         ]
       ]
     ],
-    "char": "ン"
+    "type": "text",
+    "string": "ン"
   },
   {
     "strokes": [],
-    "char": "━"
+    "type": "text",
+    "string": "━"
   },
   {
     "strokes": [
@@ -19615,7 +19755,8 @@
         ]
       ]
     ],
-    "char": "案"
+    "type": "text",
+    "string": "案"
   },
   {
     "strokes": [
@@ -19834,7 +19975,8 @@
         ]
       ]
     ],
-    "char": "以"
+    "type": "text",
+    "string": "以"
   },
   {
     "strokes": [
@@ -20069,7 +20211,8 @@
         ]
       ]
     ],
-    "char": "位"
+    "type": "text",
+    "string": "位"
   },
   {
     "strokes": [
@@ -20516,7 +20659,8 @@
         ]
       ]
     ],
-    "char": "意"
+    "type": "text",
+    "string": "意"
   },
   {
     "strokes": [
@@ -20931,7 +21075,8 @@
         ]
       ]
     ],
-    "char": "移"
+    "type": "text",
+    "string": "移"
   },
   {
     "strokes": [
@@ -21108,11 +21253,13 @@
         ]
       ]
     ],
-    "char": "井"
+    "type": "text",
+    "string": "井"
   },
   {
     "strokes": [],
-    "char": "一"
+    "type": "text",
+    "string": "一"
   },
   {
     "strokes": [
@@ -21493,7 +21640,8 @@
         ]
       ]
     ],
-    "char": "員"
+    "type": "text",
+    "string": "員"
   },
   {
     "strokes": [
@@ -21730,7 +21878,8 @@
         ]
       ]
     ],
-    "char": "引"
+    "type": "text",
+    "string": "引"
   },
   {
     "strokes": [
@@ -22191,7 +22340,8 @@
         ]
       ]
     ],
-    "char": "演"
+    "type": "text",
+    "string": "演"
   },
   {
     "strokes": [
@@ -22442,7 +22592,8 @@
         ]
       ]
     ],
-    "char": "応"
+    "type": "text",
+    "string": "応"
   },
   {
     "strokes": [
@@ -22761,7 +22912,8 @@
         ]
       ]
     ],
-    "char": "音"
+    "type": "text",
+    "string": "音"
   },
   {
     "strokes": [
@@ -22892,7 +23044,8 @@
         ]
       ]
     ],
-    "char": "下"
+    "type": "text",
+    "string": "下"
   },
   {
     "strokes": [
@@ -23073,7 +23226,8 @@
         ]
       ]
     ],
-    "char": "化"
+    "type": "text",
+    "string": "化"
   },
   {
     "strokes": [
@@ -23388,7 +23542,8 @@
         ]
       ]
     ],
-    "char": "何"
+    "type": "text",
+    "string": "何"
   },
   {
     "strokes": [
@@ -23733,7 +23888,8 @@
         ]
       ]
     ],
-    "char": "価"
+    "type": "text",
+    "string": "価"
   },
   {
     "strokes": [
@@ -24000,7 +24156,8 @@
         ]
       ]
     ],
-    "char": "加"
+    "type": "text",
+    "string": "加"
   },
   {
     "strokes": [
@@ -24195,7 +24352,8 @@
         ]
       ]
     ],
-    "char": "可"
+    "type": "text",
+    "string": "可"
   },
   {
     "strokes": [
@@ -24494,7 +24652,8 @@
         ]
       ]
     ],
-    "char": "科"
+    "type": "text",
+    "string": "科"
   },
   {
     "strokes": [
@@ -24815,7 +24974,8 @@
         ]
       ]
     ],
-    "char": "果"
+    "type": "text",
+    "string": "果"
   },
   {
     "strokes": [
@@ -25168,7 +25328,8 @@
         ]
       ]
     ],
-    "char": "画"
+    "type": "text",
+    "string": "画"
   },
   {
     "strokes": [
@@ -25441,7 +25602,8 @@
         ]
       ]
     ],
-    "char": "会"
+    "type": "text",
+    "string": "会"
   },
   {
     "strokes": [
@@ -25960,7 +26122,8 @@
         ]
       ]
     ],
-    "char": "解"
+    "type": "text",
+    "string": "解"
   },
   {
     "strokes": [
@@ -26289,7 +26452,8 @@
         ]
       ]
     ],
-    "char": "回"
+    "type": "text",
+    "string": "回"
   },
   {
     "strokes": [
@@ -26714,7 +26878,8 @@
         ]
       ]
     ],
-    "char": "開"
+    "type": "text",
+    "string": "開"
   },
   {
     "strokes": [
@@ -26933,7 +27098,8 @@
         ]
       ]
     ],
-    "char": "外"
+    "type": "text",
+    "string": "外"
   },
   {
     "strokes": [
@@ -27214,7 +27380,8 @@
         ]
       ]
     ],
-    "char": "各"
+    "type": "text",
+    "string": "各"
   },
   {
     "strokes": [
@@ -27787,7 +27954,8 @@
         ]
       ]
     ],
-    "char": "確"
+    "type": "text",
+    "string": "確"
   },
   {
     "strokes": [
@@ -28220,7 +28388,8 @@
         ]
       ]
     ],
-    "char": "覚"
+    "type": "text",
+    "string": "覚"
   },
   {
     "strokes": [
@@ -28587,7 +28756,8 @@
         ]
       ]
     ],
-    "char": "学"
+    "type": "text",
+    "string": "学"
   },
   {
     "strokes": [
@@ -28984,7 +29154,8 @@
         ]
       ]
     ],
-    "char": "楽"
+    "type": "text",
+    "string": "楽"
   },
   {
     "strokes": [
@@ -29317,7 +29488,8 @@
         ]
       ]
     ],
-    "char": "株"
+    "type": "text",
+    "string": "株"
   },
   {
     "strokes": [
@@ -29784,7 +29956,8 @@
         ]
       ]
     ],
-    "char": "感"
+    "type": "text",
+    "string": "感"
   },
   {
     "strokes": [
@@ -30269,7 +30442,8 @@
         ]
       ]
     ],
-    "char": "換"
+    "type": "text",
+    "string": "換"
   },
   {
     "strokes": [
@@ -30708,7 +30882,8 @@
         ]
       ]
     ],
-    "char": "漢"
+    "type": "text",
+    "string": "漢"
   },
   {
     "strokes": [
@@ -31321,7 +31496,8 @@
         ]
       ]
     ],
-    "char": "簡"
+    "type": "text",
+    "string": "簡"
   },
   {
     "strokes": [
@@ -31790,7 +31966,8 @@
         ]
       ]
     ],
-    "char": "間"
+    "type": "text",
+    "string": "間"
   },
   {
     "strokes": [
@@ -32263,7 +32440,8 @@
         ]
       ]
     ],
-    "char": "関"
+    "type": "text",
+    "string": "関"
   },
   {
     "strokes": [
@@ -32904,7 +33082,8 @@
         ]
       ]
     ],
-    "char": "願"
+    "type": "text",
+    "string": "願"
   },
   {
     "strokes": [
@@ -33295,7 +33474,8 @@
         ]
       ]
     ],
-    "char": "基"
+    "type": "text",
+    "string": "基"
   },
   {
     "strokes": [
@@ -33696,7 +33876,8 @@
         ]
       ]
     ],
-    "char": "期"
+    "type": "text",
+    "string": "期"
   },
   {
     "strokes": [
@@ -34287,7 +34468,8 @@
         ]
       ]
     ],
-    "char": "機"
+    "type": "text",
+    "string": "機"
   },
   {
     "strokes": [
@@ -34548,7 +34730,8 @@
         ]
       ]
     ],
-    "char": "気"
+    "type": "text",
+    "string": "気"
   },
   {
     "strokes": [
@@ -34963,7 +35146,8 @@
         ]
       ]
     ],
-    "char": "規"
+    "type": "text",
+    "string": "規"
   },
   {
     "strokes": [
@@ -35292,7 +35476,8 @@
         ]
       ]
     ],
-    "char": "記"
+    "type": "text",
+    "string": "記"
   },
   {
     "strokes": [
@@ -35595,7 +35780,8 @@
         ]
       ]
     ],
-    "char": "技"
+    "type": "text",
+    "string": "技"
   },
   {
     "strokes": [
@@ -36046,7 +36232,8 @@
         ]
       ]
     ],
-    "char": "義"
+    "type": "text",
+    "string": "義"
   },
   {
     "strokes": [
@@ -36261,7 +36448,8 @@
         ]
       ]
     ],
-    "char": "及"
+    "type": "text",
+    "string": "及"
   },
   {
     "strokes": [
@@ -36652,7 +36840,8 @@
         ]
       ]
     ],
-    "char": "究"
+    "type": "text",
+    "string": "究"
   },
   {
     "strokes": [
@@ -36949,7 +37138,8 @@
         ]
       ]
     ],
-    "char": "京"
+    "type": "text",
+    "string": "京"
   },
   {
     "strokes": [
@@ -37158,7 +37348,8 @@
         ]
       ]
     ],
-    "char": "共"
+    "type": "text",
+    "string": "共"
   },
   {
     "strokes": [
@@ -37601,7 +37792,8 @@
         ]
       ]
     ],
-    "char": "教"
+    "type": "text",
+    "string": "教"
   },
   {
     "strokes": [
@@ -38046,7 +38238,8 @@
         ]
       ]
     ],
-    "char": "業"
+    "type": "text",
+    "string": "業"
   },
   {
     "strokes": [
@@ -38477,7 +38670,8 @@
         ]
       ]
     ],
-    "char": "業"
+    "type": "text",
+    "string": "業"
   },
   {
     "strokes": [
@@ -38776,7 +38970,8 @@
         ]
       ]
     ],
-    "char": "近"
+    "type": "text",
+    "string": "近"
   },
   {
     "strokes": [
@@ -39057,7 +39252,8 @@
         ]
       ]
     ],
-    "char": "金"
+    "type": "text",
+    "string": "金"
   },
   {
     "strokes": [
@@ -39270,7 +39466,8 @@
         ]
       ]
     ],
-    "char": "区"
+    "type": "text",
+    "string": "区"
   },
   {
     "strokes": [
@@ -39571,7 +39768,8 @@
         ]
       ]
     ],
-    "char": "空"
+    "type": "text",
+    "string": "空"
   },
   {
     "strokes": [
@@ -40270,7 +40468,8 @@
         ]
       ]
     ],
-    "char": "繰"
+    "type": "text",
+    "string": "繰"
   },
   {
     "strokes": [
@@ -40943,7 +41142,8 @@
         ]
       ]
     ],
-    "char": "繰"
+    "type": "text",
+    "string": "繰"
   },
   {
     "strokes": [
@@ -41312,7 +41512,8 @@
         ]
       ]
     ],
-    "char": "係"
+    "type": "text",
+    "string": "係"
   },
   {
     "strokes": [
@@ -41591,7 +41792,8 @@
         ]
       ]
     ],
-    "char": "型"
+    "type": "text",
+    "string": "型"
   },
   {
     "strokes": [
@@ -41818,7 +42020,8 @@
         ]
       ]
     ],
-    "char": "形"
+    "type": "text",
+    "string": "形"
   },
   {
     "strokes": [
@@ -42105,7 +42308,8 @@
         ]
       ]
     ],
-    "char": "計"
+    "type": "text",
+    "string": "計"
   },
   {
     "strokes": [
@@ -42364,7 +42568,8 @@
         ]
       ]
     ],
-    "char": "決"
+    "type": "text",
+    "string": "決"
   },
   {
     "strokes": [
@@ -42851,7 +43056,8 @@
         ]
       ]
     ],
-    "char": "結"
+    "type": "text",
+    "string": "結"
   },
   {
     "strokes": [
@@ -43056,7 +43262,8 @@
         ]
       ]
     ],
-    "char": "月"
+    "type": "text",
+    "string": "月"
   },
   {
     "strokes": [
@@ -43281,7 +43488,8 @@
         ]
       ]
     ],
-    "char": "件"
+    "type": "text",
+    "string": "件"
   },
   {
     "strokes": [
@@ -43682,7 +43890,8 @@
         ]
       ]
     ],
-    "char": "検"
+    "type": "text",
+    "string": "検"
   },
   {
     "strokes": [
@@ -44073,7 +44282,8 @@
         ]
       ]
     ],
-    "char": "研"
+    "type": "text",
+    "string": "研"
   },
   {
     "strokes": [
@@ -44336,11 +44546,13 @@
         ]
       ]
     ],
-    "char": "見"
+    "type": "text",
+    "string": "見"
   },
   {
     "strokes": [],
-    "char": "元"
+    "type": "text",
+    "string": "元"
   },
   {
     "strokes": [
@@ -44693,7 +44905,8 @@
         ]
       ]
     ],
-    "char": "原"
+    "type": "text",
+    "string": "原"
   },
   {
     "strokes": [
@@ -45076,7 +45289,8 @@
         ]
       ]
     ],
-    "char": "現"
+    "type": "text",
+    "string": "現"
   },
   {
     "strokes": [
@@ -45319,7 +45533,8 @@
         ]
       ]
     ],
-    "char": "言"
+    "type": "text",
+    "string": "言"
   },
   {
     "strokes": [
@@ -45760,11 +45975,13 @@
         ]
       ]
     ],
-    "char": "個"
+    "type": "text",
+    "string": "個"
   },
   {
     "strokes": [],
-    "char": "後"
+    "type": "text",
+    "string": "後"
   },
   {
     "strokes": [
@@ -46171,7 +46388,8 @@
         ]
       ]
     ],
-    "char": "後"
+    "type": "text",
+    "string": "後"
   },
   {
     "strokes": [
@@ -46636,7 +46854,8 @@
         ]
       ]
     ],
-    "char": "御"
+    "type": "text",
+    "string": "御"
   },
   {
     "strokes": [
@@ -47113,7 +47332,8 @@
         ]
       ]
     ],
-    "char": "語"
+    "type": "text",
+    "string": "語"
   },
   {
     "strokes": [
@@ -47402,7 +47622,8 @@
         ]
       ]
     ],
-    "char": "効"
+    "type": "text",
+    "string": "効"
   },
   {
     "strokes": [
@@ -47725,7 +47946,8 @@
         ]
       ]
     ],
-    "char": "向"
+    "type": "text",
+    "string": "向"
   },
   {
     "strokes": [
@@ -47852,7 +48074,8 @@
         ]
       ]
     ],
-    "char": "工"
+    "type": "text",
+    "string": "工"
   },
   {
     "strokes": [
@@ -48067,7 +48290,8 @@
         ]
       ]
     ],
-    "char": "広"
+    "type": "text",
+    "string": "広"
   },
   {
     "strokes": [
@@ -48362,7 +48586,8 @@
         ]
       ]
     ],
-    "char": "更"
+    "type": "text",
+    "string": "更"
   },
   {
     "strokes": [
@@ -48791,7 +49016,8 @@
         ]
       ]
     ],
-    "char": "構"
+    "type": "text",
+    "string": "構"
   },
   {
     "strokes": [
@@ -49052,7 +49278,8 @@
         ]
       ]
     ],
-    "char": "考"
+    "type": "text",
+    "string": "考"
   },
   {
     "strokes": [
@@ -49325,7 +49552,8 @@
         ]
       ]
     ],
-    "char": "行"
+    "type": "text",
+    "string": "行"
   },
   {
     "strokes": [
@@ -49724,7 +49952,8 @@
         ]
       ]
     ],
-    "char": "項"
+    "type": "text",
+    "string": "項"
   },
   {
     "strokes": [
@@ -50149,7 +50378,8 @@
         ]
       ]
     ],
-    "char": "高"
+    "type": "text",
+    "string": "高"
   },
   {
     "strokes": [
@@ -50396,7 +50626,8 @@
         ]
       ]
     ],
-    "char": "号"
+    "type": "text",
+    "string": "号"
   },
   {
     "strokes": [
@@ -50669,7 +50900,8 @@
         ]
       ]
     ],
-    "char": "合"
+    "type": "text",
+    "string": "合"
   },
   {
     "strokes": [
@@ -51014,7 +51246,8 @@
         ]
       ]
     ],
-    "char": "国"
+    "type": "text",
+    "string": "国"
   },
   {
     "strokes": [
@@ -51243,11 +51476,13 @@
         ]
       ]
     ],
-    "char": "込"
+    "type": "text",
+    "string": "込"
   },
   {
     "strokes": [],
-    "char": "今"
+    "type": "text",
+    "string": "今"
   },
   {
     "strokes": [
@@ -51428,7 +51663,8 @@
         ]
       ]
     ],
-    "char": "今"
+    "type": "text",
+    "string": "今"
   },
   {
     "strokes": [
@@ -51717,7 +51953,8 @@
         ]
       ]
     ],
-    "char": "再"
+    "type": "text",
+    "string": "再"
   },
   {
     "strokes": [
@@ -52130,7 +52367,8 @@
         ]
       ]
     ],
-    "char": "最"
+    "type": "text",
+    "string": "最"
   },
   {
     "strokes": [
@@ -52701,7 +52939,8 @@
         ]
       ]
     ],
-    "char": "際"
+    "type": "text",
+    "string": "際"
   },
   {
     "strokes": [
@@ -52934,7 +53173,8 @@
         ]
       ]
     ],
-    "char": "在"
+    "type": "text",
+    "string": "在"
   },
   {
     "strokes": [
@@ -53205,7 +53445,8 @@
         ]
       ]
     ],
-    "char": "作"
+    "type": "text",
+    "string": "作"
   },
   {
     "strokes": [
@@ -53580,7 +53821,8 @@
         ]
       ]
     ],
-    "char": "索"
+    "type": "text",
+    "string": "索"
   },
   {
     "strokes": [
@@ -54095,7 +54337,8 @@
         ]
       ]
     ],
-    "char": "雑"
+    "type": "text",
+    "string": "雑"
   },
   {
     "strokes": [
@@ -54412,7 +54655,8 @@
         ]
       ]
     ],
-    "char": "参"
+    "type": "text",
+    "string": "参"
   },
   {
     "strokes": [
@@ -54571,7 +54815,8 @@
         ]
       ]
     ],
-    "char": "山"
+    "type": "text",
+    "string": "山"
   },
   {
     "strokes": [
@@ -55008,7 +55253,8 @@
         ]
       ]
     ],
-    "char": "算"
+    "type": "text",
+    "string": "算"
   },
   {
     "strokes": [
@@ -55365,7 +55611,8 @@
         ]
       ]
     ],
-    "char": "使"
+    "type": "text",
+    "string": "使"
   },
   {
     "strokes": [
@@ -55534,7 +55781,8 @@
         ]
       ]
     ],
-    "char": "子"
+    "type": "text",
+    "string": "子"
   },
   {
     "strokes": [
@@ -55761,7 +56009,8 @@
         ]
       ]
     ],
-    "char": "市"
+    "type": "text",
+    "string": "市"
   },
   {
     "strokes": [
@@ -56088,7 +56337,8 @@
         ]
       ]
     ],
-    "char": "思"
+    "type": "text",
+    "string": "思"
   },
   {
     "strokes": [
@@ -56451,7 +56701,8 @@
         ]
       ]
     ],
-    "char": "指"
+    "type": "text",
+    "string": "指"
   },
   {
     "strokes": [
@@ -56642,7 +56893,8 @@
         ]
       ]
     ],
-    "char": "氏"
+    "type": "text",
+    "string": "氏"
   },
   {
     "strokes": [
@@ -56943,7 +57195,8 @@
         ]
       ]
     ],
-    "char": "私"
+    "type": "text",
+    "string": "私"
   },
   {
     "strokes": [
@@ -57386,7 +57639,8 @@
         ]
       ]
     ],
-    "char": "視"
+    "type": "text",
+    "string": "視"
   },
   {
     "strokes": [
@@ -57771,7 +58025,8 @@
         ]
       ]
     ],
-    "char": "事"
+    "type": "text",
+    "string": "事"
   },
   {
     "strokes": [
@@ -58070,7 +58325,8 @@
         ]
       ]
     ],
-    "char": "字"
+    "type": "text",
+    "string": "字"
   },
   {
     "strokes": [
@@ -58417,7 +58673,8 @@
         ]
       ]
     ],
-    "char": "持"
+    "type": "text",
+    "string": "持"
   },
   {
     "strokes": [
@@ -58736,7 +58993,8 @@
         ]
       ]
     ],
-    "char": "時"
+    "type": "text",
+    "string": "時"
   },
   {
     "strokes": [
@@ -58985,7 +59243,8 @@
         ]
       ]
     ],
-    "char": "次"
+    "type": "text",
+    "string": "次"
   },
   {
     "strokes": [
@@ -59188,7 +59447,8 @@
         ]
       ]
     ],
-    "char": "示"
+    "type": "text",
+    "string": "示"
   },
   {
     "strokes": [
@@ -59427,11 +59687,13 @@
         ]
       ]
     ],
-    "char": "自"
+    "type": "text",
+    "string": "自"
   },
   {
     "strokes": [],
-    "char": "辞"
+    "type": "text",
+    "string": "辞"
   },
   {
     "strokes": [
@@ -59858,7 +60120,8 @@
         ]
       ]
     ],
-    "char": "辞"
+    "type": "text",
+    "string": "辞"
   },
   {
     "strokes": [
@@ -60081,7 +60344,8 @@
         ]
       ]
     ],
-    "char": "式"
+    "type": "text",
+    "string": "式"
   },
   {
     "strokes": [
@@ -60672,7 +60936,8 @@
         ]
       ]
     ],
-    "char": "識"
+    "type": "text",
+    "string": "識"
   },
   {
     "strokes": [
@@ -61021,7 +61286,8 @@
         ]
       ]
     ],
-    "char": "実"
+    "type": "text",
+    "string": "実"
   },
   {
     "strokes": [
@@ -61288,7 +61554,8 @@
         ]
       ]
     ],
-    "char": "社"
+    "type": "text",
+    "string": "社"
   },
   {
     "strokes": [
@@ -61573,7 +61840,8 @@
         ]
       ]
     ],
-    "char": "者"
+    "type": "text",
+    "string": "者"
   },
   {
     "strokes": [
@@ -61902,7 +62170,8 @@
         ]
       ]
     ],
-    "char": "取"
+    "type": "text",
+    "string": "取"
   },
   {
     "strokes": [
@@ -62111,7 +62380,8 @@
         ]
       ]
     ],
-    "char": "手"
+    "type": "text",
+    "string": "手"
   },
   {
     "strokes": [
@@ -62620,7 +62890,8 @@
         ]
       ]
     ],
-    "char": "種"
+    "type": "text",
+    "string": "種"
   },
   {
     "strokes": [
@@ -63037,7 +63308,8 @@
         ]
       ]
     ],
-    "char": "集"
+    "type": "text",
+    "string": "集"
   },
   {
     "strokes": [
@@ -63392,7 +63664,8 @@
         ]
       ]
     ],
-    "char": "重"
+    "type": "text",
+    "string": "重"
   },
   {
     "strokes": [
@@ -63707,7 +63980,8 @@
         ]
       ]
     ],
-    "char": "出"
+    "type": "text",
+    "string": "出"
   },
   {
     "strokes": [
@@ -64042,7 +64316,8 @@
         ]
       ]
     ],
-    "char": "術"
+    "type": "text",
+    "string": "術"
   },
   {
     "strokes": [
@@ -64341,7 +64616,8 @@
         ]
       ]
     ],
-    "char": "述"
+    "type": "text",
+    "string": "述"
   },
   {
     "strokes": [
@@ -64712,7 +64988,8 @@
         ]
       ]
     ],
-    "char": "俊"
+    "type": "text",
+    "string": "俊"
   },
   {
     "strokes": [
@@ -65155,7 +65432,8 @@
         ]
       ]
     ],
-    "char": "純"
+    "type": "text",
+    "string": "純"
   },
   {
     "strokes": [
@@ -65442,7 +65720,8 @@
         ]
       ]
     ],
-    "char": "処"
+    "type": "text",
+    "string": "処"
   },
   {
     "strokes": [
@@ -65777,7 +66056,8 @@
         ]
       ]
     ],
-    "char": "初"
+    "type": "text",
+    "string": "初"
   },
   {
     "strokes": [
@@ -66056,7 +66336,8 @@
         ]
       ]
     ],
-    "char": "所"
+    "type": "text",
+    "string": "所"
   },
   {
     "strokes": [
@@ -66477,7 +66758,8 @@
         ]
       ]
     ],
-    "char": "書"
+    "type": "text",
+    "string": "書"
   },
   {
     "strokes": [
@@ -66588,7 +66870,8 @@
         ]
       ]
     ],
-    "char": "小"
+    "type": "text",
+    "string": "小"
   },
   {
     "strokes": [
@@ -66733,7 +67016,8 @@
         ]
       ]
     ],
-    "char": "少"
+    "type": "text",
+    "string": "少"
   },
   {
     "strokes": [
@@ -66856,7 +67140,8 @@
         ]
       ]
     ],
-    "char": "上"
+    "type": "text",
+    "string": "上"
   },
   {
     "strokes": [
@@ -67291,7 +67576,8 @@
         ]
       ]
     ],
-    "char": "場"
+    "type": "text",
+    "string": "場"
   },
   {
     "strokes": [
@@ -67710,7 +67996,8 @@
         ]
       ]
     ],
-    "char": "常"
+    "type": "text",
+    "string": "常"
   },
   {
     "strokes": [
@@ -68085,7 +68372,8 @@
         ]
       ]
     ],
-    "char": "情"
+    "type": "text",
+    "string": "情"
   },
   {
     "strokes": [
@@ -68304,7 +68592,8 @@
         ]
       ]
     ],
-    "char": "状"
+    "type": "text",
+    "string": "状"
   },
   {
     "strokes": [
@@ -68635,7 +68924,8 @@
         ]
       ]
     ],
-    "char": "信"
+    "type": "text",
+    "string": "信"
   },
   {
     "strokes": [
@@ -69036,7 +69326,8 @@
         ]
       ]
     ],
-    "char": "新"
+    "type": "text",
+    "string": "新"
   },
   {
     "strokes": [
@@ -69255,7 +69546,8 @@
         ]
       ]
     ],
-    "char": "申"
+    "type": "text",
+    "string": "申"
   },
   {
     "strokes": [
@@ -69666,7 +69958,8 @@
         ]
       ]
     ],
-    "char": "進"
+    "type": "text",
+    "string": "進"
   },
   {
     "strokes": [
@@ -69775,7 +70068,8 @@
         ]
       ]
     ],
-    "char": "人"
+    "type": "text",
+    "string": "人"
   },
   {
     "strokes": [
@@ -70094,7 +70388,8 @@
         ]
       ]
     ],
-    "char": "図"
+    "type": "text",
+    "string": "図"
   },
   {
     "strokes": [
@@ -70577,7 +70872,8 @@
         ]
       ]
     ],
-    "char": "数"
+    "type": "text",
+    "string": "数"
   },
   {
     "strokes": [
@@ -70820,7 +71116,8 @@
         ]
       ]
     ],
-    "char": "世"
+    "type": "text",
+    "string": "世"
   },
   {
     "strokes": [
@@ -71121,7 +71418,8 @@
         ]
       ]
     ],
-    "char": "制"
+    "type": "text",
+    "string": "制"
   },
   {
     "strokes": [
@@ -71398,7 +71696,8 @@
         ]
       ]
     ],
-    "char": "性"
+    "type": "text",
+    "string": "性"
   },
   {
     "strokes": [
@@ -71659,7 +71958,8 @@
         ]
       ]
     ],
-    "char": "成"
+    "type": "text",
+    "string": "成"
   },
   {
     "strokes": [
@@ -71882,7 +72182,8 @@
         ]
       ]
     ],
-    "char": "正"
+    "type": "text",
+    "string": "正"
   },
   {
     "strokes": [
@@ -72057,7 +72358,8 @@
         ]
       ]
     ],
-    "char": "生"
+    "type": "text",
+    "string": "生"
   },
   {
     "strokes": [
@@ -72476,7 +72778,8 @@
         ]
       ]
     ],
-    "char": "設"
+    "type": "text",
+    "string": "設"
   },
   {
     "strokes": [
@@ -72933,7 +73236,8 @@
         ]
       ]
     ],
-    "char": "説"
+    "type": "text",
+    "string": "説"
   },
   {
     "strokes": [
@@ -73166,7 +73470,8 @@
         ]
       ]
     ],
-    "char": "先"
+    "type": "text",
+    "string": "先"
   },
   {
     "strokes": [
@@ -73301,7 +73606,8 @@
         ]
       ]
     ],
-    "char": "川"
+    "type": "text",
+    "string": "川"
   },
   {
     "strokes": [
@@ -73826,7 +74132,8 @@
         ]
       ]
     ],
-    "char": "線"
+    "type": "text",
+    "string": "線"
   },
   {
     "strokes": [
@@ -74379,7 +74686,8 @@
         ]
       ]
     ],
-    "char": "選"
+    "type": "text",
+    "string": "選"
   },
   {
     "strokes": [
@@ -74678,7 +74986,8 @@
         ]
       ]
     ],
-    "char": "前"
+    "type": "text",
+    "string": "前"
   },
   {
     "strokes": [
@@ -74899,7 +75208,8 @@
         ]
       ]
     ],
-    "char": "全"
+    "type": "text",
+    "string": "全"
   },
   {
     "strokes": [
@@ -75348,7 +75658,8 @@
         ]
       ]
     ],
-    "char": "組"
+    "type": "text",
+    "string": "組"
   },
   {
     "strokes": [
@@ -75913,7 +76224,8 @@
         ]
       ]
     ],
-    "char": "操"
+    "type": "text",
+    "string": "操"
   },
   {
     "strokes": [
@@ -76298,7 +76610,8 @@
         ]
       ]
     ],
-    "char": "装"
+    "type": "text",
+    "string": "装"
   },
   {
     "strokes": [
@@ -76619,7 +76932,8 @@
         ]
       ]
     ],
-    "char": "送"
+    "type": "text",
+    "string": "送"
   },
   {
     "strokes": [
@@ -77074,7 +77388,8 @@
         ]
       ]
     ],
-    "char": "増"
+    "type": "text",
+    "string": "増"
   },
   {
     "strokes": [
@@ -77457,7 +77772,8 @@
         ]
       ]
     ],
-    "char": "測"
+    "type": "text",
+    "string": "測"
   },
   {
     "strokes": [
@@ -77880,7 +78196,8 @@
         ]
       ]
     ],
-    "char": "速"
+    "type": "text",
+    "string": "速"
   },
   {
     "strokes": [
@@ -78455,7 +78772,8 @@
         ]
       ]
     ],
-    "char": "属"
+    "type": "text",
+    "string": "属"
   },
   {
     "strokes": [
@@ -78936,7 +79254,8 @@
         ]
       ]
     ],
-    "char": "続"
+    "type": "text",
+    "string": "続"
   },
   {
     "strokes": [
@@ -79191,7 +79510,8 @@
         ]
       ]
     ],
-    "char": "存"
+    "type": "text",
+    "string": "存"
   },
   {
     "strokes": [
@@ -79450,7 +79770,8 @@
         ]
       ]
     ],
-    "char": "他"
+    "type": "text",
+    "string": "他"
   },
   {
     "strokes": [
@@ -79699,7 +80020,8 @@
         ]
       ]
     ],
-    "char": "多"
+    "type": "text",
+    "string": "多"
   },
   {
     "strokes": [
@@ -79994,7 +80316,8 @@
         ]
       ]
     ],
-    "char": "体"
+    "type": "text",
+    "string": "体"
   },
   {
     "strokes": [
@@ -80263,7 +80586,8 @@
         ]
       ]
     ],
-    "char": "対"
+    "type": "text",
+    "string": "対"
   },
   {
     "strokes": [
@@ -80804,7 +81128,8 @@
         ]
       ]
     ],
-    "char": "態"
+    "type": "text",
+    "string": "態"
   },
   {
     "strokes": [
@@ -80999,7 +81324,8 @@
         ]
       ]
     ],
-    "char": "代"
+    "type": "text",
+    "string": "代"
   },
   {
     "strokes": [
@@ -81158,7 +81484,8 @@
         ]
       ]
     ],
-    "char": "大"
+    "type": "text",
+    "string": "大"
   },
   {
     "strokes": [
@@ -81605,7 +81932,8 @@
         ]
       ]
     ],
-    "char": "第"
+    "type": "text",
+    "string": "第"
   },
   {
     "strokes": [
@@ -82178,7 +82506,8 @@
         ]
       ]
     ],
-    "char": "題"
+    "type": "text",
+    "string": "題"
   },
   {
     "strokes": [
@@ -82477,7 +82806,8 @@
         ]
       ]
     ],
-    "char": "択"
+    "type": "text",
+    "string": "択"
   },
   {
     "strokes": [
@@ -82760,7 +83090,8 @@
         ]
       ]
     ],
-    "char": "単"
+    "type": "text",
+    "string": "単"
   },
   {
     "strokes": [
@@ -83169,7 +83500,8 @@
         ]
       ]
     ],
-    "char": "値"
+    "type": "text",
+    "string": "値"
   },
   {
     "strokes": [
@@ -83454,7 +83786,8 @@
         ]
       ]
     ],
-    "char": "知"
+    "type": "text",
+    "string": "知"
   },
   {
     "strokes": [
@@ -83735,7 +84068,8 @@
         ]
       ]
     ],
-    "char": "地"
+    "type": "text",
+    "string": "地"
   },
   {
     "strokes": [
@@ -84162,7 +84496,8 @@
         ]
       ]
     ],
-    "char": "置"
+    "type": "text",
+    "string": "置"
   },
   {
     "strokes": [
@@ -84371,7 +84706,8 @@
         ]
       ]
     ],
-    "char": "中"
+    "type": "text",
+    "string": "中"
   },
   {
     "strokes": [
@@ -84838,7 +85174,8 @@
         ]
       ]
     ],
-    "char": "張"
+    "type": "text",
+    "string": "張"
   },
   {
     "strokes": [
@@ -85453,7 +85790,8 @@
         ]
       ]
     ],
-    "char": "調"
+    "type": "text",
+    "string": "調"
   },
   {
     "strokes": [
@@ -85750,7 +86088,8 @@
         ]
       ]
     ],
-    "char": "長"
+    "type": "text",
+    "string": "長"
   },
   {
     "strokes": [
@@ -86075,7 +86414,8 @@
         ]
       ]
     ],
-    "char": "直"
+    "type": "text",
+    "string": "直"
   },
   {
     "strokes": [
@@ -86460,7 +86800,8 @@
         ]
       ]
     ],
-    "char": "通"
+    "type": "text",
+    "string": "通"
   },
   {
     "strokes": [
@@ -86725,7 +87066,8 @@
         ]
       ]
     ],
-    "char": "定"
+    "type": "text",
+    "string": "定"
   },
   {
     "strokes": [
@@ -87170,7 +87512,8 @@
         ]
       ]
     ],
-    "char": "提"
+    "type": "text",
+    "string": "提"
   },
   {
     "strokes": [
@@ -87587,7 +87930,8 @@
         ]
       ]
     ],
-    "char": "程"
+    "type": "text",
+    "string": "程"
   },
   {
     "strokes": [
@@ -87950,7 +88294,8 @@
         ]
       ]
     ],
-    "char": "的"
+    "type": "text",
+    "string": "的"
   },
   {
     "strokes": [
@@ -88461,7 +88806,8 @@
         ]
       ]
     ],
-    "char": "適"
+    "type": "text",
+    "string": "適"
   },
   {
     "strokes": [
@@ -88732,7 +89078,8 @@
         ]
       ]
     ],
-    "char": "点"
+    "type": "text",
+    "string": "点"
   },
   {
     "strokes": [
@@ -88969,7 +89316,8 @@
         ]
       ]
     ],
-    "char": "伝"
+    "type": "text",
+    "string": "伝"
   },
   {
     "strokes": [
@@ -89188,7 +89536,8 @@
         ]
       ]
     ],
-    "char": "田"
+    "type": "text",
+    "string": "田"
   },
   {
     "strokes": [
@@ -89639,7 +89988,8 @@
         ]
       ]
     ],
-    "char": "電"
+    "type": "text",
+    "string": "電"
   },
   {
     "strokes": [
@@ -89990,7 +90340,8 @@
         ]
       ]
     ],
-    "char": "度"
+    "type": "text",
+    "string": "度"
   },
   {
     "strokes": [
@@ -90339,7 +90690,8 @@
         ]
       ]
     ],
-    "char": "東"
+    "type": "text",
+    "string": "東"
   },
   {
     "strokes": [
@@ -90584,7 +90936,8 @@
         ]
       ]
     ],
-    "char": "当"
+    "type": "text",
+    "string": "当"
   },
   {
     "strokes": [
@@ -91015,7 +91368,8 @@
         ]
       ]
     ],
-    "char": "動"
+    "type": "text",
+    "string": "動"
   },
   {
     "strokes": [
@@ -91304,7 +91658,8 @@
         ]
       ]
     ],
-    "char": "同"
+    "type": "text",
+    "string": "同"
   },
   {
     "strokes": [
@@ -91711,7 +92066,8 @@
         ]
       ]
     ],
-    "char": "得"
+    "type": "text",
+    "string": "得"
   },
   {
     "strokes": [
@@ -92082,7 +92438,8 @@
         ]
       ]
     ],
-    "char": "特"
+    "type": "text",
+    "string": "特"
   },
   {
     "strokes": [
@@ -92485,7 +92842,8 @@
         ]
       ]
     ],
-    "char": "特"
+    "type": "text",
+    "string": "特"
   },
   {
     "strokes": [
@@ -92938,7 +93296,8 @@
         ]
       ]
     ],
-    "char": "読"
+    "type": "text",
+    "string": "読"
   },
   {
     "strokes": [
@@ -93163,7 +93522,8 @@
         ]
       ]
     ],
-    "char": "内"
+    "type": "text",
+    "string": "内"
   },
   {
     "strokes": [
@@ -93264,7 +93624,8 @@
         ]
       ]
     ],
-    "char": "入"
+    "type": "text",
+    "string": "入"
   },
   {
     "strokes": [
@@ -93741,7 +94102,8 @@
         ]
       ]
     ],
-    "char": "認"
+    "type": "text",
+    "string": "認"
   },
   {
     "strokes": [
@@ -93986,7 +94348,8 @@
         ]
       ]
     ],
-    "char": "年"
+    "type": "text",
+    "string": "年"
   },
   {
     "strokes": [
@@ -94167,7 +94530,8 @@
         ]
       ]
     ],
-    "char": "之"
+    "type": "text",
+    "string": "之"
   },
   {
     "strokes": [
@@ -94572,7 +94936,8 @@
         ]
       ]
     ],
-    "char": "能"
+    "type": "text",
+    "string": "能"
   },
   {
     "strokes": [
@@ -94973,7 +95338,8 @@
         ]
       ]
     ],
-    "char": "配"
+    "type": "text",
+    "string": "配"
   },
   {
     "strokes": [
@@ -95198,7 +95564,8 @@
         ]
       ]
     ],
-    "char": "白"
+    "type": "text",
+    "string": "白"
   },
   {
     "strokes": [
@@ -95541,7 +95908,8 @@
         ]
       ]
     ],
-    "char": "発"
+    "type": "text",
+    "string": "発"
   },
   {
     "strokes": [
@@ -95986,7 +96354,8 @@
         ]
       ]
     ],
-    "char": "番"
+    "type": "text",
+    "string": "番"
   },
   {
     "strokes": [
@@ -96259,7 +96628,8 @@
         ]
       ]
     ],
-    "char": "非"
+    "type": "text",
+    "string": "非"
   },
   {
     "strokes": [
@@ -96470,7 +96840,8 @@
         ]
       ]
     ],
-    "char": "必"
+    "type": "text",
+    "string": "必"
   },
   {
     "strokes": [
@@ -96795,7 +97166,8 @@
         ]
       ]
     ],
-    "char": "表"
+    "type": "text",
+    "string": "表"
   },
   {
     "strokes": [
@@ -97168,7 +97540,8 @@
         ]
       ]
     ],
-    "char": "評"
+    "type": "text",
+    "string": "評"
   },
   {
     "strokes": [
@@ -97523,7 +97896,8 @@
         ]
       ]
     ],
-    "char": "品"
+    "type": "text",
+    "string": "品"
   },
   {
     "strokes": [
@@ -97700,7 +98074,8 @@
         ]
       ]
     ],
-    "char": "不"
+    "type": "text",
+    "string": "不"
   },
   {
     "strokes": [
@@ -97895,7 +98270,8 @@
         ]
       ]
     ],
-    "char": "付"
+    "type": "text",
+    "string": "付"
   },
   {
     "strokes": [
@@ -98300,7 +98676,8 @@
         ]
       ]
     ],
-    "char": "普"
+    "type": "text",
+    "string": "普"
   },
   {
     "strokes": [
@@ -98753,7 +99130,8 @@
         ]
       ]
     ],
-    "char": "部"
+    "type": "text",
+    "string": "部"
   },
   {
     "strokes": [
@@ -99300,7 +99678,8 @@
         ]
       ]
     ],
-    "char": "複"
+    "type": "text",
+    "string": "複"
   },
   {
     "strokes": [
@@ -99477,7 +99856,8 @@
         ]
       ]
     ],
-    "char": "分"
+    "type": "text",
+    "string": "分"
   },
   {
     "strokes": [
@@ -99686,7 +100066,8 @@
         ]
       ]
     ],
-    "char": "文"
+    "type": "text",
+    "string": "文"
   },
   {
     "strokes": [
@@ -100183,7 +100564,8 @@
         ]
       ]
     ],
-    "char": "聞"
+    "type": "text",
+    "string": "聞"
   },
   {
     "strokes": [
@@ -100436,7 +100818,8 @@
         ]
       ]
     ],
-    "char": "並"
+    "type": "text",
+    "string": "並"
   },
   {
     "strokes": [
@@ -100731,7 +101114,8 @@
         ]
       ]
     ],
-    "char": "別"
+    "type": "text",
+    "string": "別"
   },
   {
     "strokes": [
@@ -101054,7 +101438,8 @@
         ]
       ]
     ],
-    "char": "変"
+    "type": "text",
+    "string": "変"
   },
   {
     "strokes": [
@@ -101701,7 +102086,8 @@
         ]
       ]
     ],
-    "char": "編"
+    "type": "text",
+    "string": "編"
   },
   {
     "strokes": [
@@ -102042,7 +102428,8 @@
         ]
       ]
     ],
-    "char": "返"
+    "type": "text",
+    "string": "返"
   },
   {
     "strokes": [
@@ -102523,7 +102910,8 @@
         ]
       ]
     ],
-    "char": "報"
+    "type": "text",
+    "string": "報"
   },
   {
     "strokes": [
@@ -102728,7 +103116,8 @@
         ]
       ]
     ],
-    "char": "方"
+    "type": "text",
+    "string": "方"
   },
   {
     "strokes": [
@@ -102993,7 +103382,8 @@
         ]
       ]
     ],
-    "char": "法"
+    "type": "text",
+    "string": "法"
   },
   {
     "strokes": [
@@ -103212,7 +103602,8 @@
         ]
       ]
     ],
-    "char": "本"
+    "type": "text",
+    "string": "本"
   },
   {
     "strokes": [
@@ -103533,7 +103924,8 @@
         ]
       ]
     ],
-    "char": "味"
+    "type": "text",
+    "string": "味"
   },
   {
     "strokes": [
@@ -103910,7 +104302,8 @@
         ]
       ]
     ],
-    "char": "無"
+    "type": "text",
+    "string": "無"
   },
   {
     "strokes": [
@@ -104159,7 +104552,8 @@
         ]
       ]
     ],
-    "char": "名"
+    "type": "text",
+    "string": "名"
   },
   {
     "strokes": [
@@ -104504,7 +104898,8 @@
         ]
       ]
     ],
-    "char": "明"
+    "type": "text",
+    "string": "明"
   },
   {
     "strokes": [
@@ -104851,7 +105246,8 @@
         ]
       ]
     ],
-    "char": "面"
+    "type": "text",
+    "string": "面"
   },
   {
     "strokes": [
@@ -105028,7 +105424,8 @@
         ]
       ]
     ],
-    "char": "木"
+    "type": "text",
+    "string": "木"
   },
   {
     "strokes": [
@@ -105231,7 +105628,8 @@
         ]
       ]
     ],
-    "char": "目"
+    "type": "text",
+    "string": "目"
   },
   {
     "strokes": [
@@ -105622,7 +106020,8 @@
         ]
       ]
     ],
-    "char": "問"
+    "type": "text",
+    "string": "問"
   },
   {
     "strokes": [
@@ -106061,11 +106460,13 @@
         ]
       ]
     ],
-    "char": "野"
+    "type": "text",
+    "string": "野"
   },
   {
     "strokes": [],
-    "char": "約"
+    "type": "text",
+    "string": "約"
   },
   {
     "strokes": [
@@ -106454,7 +106855,8 @@
         ]
       ]
     ],
-    "char": "約"
+    "type": "text",
+    "string": "約"
   },
   {
     "strokes": [
@@ -106695,7 +107097,8 @@
         ]
       ]
     ],
-    "char": "有"
+    "type": "text",
+    "string": "有"
   },
   {
     "strokes": [
@@ -106896,7 +107299,8 @@
         ]
       ]
     ],
-    "char": "予"
+    "type": "text",
+    "string": "予"
   },
   {
     "strokes": [
@@ -107273,7 +107677,8 @@
         ]
       ]
     ],
-    "char": "容"
+    "type": "text",
+    "string": "容"
   },
   {
     "strokes": [
@@ -107706,7 +108111,8 @@
         ]
       ]
     ],
-    "char": "様"
+    "type": "text",
+    "string": "様"
   },
   {
     "strokes": [
@@ -108033,7 +108439,8 @@
         ]
       ]
     ],
-    "char": "用"
+    "type": "text",
+    "string": "用"
   },
   {
     "strokes": [
@@ -108412,7 +108819,8 @@
         ]
       ]
     ],
-    "char": "要"
+    "type": "text",
+    "string": "要"
   },
   {
     "strokes": [
@@ -108695,7 +109103,8 @@
         ]
       ]
     ],
-    "char": "来"
+    "type": "text",
+    "string": "来"
   },
   {
     "strokes": [
@@ -108958,7 +109367,8 @@
         ]
       ]
     ],
-    "char": "利"
+    "type": "text",
+    "string": "利"
   },
   {
     "strokes": [
@@ -109341,7 +109751,8 @@
         ]
       ]
     ],
-    "char": "理"
+    "type": "text",
+    "string": "理"
   },
   {
     "strokes": [
@@ -109524,7 +109935,8 @@
         ]
       ]
     ],
-    "char": "立"
+    "type": "text",
+    "string": "立"
   },
   {
     "strokes": [
@@ -109861,7 +110273,8 @@
         ]
       ]
     ],
-    "char": "料"
+    "type": "text",
+    "string": "料"
   },
   {
     "strokes": [
@@ -110172,7 +110585,8 @@
         ]
       ]
     ],
-    "char": "良"
+    "type": "text",
+    "string": "良"
   },
   {
     "strokes": [
@@ -110329,7 +110743,8 @@
         ]
       ]
     ],
-    "char": "力"
+    "type": "text",
+    "string": "力"
   },
   {
     "strokes": [
@@ -110908,7 +111323,8 @@
         ]
       ]
     ],
-    "char": "類"
+    "type": "text",
+    "string": "類"
   },
   {
     "strokes": [
@@ -111205,7 +111621,8 @@
         ]
       ]
     ],
-    "char": "例"
+    "type": "text",
+    "string": "例"
   },
   {
     "strokes": [
@@ -111446,7 +111863,8 @@
         ]
       ]
     ],
-    "char": "列"
+    "type": "text",
+    "string": "列"
   },
   {
     "strokes": [
@@ -111865,7 +112283,8 @@
         ]
       ]
     ],
-    "char": "連"
+    "type": "text",
+    "string": "連"
   },
   {
     "strokes": [
@@ -112378,7 +112797,8 @@
         ]
       ]
     ],
-    "char": "録"
+    "type": "text",
+    "string": "録"
   },
   {
     "strokes": [
@@ -112873,7 +113293,8 @@
         ]
       ]
     ],
-    "char": "論"
+    "type": "text",
+    "string": "論"
   },
   {
     "strokes": [
@@ -113292,6 +113713,7 @@
         ]
       ]
     ],
-    "char": "話"
+    "type": "text",
+    "string": "話"
   }
 ]

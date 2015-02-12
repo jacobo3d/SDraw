@@ -335,7 +335,7 @@ move_mode = function() {
 };
 
 recognition = function() {
-  var d, entry, height, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, size, stroke, totaldist, width, x0, x1, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _m, _n, _ref, _ref1, _results, _results1, _results2;
+  var cands, entry, height, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, size, stroke, totaldist, width, x0, x1, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _m, _n, _ref, _ref1, _results, _results1, _results2;
   nstrokes = strokes.length;
   _ref = [1000, 1000, 0, 0], minx = _ref[0], miny = _ref[1], maxx = _ref[2], maxy = _ref[3];
   for (_i = 0, _len = strokes.length; _i < _len; _i++) {
@@ -361,7 +361,7 @@ recognition = function() {
     y1 = (stroke[1][1] - miny) * 1000.0 / size;
     normalized_strokes.push([[x0, y0], [x1, y1]]);
   }
-  d = [];
+  cands = [];
   for (_k = 0, _len2 = kanjidata.length; _k < _len2; _k++) {
     entry = kanjidata[_k];
     kstrokes = entry.strokes;
@@ -420,17 +420,15 @@ recognition = function() {
       dy = kanji_strokes[i][1][1] - normalized_strokes[i][1][1];
       return totaldist += Math.sqrt(dx * dx + dy * dy);
     });
-    d.push([entry, totaldist]);
+    cands.push([entry, totaldist]);
   }
-  d = d.sort(function(a, b) {
+  cands = cands.sort(function(a, b) {
     return a[1] - b[1];
   });
   return [0, 1, 2, 3, 4, 5].forEach(function(i) {
-    var div, text;
-    div = $("#cand" + i);
-    div.children().remove();
-    text = $('<span>').text(d[i][0].char);
-    text.css('font-size', '70pt');
-    return div.append(text);
+    var candsvg;
+    candsvg = d3.select("#cand" + i);
+    candsvg.selectAll("*").remove();
+    return candsvg.append("text").attr("x", 10).attr("y", 80).attr("font-size", '60px').attr("fill", "blue").text(cands[i][0].string);
   });
 };

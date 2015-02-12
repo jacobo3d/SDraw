@@ -378,7 +378,7 @@ recognition = ->
   #
   # 漢字ストロークデータとマッチングをとる
   #
-  d = []
+  cands = []
   for entry in kanjidata
     kstrokes = entry.strokes
     continue if kstrokes.length < nstrokes
@@ -421,13 +421,23 @@ recognition = ->
       dx = kanji_strokes[i][1][0] - normalized_strokes[i][1][0]
       dy = kanji_strokes[i][1][1] - normalized_strokes[i][1][1]
       totaldist += Math.sqrt(dx * dx + dy * dy)
-    d.push [entry, totaldist]
-  d = d.sort (a,b) ->
+    cands.push [entry, totaldist]
+  cands = cands.sort (a,b) ->
     a[1] - b[1]
   # $('#searchtext').val(d[0][0].char)
   [0..5].forEach (i) ->
-    div = $("#cand#{i}")
-    div.children().remove();
-    text = $('<span>').text d[i][0].char
-    text.css 'font-size', '70pt'
-    div.append text
+    candsvg = d3.select "#cand#{i}"
+    candsvg.selectAll "*"
+      .remove()
+    candsvg.append "text"
+      .attr "x", 10
+      .attr "y", 80
+      .attr "font-size", '60px'
+      .attr "fill", "blue"
+      .text cands[i][0].string
+
+#    div = $("#cand#{i}")
+#    div.children().remove();
+#    text = $('<span>').text d[i][0].string
+#    text.css 'font-size', '70pt'
+#    div.append text

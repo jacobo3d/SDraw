@@ -17,8 +17,9 @@ Dir.open(".").each { |file|
     if file =~ /^K(.*)\-/ then
       entry = {}
       euc = $1
-      char = euc2char(euc)
-      entry['char'] = char
+      string = euc2char(euc)
+      entry['string'] = string
+      entry['type'] = 'text'
       strokes = []
       File.open(file){ |f|
         stroke = []
