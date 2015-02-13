@@ -379,49 +379,50 @@ recognition = ->
   # 漢字ストロークデータとマッチングをとる
   #
   cands = []
-  for entry in kanjidata.concat figuredata
-    kstrokes = entry.strokes
-    continue if kstrokes.length < nstrokes
-    [minx, miny, maxx, maxy] = [1000, 1000, 0, 0]
-    [0...nstrokes].forEach (i) ->
-      points = kstrokes[i]
-      stroke = []
-      stroke[0] = points[0]
-      stroke[1] = points[points.length-1]
-      minx = Math.min minx, stroke[0][0]
-      maxx = Math.max maxx, stroke[0][0]
-      minx = Math.min minx, stroke[1][0]
-      maxx = Math.max maxx, stroke[1][0]
-      miny = Math.min miny, stroke[0][1]
-      maxy = Math.max maxy, stroke[0][1]
-      miny = Math.min miny, stroke[1][1]
-      maxy = Math.max maxy, stroke[1][1]
-    width = maxx - minx
-    height = maxy - miny
-    size = Math.max width, height
-    kanji_strokes = []
-    [0...nstrokes].forEach (i) ->
-      points = kstrokes[i]
-      stroke = []
-      stroke[0] = points[0]
-      stroke[1] = points[points.length-1]
-      x0 = (stroke[0][0]-minx) * 1000.0 / size
-      y0 = (stroke[0][1]-miny) * 1000.0 / size
-      x1 = (stroke[1][0]-minx) * 1000.0 / size
-      y1 = (stroke[1][1]-miny) * 1000.0 / size
-      kanji_strokes.push [[x0, y0], [x1, y1]]
-    #
-    # normalized_strokes と kanji_strokes を比較する
-    #
-    totaldist = 0.0
-    [0...nstrokes].forEach (i) ->
-      dx = kanji_strokes[i][0][0] - normalized_strokes[i][0][0]
-      dy = kanji_strokes[i][0][1] - normalized_strokes[i][0][1]
-      totaldist += Math.sqrt(dx * dx + dy * dy)
-      dx = kanji_strokes[i][1][0] - normalized_strokes[i][1][0]
-      dy = kanji_strokes[i][1][1] - normalized_strokes[i][1][1]
-      totaldist += Math.sqrt(dx * dx + dy * dy)
-    cands.push [entry, totaldist]
+  for data in [kanjidata, figuredata]
+    for entry in data
+      kstrokes = entry.strokes
+      continue if kstrokes.length < nstrokes
+      [minx, miny, maxx, maxy] = [1000, 1000, 0, 0]
+      [0...nstrokes].forEach (i) ->
+        points = kstrokes[i]
+        stroke = []
+        stroke[0] = points[0]
+        stroke[1] = points[points.length-1]
+        minx = Math.min minx, stroke[0][0]
+        maxx = Math.max maxx, stroke[0][0]
+        minx = Math.min minx, stroke[1][0]
+        maxx = Math.max maxx, stroke[1][0]
+        miny = Math.min miny, stroke[0][1]
+        maxy = Math.max maxy, stroke[0][1]
+        miny = Math.min miny, stroke[1][1]
+        maxy = Math.max maxy, stroke[1][1]
+      width = maxx - minx
+      height = maxy - miny
+      size = Math.max width, height
+      kanji_strokes = []
+      [0...nstrokes].forEach (i) ->
+        points = kstrokes[i]
+        stroke = []
+        stroke[0] = points[0]
+        stroke[1] = points[points.length-1]
+        x0 = (stroke[0][0]-minx) * 1000.0 / size
+        y0 = (stroke[0][1]-miny) * 1000.0 / size
+        x1 = (stroke[1][0]-minx) * 1000.0 / size
+        y1 = (stroke[1][1]-miny) * 1000.0 / size
+        kanji_strokes.push [[x0, y0], [x1, y1]]
+      #
+      # normalized_strokes と kanji_strokes を比較する
+      #
+      totaldist = 0.0
+      [0...nstrokes].forEach (i) ->
+        dx = kanji_strokes[i][0][0] - normalized_strokes[i][0][0]
+        dy = kanji_strokes[i][0][1] - normalized_strokes[i][0][1]
+        totaldist += Math.sqrt(dx * dx + dy * dy)
+        dx = kanji_strokes[i][1][0] - normalized_strokes[i][1][0]
+        dy = kanji_strokes[i][1][1] - normalized_strokes[i][1][1]
+        totaldist += Math.sqrt(dx * dx + dy * dy)
+      cands.push [entry, totaldist]
 
   #
   # 図形ストロークデータとマッチング
@@ -441,3 +442,30 @@ recognition = ->
     c = candsvg.append cand.type
     c.attr cand.attr
     c.text cand.text if cand.text
+
+    c['ind'] = i
+    c.on 'mousedown', ->
+      d3.event.preventDefault()
+      #alert d3.event.target.nodeName
+      #for attr in d3.event.target.attributes
+      #  alert attr.nodeName
+      target = d3.event.target
+      copy = svg.append target.nodeName
+      for attr in target.attributes
+        copy.attr attr.nodeName, attr.value
+      copy.text target.innerHTML
+
+#      image = d3.event.target.src
+#    template.selectAll "*"
+#      .remove()
+#    template.append 'image'
+#      .attr
+#        'xlink:href': image
+#        x: 0
+#        y: 0
+#        width: 400
+#        height: 400
+#        preserveAspectRatio: "meet"
+#    mousedown = true
+#    pointx = d3.event.clientX
+#    pointy = d3.event.clientY

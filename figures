@@ -18,8 +18,23 @@ entry['attr'] = {
   'fill' => 'none',
   'stroke-width' => 3
 }
+data.push entry
 
-
+#
+# 座標
+#
+entry = {}
+entry['strokes'] = [
+  [[0, 0], [0, 80]],
+  [[0, 80], [80, 80]],
+]
+entry['type'] = 'path'
+entry['attr'] = {
+  'd' => "M10,10L10,80L80,80",
+  'stroke' => '#008800',
+  'fill' => 'none',
+  'stroke-width' => 3
+}
 data.push entry
 
 puts data.to_json
