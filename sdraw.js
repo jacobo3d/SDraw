@@ -335,7 +335,7 @@ move_mode = function() {
 };
 
 recognition = function() {
-  var cands, entry, height, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, size, stroke, totaldist, width, x0, x1, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _m, _n, _ref, _ref1, _results, _results1, _results2;
+  var cands, entry, height, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, size, stroke, totaldist, width, x0, x1, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _m, _n, _ref, _ref1, _ref2, _results, _results1, _results2;
   nstrokes = strokes.length;
   _ref = [1000, 1000, 0, 0], minx = _ref[0], miny = _ref[1], maxx = _ref[2], maxy = _ref[3];
   for (_i = 0, _len = strokes.length; _i < _len; _i++) {
@@ -362,13 +362,14 @@ recognition = function() {
     normalized_strokes.push([[x0, y0], [x1, y1]]);
   }
   cands = [];
-  for (_k = 0, _len2 = kanjidata.length; _k < _len2; _k++) {
-    entry = kanjidata[_k];
+  _ref1 = kanjidata.concat(figuredata);
+  for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+    entry = _ref1[_k];
     kstrokes = entry.strokes;
     if (kstrokes.length < nstrokes) {
       continue;
     }
-    _ref1 = [1000, 1000, 0, 0], minx = _ref1[0], miny = _ref1[1], maxx = _ref1[2], maxy = _ref1[3];
+    _ref2 = [1000, 1000, 0, 0], minx = _ref2[0], miny = _ref2[1], maxx = _ref2[2], maxy = _ref2[3];
     (function() {
       _results = [];
       for (var _l = 0; 0 <= nstrokes ? _l < nstrokes : _l > nstrokes; 0 <= nstrokes ? _l++ : _l--){ _results.push(_l); }

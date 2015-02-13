@@ -379,7 +379,7 @@ recognition = ->
   # 漢字ストロークデータとマッチングをとる
   #
   cands = []
-  for entry in kanjidata
+  for entry in kanjidata.concat figuredata
     kstrokes = entry.strokes
     continue if kstrokes.length < nstrokes
     [minx, miny, maxx, maxy] = [1000, 1000, 0, 0]
@@ -423,6 +423,11 @@ recognition = ->
       totaldist += Math.sqrt(dx * dx + dy * dy)
     cands.push [entry, totaldist]
 
+  #
+  # 図形ストロークデータとマッチング
+  #
+  # cands.push [figuredata[0], 0]
+
   # スコア順にソート
   cands = cands.sort (a,b) ->
     a[1] - b[1]
@@ -436,16 +441,3 @@ recognition = ->
     c = candsvg.append cand.type
     c.attr cand.attr
     c.text cand.text if cand.text
-
-#    candsvg.append "text"
-#      .attr "x", 10
-#      .attr "y", 80
-#      .attr "font-size", '60px'
-#      .attr "fill", "blue"
-#      .text cands[i][0].string
-
-#    div = $("#cand#{i}")
-#    div.children().remove();
-#    text = $('<span>').text d[i][0].string
-#    text.css 'font-size', '70pt'
-#    div.append text

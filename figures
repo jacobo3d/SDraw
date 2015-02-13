@@ -8,12 +8,13 @@ data = []
 #
 entry = {}
 entry['strokes'] = [
-  [[80,0], [80,160]]
+  [[0, 0], [80, 80]],
+  [[80, 0], [0, 80]],
 ]
 entry['type'] = 'path'
 entry['attr'] = {
-  'd' => "M10,10L200,200M200,10L10,200",
-  'stroke' => 'red',
+  'd' => "M10,10L80,80M80,10L10,80",
+  'stroke' => '#008800',
   'fill' => 'none',
   'stroke-width' => 3
 }
