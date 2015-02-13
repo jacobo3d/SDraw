@@ -446,14 +446,12 @@ recognition = ->
     c['ind'] = i
     c.on 'mousedown', ->
       d3.event.preventDefault()
-      #alert d3.event.target.nodeName
-      #for attr in d3.event.target.attributes
-      #  alert attr.nodeName
+      strokes = []
       target = d3.event.target
       copy = svg.append target.nodeName
       for attr in target.attributes
         copy.attr attr.nodeName, attr.value
-      copy.text target.innerHTML
+      copy.text target.innerHTML if target.innerHTML
 
 #      image = d3.event.target.src
 #    template.selectAll "*"

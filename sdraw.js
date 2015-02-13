@@ -443,6 +443,7 @@ recognition = function() {
     return c.on('mousedown', function() {
       var attr, copy, target, _len4, _p, _ref3;
       d3.event.preventDefault();
+      strokes = [];
       target = d3.event.target;
       copy = svg.append(target.nodeName);
       _ref3 = target.attributes;
@@ -450,7 +451,9 @@ recognition = function() {
         attr = _ref3[_p];
         copy.attr(attr.nodeName, attr.value);
       }
-      return copy.text(target.innerHTML);
+      if (target.innerHTML) {
+        return copy.text(target.innerHTML);
+      }
     });
   });
 };
