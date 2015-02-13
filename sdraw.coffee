@@ -137,6 +137,8 @@ imageheight = 400
 mousedown = false
 pointx = 0
 pointy = 0
+elementx = 0
+elementy = 0
 #for i in [0..10]
 #  d3.select("#cand#{i}").on 'mousedown', ->
 #    d3.event.preventDefault()
@@ -350,6 +352,7 @@ move_mode = ->
 
 ###############
 
+copied_element = null
 recognition = ->
   #
   # strokesを正規化する。
@@ -439,19 +442,37 @@ recognition = ->
     candsvg = d3.select "#cand#{i}"
     candsvg.selectAll "*"
       .remove()
-    c = candsvg.append cand.type
-    c.attr cand.attr
-    c.text cand.text if cand.text
+    candelement = candsvg.append cand.type
+    candelement.attr cand.attr
+    candelement.text cand.text if cand.text
 
-    c['ind'] = i
-    c.on 'mousedown', ->
+    candelement.on 'mousedown', ->
       d3.event.preventDefault()
+      mousedown = true
+      pointx = d3.event.clientX
+      pointy = d3.event.clientY
       strokes = []
       target = d3.event.target
-      copy = svg.append target.nodeName
+      copied_element = svg.append target.nodeName
       for attr in target.attributes
-        copy.attr attr.nodeName, attr.value
-      copy.text target.innerHTML if target.innerHTML
+        copied_element.attr attr.nodeName, attr.value
+        elementx = Number(attr.value) if attr.nodeName == 'x'
+        elementy = Number(attr.value) if attr.nodeName == 'y'
+      copied_element.text target.innerHTML if target.innerHTML
+
+    candelement.on 'mousemove', ->
+      return unless mousedown
+      d3.event.preventDefault()
+      $('#searchtext').val(elementy)
+      copied_element.attr
+        x: (d3.event.clientX - pointx) * 3 + elementx
+        y: (d3.event.clientY - pointy) * 3 + elementy
+
+    candelement.on 'mouseup', ->
+      return unless mousedown
+      d3.event.preventDefault()
+      mousedown = false
+
 
 #      image = d3.event.target.src
 #    template.selectAll "*"
