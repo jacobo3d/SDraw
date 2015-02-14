@@ -11,7 +11,6 @@
 # 
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
-svgPos = null
 
 kanjidata = null
 figuredata = null
@@ -32,7 +31,6 @@ resize = ->
       height: drawHeight
     .style
       'background-color': "#ffffff"
-  svgPos = $('svg').offset() # これはjQueryの表現... D3の表現があるはずでは
 
   $('#candidates')
     .css 'height', drawHeight/2 - 30
@@ -83,9 +81,7 @@ $('#dup').on 'click', ->
       cloned.attr a.nodeName, a.value 
     cloned.on 'mousedown', ->
       if mode == 'select'
-        downpoint =
-          x: d3.event.clientX - svgPos.left
-          y: d3.event.clientY - svgPos.top
+        downpoint = d3.mouse(this)
         move_mode()
 
     #for (var j = 0; j < length; j++) { // Iterate on attributes and skip on "id"
@@ -181,8 +177,8 @@ elementy = 0
 
 window.line = d3.svg.line()
   .interpolate 'cardinal'  # 指定した点を通る
-  .x (d) -> d.x
-  .y (d) -> d.y
+  .x (d) -> d[0]
+  .y (d) -> d[1]
 
 ##
 ## テンプレート領域
@@ -207,21 +203,23 @@ setTemplate = (id, template) ->
     d3.event.preventDefault()
     if randomTimeout
       clearTimeout randomTimeout
-    pointx = d3.event.clientX
-    pointy = d3.event.clientY
+    [pointx, pointy] = d3.mouse(this)
+    #pointx = d3.event.clientX
+    #pointy = d3.event.clientY
     srand(timeseed)
   d3.select("##{id}").on 'mousemove', ->
     if mousedown
       d3.event.preventDefault()
-      template.change d3.event.clientX - pointx, d3.event.clientY - pointy
+      [x, y] = d3.mouse(this)
+      template.change x - pointx, y - pointy
       i = Math.floor((d3.event.clientX - pointx) / 10)
       j = Math.floor((d3.event.clientY - pointy) / 10)
       srand(timeseed + i * 100 + j)
   d3.select("##{id}").on 'mouseup', ->
     mousedown = false
-    randomTimeout = setTimeout ->
-      timeseed = Number(new Date()) # 3秒たつと値が変わる
-    , 3000
+    #randomTimeout = setTimeout ->
+    #  timeseed = Number(new Date()) # 3秒たつと値が変わる
+    #, 3000
 
 setTemplate("template0", meshTemplate)
 setTemplate("template1", parseTemplate)
@@ -237,7 +235,6 @@ setTemplate("template3", kareobanaTemplate3)
 points = []
 path = null
 # SVGElement.getScreenCTM() とか使うべきなのかも
-# svgPos = $('svg').offset()
 
 strokes = []
 
@@ -259,7 +256,7 @@ selfunc = (path) ->
       if selected.indexOf(path) < 0
         selected.push path
 
-downpoint = {}
+downpoint = []
 
 draw_mode = ->
   mode = 'draw'
@@ -276,11 +273,9 @@ draw_mode = ->
     d3.event.preventDefault()
     mousedown = true
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
-    downpoint =
-      x: d3.mouse(this)[0]
-      y: d3.mouse(this)[1]
-    #  x: d3.event.clientX - svgPos.left
-    #  y: d3.event.clientY - svgPos.top
+    downpoint = d3.mouse(this)
+    #  x: d3.mouse(this)[0]
+    #  y: d3.mouse(this)[1]
     points = [ downpoint ]
 
     path.on 'mousemove', selfunc path  # クロージャ
@@ -289,20 +284,16 @@ draw_mode = ->
         downpoint =
           x: d3.mouse(this)[0]
           y: d3.mouse(this)[1]
-        #  x: d3.event.clientX - svgPos.left
-        #  y: d3.event.clientY - svgPos.top
         move_mode()
 
   svg.on 'mouseup', ->
     return unless mousedown
     d3.event.preventDefault()
-    uppoint =
-      x: d3.event.clientX - svgPos.left
-      y: d3.event.clientY - svgPos.top
+    uppoint = d3.mouse(this)
     points.push uppoint
     draw()
     mousedown = false
-    strokes.push [[downpoint.x, downpoint.y], [uppoint.x, uppoint.y]]
+    strokes.push [ downpoint, uppoint ]
 
     recognition() # !!!!!
 
@@ -310,11 +301,10 @@ draw_mode = ->
     return unless mousedown
     d3.event.preventDefault()
     #[x, y] = d3.mouse(this)
-    points.push
-      x: d3.mouse(this)[0]
-      y: d3.mouse(this)[1]
-      #x: d3.event.clientX - svgPos.left
-      #y: d3.event.clientY - svgPos.top
+    #points.push
+    #  x: d3.mouse(this)[0]
+    #  y: d3.mouse(this)[1]
+    points.push d3.mouse(this)
     draw()
 
 edit_mode = ->
@@ -347,8 +337,7 @@ move_mode = ->
 
   svg.on 'mousemove', ->
     return unless mousedown
-    x = d3.event.clientX - svgPos.left
-    y = d3.event.clientY - svgPos.top
+    [x, y] = d3.mouse(this)
     for element in selected
       element.attr "transform", "translate(#{x-downpoint.x},#{y-downpoint.y})"
 
@@ -438,7 +427,6 @@ recognition = ->
   #
   # 図形ストロークデータとマッチング
   #
-  # cands.push [figuredata[0], 0]
 
   # スコア順にソート
   cands = cands.sort (a,b) ->
