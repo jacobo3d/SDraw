@@ -70,12 +70,6 @@ $('#dup').on 'click', ->
     node_name = element.property "nodeName"
     parent = d3.select element.node().parentNode
 
-    #for i in attr
-    #  alert i.nodeName
-
-    # cloned = parent.append node_name
-    #  .attr "id", element.attr("id") + i
-
     cloned = parent.append node_name
     for a in attr
       cloned.attr a.nodeName, a.value 
