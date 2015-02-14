@@ -11,9 +11,9 @@
 # 
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
-
-kanjidata = null
-figuredata = null
+#a = svg.attr().property()
+#for x, y of a
+#  alert "#{x} => #{y}"
 
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
@@ -43,20 +43,16 @@ $ ->
   draw_mode()
 
   $.getJSON "kanji/kanji.json", (data) ->
-    kanjidata = data
-
+    window.kanjidata = data
   $.getJSON "figures.json", (data) ->
-    figuredata = data
+    window.figuredata = data
 
 #
 # 編集モード/描画モード
 # 
 mode = 'draw' # または 'select' または 'move'
-$('#draw').on 'click', ->
-  draw_mode()
-
-$('#edit').on 'click', ->
-  edit_mode()
+$('#draw').on 'click', -> draw_mode()
+$('#edit').on 'click', -> edit_mode()
 
 $('#delete').on 'click', ->
   for element in selected
@@ -66,23 +62,17 @@ $('#dup').on 'click', ->
   for element in selected
     # alert element.node().attributes[0]
     attr = element.node().attributes
-    length = attr.length
     node_name = element.property "nodeName"
     parent = d3.select element.node().parentNode
 
     cloned = parent.append node_name
     for a in attr
-      cloned.attr a.nodeName, a.value 
+      cloned.attr a.nodeName, a.value
+    cloned.attr "transform", "translate(30,30)"
     cloned.on 'mousedown', ->
       if mode == 'select'
         downpoint = d3.mouse(this)
         move_mode()
-
-    #for (var j = 0; j < length; j++) { // Iterate on attributes and skip on "id"
-    #    if (attr[j].nodeName == "id") continue;
-    #    cloned.attr(attr[j].name,attr[j].value);
-    #}
-    #return cloned;
 
 $('#test').on 'click', ->
   svg.append "text"
@@ -198,16 +188,14 @@ setTemplate = (id, template) ->
     if randomTimeout
       clearTimeout randomTimeout
     [pointx, pointy] = d3.mouse(this)
-    #pointx = d3.event.clientX
-    #pointy = d3.event.clientY
     srand(timeseed)
   d3.select("##{id}").on 'mousemove', ->
     if mousedown
       d3.event.preventDefault()
       [x, y] = d3.mouse(this)
       template.change x - pointx, y - pointy
-      i = Math.floor((d3.event.clientX - pointx) / 10)
-      j = Math.floor((d3.event.clientY - pointy) / 10)
+      i = Math.floor((x - pointx) / 10)
+      j = Math.floor((y - pointy) / 10)
       srand(timeseed + i * 100 + j)
   d3.select("##{id}").on 'mouseup', ->
     mousedown = false
@@ -268,16 +256,12 @@ draw_mode = ->
     mousedown = true
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
     downpoint = d3.mouse(this)
-    #  x: d3.mouse(this)[0]
-    #  y: d3.mouse(this)[1]
     points = [ downpoint ]
 
     path.on 'mousemove', selfunc path  # クロージャ
     path.on 'mousedown', ->
       if mode == 'select'
-        downpoint =
-          x: d3.mouse(this)[0]
-          y: d3.mouse(this)[1]
+        downpoint = d3.mouse(this)
         move_mode()
 
   svg.on 'mouseup', ->
@@ -327,13 +311,14 @@ move_mode = ->
     .remove()
 
   svg.on 'mousedown', ->
+    downpoint = d3.mouse(this)
     mousedown = true
 
   svg.on 'mousemove', ->
     return unless mousedown
     [x, y] = d3.mouse(this)
     for element in selected
-      element.attr "transform", "translate(#{x-downpoint.x},#{y-downpoint.y})"
+      element.attr "transform", "translate(#{x-downpoint[0]},#{y-downpoint[1]})"
 
   svg.on 'mouseup', ->
     return unless mousedown
@@ -373,7 +358,7 @@ recognition = ->
   # 漢字ストロークデータとマッチングをとる
   #
   cands = []
-  for data in [kanjidata, figuredata]
+  for data in [window.kanjidata, window.figuredata]
     for entry in data
       kstrokes = entry.strokes
       continue if kstrokes.length < nstrokes
@@ -439,8 +424,7 @@ recognition = ->
     candelement.on 'mousedown', ->
       d3.event.preventDefault()
       mousedown = true
-      pointx = d3.event.clientX
-      pointy = d3.event.clientY
+      [pointx, pointy] = d3.mouse(this)
       strokes = []
       target = d3.event.target
       copied_element = svg.append target.nodeName
@@ -454,28 +438,10 @@ recognition = ->
       return unless mousedown
       d3.event.preventDefault()
       $('#searchtext').val(elementy)
-      copied_element.attr "transform", "translate(#{d3.event.clientX - pointx},#{d3.event.clientY - pointy})"
-      #copied_element.attr
-      #  x: (d3.event.clientX - pointx) * 3 + elementx
-      #  y: (d3.event.clientY - pointy) * 3 + elementy
+      [x, y] = d3.mouse(this)
+      copied_element.attr "transform", "translate(#{x - pointx},#{y - pointy})"
 
     candelement.on 'mouseup', ->
       return unless mousedown
       d3.event.preventDefault()
       mousedown = false
-
-
-#      image = d3.event.target.src
-#    template.selectAll "*"
-#      .remove()
-#    template.append 'image'
-#      .attr
-#        'xlink:href': image
-#        x: 0
-#        y: 0
-#        width: 400
-#        height: 400
-#        preserveAspectRatio: "meet"
-#    mousedown = true
-#    pointx = d3.event.clientX
-#    pointy = d3.event.clientY
