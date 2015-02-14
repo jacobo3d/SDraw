@@ -464,9 +464,10 @@ recognition = ->
       return unless mousedown
       d3.event.preventDefault()
       $('#searchtext').val(elementy)
-      copied_element.attr
-        x: (d3.event.clientX - pointx) * 3 + elementx
-        y: (d3.event.clientY - pointy) * 3 + elementy
+      copied_element.attr "transform", "translate(#{d3.event.clientX - pointx},#{d3.event.clientY - pointy})"
+      #copied_element.attr
+      #  x: (d3.event.clientX - pointx) * 3 + elementx
+      #  y: (d3.event.clientY - pointy) * 3 + elementy
 
     candelement.on 'mouseup', ->
       return unless mousedown
