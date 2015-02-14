@@ -7,6 +7,7 @@
 # 
 # グローバル変数は window.xxxx みたいに指定する
 # このファイル中のみのグローバル変数は関数定義の外で初期化しておく
+#
 # 
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
@@ -31,6 +32,7 @@ resize = ->
       height: drawHeight
     .style
       'background-color': "#ffffff"
+  svgPos = $('svg').offset() # これはjQueryの表現... D3の表現があるはずでは
 
   $('#candidates')
     .css 'height', drawHeight/2 - 30
@@ -40,7 +42,6 @@ resize = ->
 $ ->
   resize()
   $(window).resize resize
-  svgPos = $('svg').offset()
   draw_mode()
 
   $.getJSON "kanji/kanji.json", (data) ->
@@ -276,16 +277,20 @@ draw_mode = ->
     mousedown = true
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
     downpoint =
-      x: d3.event.clientX - svgPos.left
-      y: d3.event.clientY - svgPos.top
+      x: d3.mouse(this)[0]
+      y: d3.mouse(this)[1]
+    #  x: d3.event.clientX - svgPos.left
+    #  y: d3.event.clientY - svgPos.top
     points = [ downpoint ]
 
     path.on 'mousemove', selfunc path  # クロージャ
     path.on 'mousedown', ->
       if mode == 'select'
         downpoint =
-          x: d3.event.clientX - svgPos.left
-          y: d3.event.clientY - svgPos.top
+          x: d3.mouse(this)[0]
+          y: d3.mouse(this)[1]
+        #  x: d3.event.clientX - svgPos.left
+        #  y: d3.event.clientY - svgPos.top
         move_mode()
 
   svg.on 'mouseup', ->
@@ -304,9 +309,12 @@ draw_mode = ->
   svg.on 'mousemove', ->
     return unless mousedown
     d3.event.preventDefault()
+    #[x, y] = d3.mouse(this)
     points.push
-      x: d3.event.clientX - svgPos.left
-      y: d3.event.clientY - svgPos.top
+      x: d3.mouse(this)[0]
+      y: d3.mouse(this)[1]
+      #x: d3.event.clientX - svgPos.left
+      #y: d3.event.clientY - svgPos.top
     draw()
 
 edit_mode = ->

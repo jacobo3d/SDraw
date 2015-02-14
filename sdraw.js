@@ -28,6 +28,7 @@ resize = function() {
   }).style({
     'background-color': "#ffffff"
   });
+  svgPos = $('svg').offset();
   $('#candidates').css('height', drawHeight / 2 - 30);
   return $('#suggestions').css('height', drawHeight / 2 - 30);
 };
@@ -35,7 +36,6 @@ resize = function() {
 $(function() {
   resize();
   $(window).resize(resize);
-  svgPos = $('svg').offset();
   draw_mode();
   $.getJSON("kanji/kanji.json", function(data) {
     return kanjidata = data;
@@ -245,16 +245,16 @@ draw_mode = function() {
     mousedown = true;
     path = svg.append('path');
     downpoint = {
-      x: d3.event.clientX - svgPos.left,
-      y: d3.event.clientY - svgPos.top
+      x: d3.mouse(this)[0],
+      y: d3.mouse(this)[1]
     };
     points = [downpoint];
     path.on('mousemove', selfunc(path));
     return path.on('mousedown', function() {
       if (mode === 'select') {
         downpoint = {
-          x: d3.event.clientX - svgPos.left,
-          y: d3.event.clientY - svgPos.top
+          x: d3.mouse(this)[0],
+          y: d3.mouse(this)[1]
         };
         return move_mode();
       }
@@ -282,8 +282,8 @@ draw_mode = function() {
     }
     d3.event.preventDefault();
     points.push({
-      x: d3.event.clientX - svgPos.left,
-      y: d3.event.clientY - svgPos.top
+      x: d3.mouse(this)[0],
+      y: d3.mouse(this)[1]
     });
     return draw();
   });
