@@ -50,7 +50,7 @@ $ ->
 #
 # 編集モード/描画モード
 # 
-mode = 'draw' # または 'select' または 'move'
+mode = 'draw' # または 'edit' または 'move'
 $('#draw').on 'click', -> draw_mode()
 $('#edit').on 'click', -> edit_mode()
 
@@ -60,7 +60,6 @@ $('#delete').on 'click', ->
 
 $('#dup').on 'click', ->
   for element in selected
-    # alert element.node().attributes[0]
     attr = element.node().attributes
     node_name = element.property "nodeName"
     parent = d3.select element.node().parentNode
@@ -70,7 +69,7 @@ $('#dup').on 'click', ->
       cloned.attr a.nodeName, a.value
     cloned.attr "transform", "translate(30,30)"
     cloned.on 'mousedown', ->
-      if mode == 'select'
+      if mode == 'edit'
         downpoint = d3.mouse(this)
         move_mode()
 
@@ -231,7 +230,7 @@ selected = []
 
 selfunc = (path) ->
   ->
-    if mode == 'select'
+    if mode == 'edit'
       return unless mousedown
       path.attr
         stroke: 'yellow'
@@ -258,9 +257,11 @@ draw_mode = ->
     downpoint = d3.mouse(this)
     points = [ downpoint ]
 
+    # マウスが横切ったら選択する
     path.on 'mousemove', selfunc path  # クロージャ
+    
     path.on 'mousedown', ->
-      if mode == 'select'
+      if mode == 'edit'
         downpoint = d3.mouse(this)
         move_mode()
 
@@ -287,7 +288,7 @@ draw_mode = ->
 
 edit_mode = ->
   selected = []
-  mode = 'select'
+  mode = 'edit'
   strokes = []
 
   template.selectAll "*"

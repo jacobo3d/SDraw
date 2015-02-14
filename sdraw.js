@@ -74,7 +74,7 @@ $('#dup').on('click', function() {
     cloned.attr("transform", "translate(30,30)");
     _results.push(cloned.on('mousedown', function() {
       var downpoint;
-      if (mode === 'select') {
+      if (mode === 'edit') {
         downpoint = d3.mouse(this);
         return move_mode();
       }
@@ -205,7 +205,7 @@ selected = [];
 
 selfunc = function(path) {
   return function() {
-    if (mode === 'select') {
+    if (mode === 'edit') {
       if (!mousedown) {
         return;
       }
@@ -236,7 +236,7 @@ draw_mode = function() {
     points = [downpoint];
     path.on('mousemove', selfunc(path));
     return path.on('mousedown', function() {
-      if (mode === 'select') {
+      if (mode === 'edit') {
         downpoint = d3.mouse(this);
         return move_mode();
       }
@@ -267,7 +267,7 @@ draw_mode = function() {
 
 edit_mode = function() {
   selected = [];
-  mode = 'select';
+  mode = 'edit';
   strokes = [];
   template.selectAll("*").remove();
   svg.on('mousedown', function() {
