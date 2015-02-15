@@ -73,6 +73,10 @@ $('#dup').on 'click', ->
         downpoint = d3.mouse(this)
         move_mode()
 
+    cloned.on 'mousemove', selfunc cloned
+
+#    selected.push cloned
+
 $('#test').on 'click', ->
   svg.append "text"
     .attr "x", 50
@@ -232,10 +236,8 @@ selfunc = (path) ->
   ->
     if mode == 'edit'
       return unless mousedown
-      path.attr
-        stroke: 'yellow'
-      if selected.indexOf(path) < 0
-        selected.push path
+      path.attr "stroke", "yellow"
+      selected.push path unless path in selected 
 
 downpoint = []
 
@@ -247,8 +249,7 @@ draw_mode = ->
   template.selectAll "*"
     .remove()
   svg.selectAll "*"
-    .attr
-      stroke: 'blue'
+    .attr "stroke", 'blue'
 
   svg.on 'mousedown', ->
     d3.event.preventDefault()
@@ -425,14 +426,15 @@ recognition = ->
     candelement.on 'mousedown', ->
       d3.event.preventDefault()
       mousedown = true
-      [pointx, pointy] = d3.mouse(this)
+      downpoint = d3.mouse(this)
+      # [pointx, pointy] = d3.mouse(this)
       strokes = []
       target = d3.event.target
       copied_element = svg.append target.nodeName
       for attr in target.attributes
         copied_element.attr attr.nodeName, attr.value
-        elementx = Number(attr.value) if attr.nodeName == 'x'
-        elementy = Number(attr.value) if attr.nodeName == 'y'
+        #elementx = Number(attr.value) if attr.nodeName == 'x'
+        #elementy = Number(attr.value) if attr.nodeName == 'y'
       copied_element.text target.innerHTML if target.innerHTML
 
     candelement.on 'mousemove', ->
@@ -440,7 +442,7 @@ recognition = ->
       d3.event.preventDefault()
       $('#searchtext').val(elementy)
       [x, y] = d3.mouse(this)
-      copied_element.attr "transform", "translate(#{x - pointx},#{y - pointy})"
+      copied_element.attr "transform", "translate(#{x - downpoint[0]},#{y - downpoint[1]})"
 
     candelement.on 'mouseup', ->
       return unless mousedown
