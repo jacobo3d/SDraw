@@ -226,6 +226,7 @@ selfunc = (element) ->
       selected.push element unless element in selected
 
 modetimeout = null
+downtime = null
 
 draw_mode = ->
   mode = 'draw'
@@ -239,8 +240,9 @@ draw_mode = ->
 
   svg.on 'mousedown', ->
     d3.event.preventDefault()
-    downpoint = d3.mouse(this)
     
+    downpoint = d3.mouse(this)
+    downtime = new Date()
     modetimeout = setTimeout -> # 300msじっとしてると編集モードになるとか
       selected = []
       edit_mode()
@@ -297,6 +299,7 @@ edit_mode = ->
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
+    downtime = new Date()
     #modetimeout = setTimeout ->
     #  selected = []
     #  draw_mode()
@@ -334,6 +337,12 @@ edit_mode = ->
 
     downpoint = null
     moving = false
+
+    uptime = new Date()
+    if uptime - downtime < 300
+      selected = []
+      strokes = []
+      draw_mode()
 
 ###############
 
