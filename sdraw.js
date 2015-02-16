@@ -292,7 +292,7 @@ draw_mode = function() {
       return;
     }
     movepoint = d3.mouse(this);
-    if (dist(movepoint, downpoint) < 10.0) {
+    if (dist(movepoint, downpoint) > 10.0) {
       clearTimeout(modetimeout);
     }
     d3.event.preventDefault();
@@ -321,7 +321,7 @@ edit_mode = function() {
       return;
     }
     movepoint = d3.mouse(this);
-    if (dist(movepoint, downpoint) < 10.0) {
+    if (dist(movepoint, downpoint) > 10.0) {
       clearTimeout(modetimeout);
     }
     $('#searchtext').val("move-move selected = " + selected.length);
