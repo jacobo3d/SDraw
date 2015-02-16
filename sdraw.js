@@ -292,7 +292,7 @@ draw_mode = function() {
       return;
     }
     movepoint = d3.mouse(this);
-    if (dist(movepoint, downpoint) > 10.0) {
+    if (dist(movepoint, downpoint) > 20.0) {
       clearTimeout(modetimeout);
     }
     d3.event.preventDefault();
@@ -306,11 +306,7 @@ edit_mode = function() {
   template.selectAll("*").remove();
   svg.on('mousedown', function() {
     d3.event.preventDefault();
-    downpoint = d3.mouse(this);
-    return modetimeout = setTimeout(function() {
-      selected = [];
-      return draw_mode();
-    }, 300);
+    return downpoint = d3.mouse(this);
   });
   svg.on('mousemove', function() {
     var attr, e, element, movepoint, x, y, _i, _j, _len, _len1, _results;
@@ -321,7 +317,7 @@ edit_mode = function() {
       return;
     }
     movepoint = d3.mouse(this);
-    if (dist(movepoint, downpoint) > 10.0) {
+    if (dist(movepoint, downpoint) > 20.0) {
       clearTimeout(modetimeout);
     }
     $('#searchtext').val("move-move selected = " + selected.length);

@@ -283,7 +283,7 @@ draw_mode = ->
   svg.on 'mousemove', ->
     return unless downpoint
     movepoint = d3.mouse(this)
-    clearTimeout modetimeout if dist(movepoint,downpoint) > 10.0
+    clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
     d3.event.preventDefault()
     points.push movepoint
     draw()
@@ -297,16 +297,16 @@ edit_mode = ->
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
-    modetimeout = setTimeout ->
-      selected = []
-      draw_mode()
-    , 300
+    #modetimeout = setTimeout ->
+    #  selected = []
+    #  draw_mode()
+    #, 300
 
   svg.on 'mousemove', ->
     return unless downpoint
     return unless moving
     movepoint = d3.mouse(this)
-    clearTimeout modetimeout if dist(movepoint,downpoint) > 10.0
+    clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
     $('#searchtext').val("move-move selected = #{selected.length}")
     for element in selected
       attr = element.node().attributes
