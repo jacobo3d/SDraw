@@ -298,7 +298,6 @@ edit_mode = ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
     modetimeout = setTimeout ->
-      downpoint = null
       selected = []
       draw_mode()
     , 300
