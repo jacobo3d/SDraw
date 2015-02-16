@@ -76,16 +76,21 @@ $('#dup').on 'click', ->
     parent = d3.select element.node().parentNode
 
     cloned = parent.append node_name
-    for a in attr
-      cloned.attr a.nodeName, a.value
-    cloned.attr "transform", "translate(30,30)"
+    x = 0.0
+    y = 0.0
+    for e in attr
+      cloned.attr e.nodeName, e.value
+      x = Number(e.value) if e.nodeName == 'xx'
+      y = Number(e.value) if e.nodeName == 'yy'
+    cloned.attr "transform", "translate(#{30+x},#{30+y})"
     cloned.on 'mousedown', ->
       if mode == 'edit'
         downpoint = d3.mouse(this)
 
     cloned.on 'mousemove', selfunc cloned
 
-#    selected.push cloned
+    selected.push cloned
+    alert selected.length
 
 $('#test').on 'click', ->
   svg.append "text"
@@ -241,12 +246,21 @@ draw_mode = ->
       downpoint = d3.mouse(this)
       for element in selected
         attr = element.node().attributes
-        xisset = false
-        for x in attr
-          xisset = true if x.nodeName == 'xx'
-        unless xisset
-          element.attr "xx", 0.0 # downpoint[0]
-          element.attr "yy", 0.0 # downpoint[1]
+        x = 0.0
+        y = 0.0
+        for e in attr
+          x = Number(e.value) if e.nodeName == 'xx'
+          y = Number(e.value) if e.nodeName == 'yy'
+        element.attr "xx", x
+        element.attr "yy", y
+
+        #xisset = false
+        #for x in attr
+        #  xisset = true if x.nodeName == 'xx'
+        #unless xisset
+        #  element.attr "xx", 0.0 # downpoint[0]
+        #  element.attr "yy", 0.0 # downpoint[1]
+          
         moving = true
         
     # マウスが横切ったら選択する
