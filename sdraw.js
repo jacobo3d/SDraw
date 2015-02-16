@@ -24,6 +24,10 @@ window.browserHeight = function() {
   return window.innerHeight || document.body.clientHeight;
 };
 
+window.hypot = function(x, y) {
+  return Math.sqrt(x * x + y * y);
+};
+
 resize = function() {
   window.drawWidth = browserWidth() * 0.69;
   window.drawHeight = browserHeight();
@@ -436,10 +440,10 @@ recognition = function() {
         var dx, dy;
         dx = kanji_strokes[i][0][0] - normalized_strokes[i][0][0];
         dy = kanji_strokes[i][0][1] - normalized_strokes[i][0][1];
-        totaldist += Math.sqrt(dx * dx + dy * dy);
+        totaldist += hypot(dx, dy);
         dx = kanji_strokes[i][1][0] - normalized_strokes[i][1][0];
         dy = kanji_strokes[i][1][1] - normalized_strokes[i][1][1];
-        return totaldist += Math.sqrt(dx * dx + dy * dy);
+        return totaldist += hypot(dx, dy);
       });
       cands.push([entry, totaldist]);
     }

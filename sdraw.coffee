@@ -29,6 +29,8 @@ window.browserWidth = ->
 window.browserHeight = ->
   window.innerHeight || document.body.clientHeight
 
+window.hypot = (x, y) -> Math.sqrt(x * x + y * y)
+
 resize = ->
   window.drawWidth = browserWidth() * 0.69
   window.drawHeight = browserHeight()
@@ -403,10 +405,10 @@ recognition = ->
       [0...nstrokes].forEach (i) ->
         dx = kanji_strokes[i][0][0] - normalized_strokes[i][0][0]
         dy = kanji_strokes[i][0][1] - normalized_strokes[i][0][1]
-        totaldist += Math.sqrt(dx * dx + dy * dy)
+        totaldist += hypot dx, dy
         dx = kanji_strokes[i][1][0] - normalized_strokes[i][1][0]
         dy = kanji_strokes[i][1][1] - normalized_strokes[i][1][1]
-        totaldist += Math.sqrt(dx * dx + dy * dy)
+        totaldist += hypot dx, dy
       cands.push [entry, totaldist]
 
   # スコア順にソート
