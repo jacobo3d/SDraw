@@ -21,6 +21,7 @@ downpoint = null  # mousedown時の座標
 selected = []     # 選択された要素列
 points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
+moving = false
 
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
@@ -57,8 +58,9 @@ $ ->
 #
 # 編集モード/描画モード
 # 
-mode = 'draw' # または 'edit' または 'move'
-$('#draw').on 'click', -> draw_mode()
+mode = 'draw' # または 'edit'
+$('#draw').on 'click', ->
+  draw_mode()
 $('#edit').on 'click', ->
   selected = []
   edit_mode()
@@ -80,7 +82,6 @@ $('#dup').on 'click', ->
     cloned.on 'mousedown', ->
       if mode == 'edit'
         downpoint = d3.mouse(this)
-        move_mode()
 
     cloned.on 'mousemove', selfunc cloned
 
@@ -222,17 +223,18 @@ draw_mode = ->
     points = [ downpoint ]
 
     path.on 'mousedown', ->
-      if mode == 'edit'
-        downpoint = d3.mouse(this)
-        $('#searchtext').val(downpoint[0])
-        attr = path.node().attributes
-        xisset = false
-        for x in attr
-          xisset = true if x.nodeName == 'x'
-        unless xisset
-          path.attr "x", downpoint[0]
-          path.attr "y", downpoint[1]
-        move_mode()
+      return unless mode == 'edit'
+      downpoint = d3.mouse(this)
+      $('#searchtext').val(downpoint[0])
+      attr = path.node().attributes
+      xisset = false
+      for x in attr
+        xisset = true if x.nodeName == 'x'
+      unless xisset
+        path.attr "x", 0.0 # downpoint[0]
+        path.attr "y", 0.0 # downpoint[1]
+      moving = true
+      #move_mode()
         
     # マウスが横切ったら選択する
     path.on 'mousemove', selfunc path  # クロージャ
@@ -242,7 +244,10 @@ draw_mode = ->
       #  target = d3.event.target
       #  for attr in target.attributes
       #    alert attr.nodeName
-      drawpoint = null
+
+      # これらはsvg.on('mouseup')でセットする
+      #drawpoint = null
+      #moving = false
 
   svg.on 'mouseup', ->
     return unless downpoint
@@ -252,6 +257,7 @@ draw_mode = ->
     draw()
     strokes.push [ downpoint, uppoint ]
     downpoint = null
+    moving = false # ねんのため
 
     recognition() # !!!!!
 
@@ -262,58 +268,43 @@ draw_mode = ->
     draw()
 
 edit_mode = ->
-  # selected = []
   mode = 'edit'
-  strokes = []
-
+  
   template.selectAll "*"
     .remove()
 
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
-
-  svg.on 'mousemove', ->
-
-  svg.on 'mouseup', ->
-    return unless downpoint
-    d3.event.preventDefault()
-    downpoint = null
-
-move_mode = ->
-  mode = 'move'
-
-  template.selectAll "*"
-    .remove()
-
-  svg.on 'mousedown', ->
-    d3.event.preventDefault()
-    downpoint = d3.mouse(this)
-    $('#searchtext').val('move-down')
+    $('#searchtext').val("edit-down")
 
   svg.on 'mousemove', ->
     return unless downpoint
+    return unless moving
     movepoint = d3.mouse(this)
     $('#searchtext').val("move-move selected = #{selected.length}")
     for element in selected
       # element.attr "transform", "translate(#{movepoint[0]-downpoint[0]},#{movepoint[1]-downpoint[1]})"
       attr = element.node().attributes
-      x = 0
-      y = 0
+      x = 0.0
+      y = 0.0
       for e in attr
         x = e.value if e.nodeName == 'x'
         y = e.value if e.nodeName == 'y'
-      $('#searchtext').val("move-move #{x}, #{y}")
-      element.attr "transform", "translate(#{movepoint[0]-x},#{movepoint[1]-y})"
+        
+      #$('#searchtext').val("xy(#{x},#{y})d(#{downpoint[0]},#{downpoint[1]})m(#{movepoint[0]},#{movepoint[1]})-t(#{movepoint[0]-downpoint[0]+x},#{movepoint[1]-downpoint[1]+y})")
+      $('#searchtext').val("#{movepoint[0]-downpoint[0]+Number(x)},#{movepoint[1]-downpoint[1]+Number(y)}")
+      element.attr "transform", "translate(#{Number(movepoint[0])-Number(downpoint[0])+Number(x)},#{Number(movepoint[1])-Number(downpoint[1])+Number(y)})"
 
   svg.on 'mouseup', ->
     return unless downpoint
     d3.event.preventDefault()
     $('#searchtext').val('move-up')
     uppoint = d3.mouse(this)
-    for element in selected
-      element.attr 'x', uppoint[0]
-      element.attr 'y', uppoint[1]
+    if moving
+      for element in selected
+        element.attr 'x', uppoint[0]-downpoint[0]
+        element.attr 'y', uppoint[1]-downpoint[1]
       
       #attr = element.node().attributes
       #a = element.attr().property()
@@ -325,7 +316,7 @@ move_mode = ->
       #  alert x.value
     
     downpoint = null
-    edit_mode()
+    moving = false
 
 ###############
 
