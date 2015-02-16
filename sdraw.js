@@ -8,6 +8,12 @@ svg = d3.select("svg");
 
 downpoint = null;
 
+selected = [];
+
+points = [];
+
+strokes = [];
+
 window.browserWidth = function() {
   return window.innerWidth || document.body.clientWidth;
 };
@@ -173,11 +179,7 @@ setTemplate("template2", kareobanaTemplate);
 
 setTemplate("template3", kareobanaTemplate3);
 
-points = [];
-
 path = null;
-
-strokes = [];
 
 draw = function() {
   return path.attr({
@@ -187,8 +189,6 @@ draw = function() {
     fill: "none"
   });
 };
-
-selected = [];
 
 selfunc = function(path) {
   return function() {
@@ -272,15 +272,15 @@ move_mode = function() {
     return downpoint = d3.mouse(this);
   });
   svg.on('mousemove', function() {
-    var element, x, y, _i, _len, _ref, _results;
+    var element, movepoint, _i, _len, _results;
     if (!downpoint) {
       return;
     }
-    _ref = d3.mouse(this), x = _ref[0], y = _ref[1];
+    movepoint = d3.mouse(this);
     _results = [];
     for (_i = 0, _len = selected.length; _i < _len; _i++) {
       element = selected[_i];
-      _results.push(element.attr("transform", "translate(" + (x - downpoint[0]) + "," + (y - downpoint[1]) + ")"));
+      _results.push(element.attr("transform", "translate(" + (movepoint[0] - downpoint[0]) + "," + (movepoint[0] - downpoint[1]) + ")"));
     }
     return _results;
   });

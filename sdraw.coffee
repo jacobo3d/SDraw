@@ -15,8 +15,12 @@ svg =  d3.select "svg"
 #a = svg.attr().property()
 #for x, y of a
 #  alert "#{x} => #{y}"
-# 
-downpoint = null
+#
+
+downpoint = null  # mousedown時の座標
+selected = []     # 選択された要素列
+points = []       # ストローク座標列
+strokes = []      # 始点と終点の組の列
 
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
@@ -183,11 +187,8 @@ setTemplate("template3", kareobanaTemplate3)
 ## ユーザによるお絵書き
 ## 
   
-points = []
 path = null
 # SVGElement.getScreenCTM() とか使うべきなのかも
-
-strokes = []
 
 draw = ->
   path.attr
@@ -195,8 +196,6 @@ draw = ->
     stroke:         'blue'
     'stroke-width': 8
     fill:           "none"
-
-selected = []
 
 selfunc = (path) ->
   ->
@@ -277,9 +276,9 @@ move_mode = ->
 
   svg.on 'mousemove', ->
     return unless downpoint
-    [x, y] = d3.mouse(this)
+    movepoint = d3.mouse(this)
     for element in selected
-      element.attr "transform", "translate(#{x-downpoint[0]},#{y-downpoint[1]})"
+      element.attr "transform", "translate(#{movepoint[0]-downpoint[0]},#{movepoint[0]-downpoint[1]})"
 
   svg.on 'mouseup', ->
     return unless downpoint
