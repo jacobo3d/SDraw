@@ -91,18 +91,25 @@ $('#dup').on 'click', ->
       return unless mode == 'edit'
       downpoint = d3.mouse(this)
       moving = true
-
     cloned.on 'mousemove', selfunc cloned
-
+    
     selected.push cloned
 
-$('#test').on 'click', ->
-  svg.append "text"
-    .text "テキストを表示できます"
-    .attr "x", 50
-    .attr "y", 100
-    .attr "font-size", '60px'
-    .attr "fill", "blue"
+#
+# 繰り返し操作サポート
+# selected[n] と selected[n+1]が同じものであり、座標だけ違う場合は
+# コピーする
+#
+$('#repeat').on 'click', ->
+
+  
+#$('#test').on 'click', ->
+#  svg.append "text"
+#    .text "テキストを表示できます"
+#    .attr "x", 50
+#    .attr "y", 100
+#    .attr "font-size", '60px'
+#    .attr "fill", "blue"
 
 ############################################################################
 #
