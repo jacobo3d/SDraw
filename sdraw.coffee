@@ -11,9 +11,12 @@
 # 
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
+
 #a = svg.attr().property()
 #for x, y of a
 #  alert "#{x} => #{y}"
+# 
+downpoint = null
 
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
@@ -79,11 +82,11 @@ $('#dup').on 'click', ->
 
 $('#test').on 'click', ->
   svg.append "text"
+    .text "テキストを表示できます"
     .attr "x", 50
     .attr "y", 100
     .attr "font-size", '60px'
     .attr "fill", "blue"
-    .text "テキストを表示できます"
 
 ############################################################################
 #
@@ -115,41 +118,6 @@ candsearch = ->
 $('#searchbutton').on 'click', candsearch
 $('#searchtext').on 'keydown', (e) ->
   candsearch() if e.keyCode == 13
-
-imagewidth = 400
-imageheight = 400
-mousedown = false
-pointx = 0
-pointy = 0
-elementx = 0
-elementy = 0
-#for i in [0..10]
-#  d3.select("#cand#{i}").on 'mousedown', ->
-#    d3.event.preventDefault()
-#    image = d3.event.target.src
-#    template.selectAll "*"
-#      .remove()
-#    template.append 'image'
-#      .attr
-#        'xlink:href': image
-#        x: 0
-#        y: 0
-#        width: 400
-#        height: 400
-#        preserveAspectRatio: "meet"
-#    mousedown = true
-#    pointx = d3.event.clientX
-#    pointy = d3.event.clientY
-#  d3.select("#cand#{i}").on 'mousemove', ->
-#    if mousedown
-#      d3.event.preventDefault()
-#      d3.select("image")
-#        .attr
-#          x: d3.event.clientX - pointx
-#          y: d3.event.clientY - pointy
-#  d3.select("#cand#{i}").on 'mouseup', ->
-#    d3.event.preventDefault()
-#    mousedown = false
 
 ############################################################################
 #
@@ -186,22 +154,21 @@ setTemplate = (id, template) ->
   d3.select("##{id}").on 'click', ->
     template.draw()
   d3.select("##{id}").on 'mousedown', ->
-    mousedown = true
     d3.event.preventDefault()
+    downpoint = d3.mouse(this)
     if randomTimeout
       clearTimeout randomTimeout
-    [pointx, pointy] = d3.mouse(this)
     srand(timeseed)
   d3.select("##{id}").on 'mousemove', ->
-    if mousedown
+    if downpoint
       d3.event.preventDefault()
       [x, y] = d3.mouse(this)
-      template.change x - pointx, y - pointy
-      i = Math.floor((x - pointx) / 10)
-      j = Math.floor((y - pointy) / 10)
+      template.change x - downpoint[0], y - downpoint[1]
+      i = Math.floor((x - downpoint[0]) / 10)
+      j = Math.floor((y - downpoint[1]) / 10)
       srand(timeseed + i * 100 + j)
   d3.select("##{id}").on 'mouseup', ->
-    mousedown = false
+    downpoint = null
     #randomTimeout = setTimeout ->
     #  timeseed = Number(new Date()) # 3秒たつと値が変わる
     #, 3000
@@ -209,7 +176,6 @@ setTemplate = (id, template) ->
 setTemplate("template0", meshTemplate)
 setTemplate("template1", parseTemplate)
 setTemplate("template2", kareobanaTemplate)
-# setTemplate("template3", kareobanaTemplate2)
 setTemplate("template3", kareobanaTemplate3)
 
 ############################################################################
@@ -235,11 +201,9 @@ selected = []
 selfunc = (path) ->
   ->
     if mode == 'edit'
-      return unless mousedown
+      return unless downpoint
       path.attr "stroke", "yellow"
       selected.push path unless path in selected 
-
-downpoint = []
 
 draw_mode = ->
   mode = 'draw'
@@ -253,9 +217,8 @@ draw_mode = ->
 
   svg.on 'mousedown', ->
     d3.event.preventDefault()
-    mousedown = true
-    path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
     downpoint = d3.mouse(this)
+    path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
     points = [ downpoint ]
 
     # マウスが横切ったら選択する
@@ -267,23 +230,19 @@ draw_mode = ->
         move_mode()
 
   svg.on 'mouseup', ->
-    return unless mousedown
+    return unless downpoint
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
     points.push uppoint
     draw()
-    mousedown = false
     strokes.push [ downpoint, uppoint ]
+    downpoint = null
 
     recognition() # !!!!!
 
   svg.on 'mousemove', ->
-    return unless mousedown
+    return unless downpoint
     d3.event.preventDefault()
-    #[x, y] = d3.mouse(this)
-    #points.push
-    #  x: d3.mouse(this)[0]
-    #  y: d3.mouse(this)[1]
     points.push d3.mouse(this)
     draw()
 
@@ -297,14 +256,14 @@ edit_mode = ->
 
   svg.on 'mousedown', ->
     d3.event.preventDefault()
-    mousedown = true
+    downpoint = d3.mouse(this)
 
   svg.on 'mousemove', ->
 
   svg.on 'mouseup', ->
-    return unless mousedown
+    return unless downpoint
     d3.event.preventDefault()
-    mousedown = false
+    downpoint = null
 
 move_mode = ->
   mode = 'move'
@@ -313,19 +272,19 @@ move_mode = ->
     .remove()
 
   svg.on 'mousedown', ->
+    d3.event.preventDefault()
     downpoint = d3.mouse(this)
-    mousedown = true
 
   svg.on 'mousemove', ->
-    return unless mousedown
+    return unless downpoint
     [x, y] = d3.mouse(this)
     for element in selected
       element.attr "transform", "translate(#{x-downpoint[0]},#{y-downpoint[1]})"
 
   svg.on 'mouseup', ->
-    return unless mousedown
+    return unless downpoint
     d3.event.preventDefault()
-    mousedown = false
+    downpoint = null
     edit_mode()
 
 ###############
@@ -357,7 +316,7 @@ recognition = ->
     y1 = (stroke[1][1]-miny) * 1000.0 / size
     normalized_strokes.push [[x0, y0], [x1, y1]]
   #
-  # 漢字ストロークデータとマッチングをとる
+  # 漢字/図形ストロークデータとマッチングをとる
   #
   cands = []
   for data in [window.kanjidata, window.figuredata]
@@ -405,10 +364,6 @@ recognition = ->
         totaldist += Math.sqrt(dx * dx + dy * dy)
       cands.push [entry, totaldist]
 
-  #
-  # 図形ストロークデータとマッチング
-  #
-
   # スコア順にソート
   cands = cands.sort (a,b) ->
     a[1] - b[1]
@@ -425,26 +380,22 @@ recognition = ->
 
     candelement.on 'mousedown', ->
       d3.event.preventDefault()
-      mousedown = true
       downpoint = d3.mouse(this)
-      # [pointx, pointy] = d3.mouse(this)
       strokes = []
       target = d3.event.target
       copied_element = svg.append target.nodeName
       for attr in target.attributes
         copied_element.attr attr.nodeName, attr.value
-        #elementx = Number(attr.value) if attr.nodeName == 'x'
-        #elementy = Number(attr.value) if attr.nodeName == 'y'
       copied_element.text target.innerHTML if target.innerHTML
 
     candelement.on 'mousemove', ->
-      return unless mousedown
+      return unless downpoint
       d3.event.preventDefault()
       $('#searchtext').val(elementy)
       [x, y] = d3.mouse(this)
       copied_element.attr "transform", "translate(#{x - downpoint[0]},#{y - downpoint[1]})"
 
     candelement.on 'mouseup', ->
-      return unless mousedown
+      return unless downpoint
       d3.event.preventDefault()
-      mousedown = false
+      downpoint = null
