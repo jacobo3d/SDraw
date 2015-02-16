@@ -288,12 +288,12 @@ draw_mode = function() {
   });
   return svg.on('mousemove', function() {
     var movepoint;
+    if (!downpoint) {
+      return;
+    }
     movepoint = d3.mouse(this);
     if (dist(movepoint, downpoint) < 10.0) {
       clearTimeout(modetimeout);
-    }
-    if (!downpoint) {
-      return;
     }
     d3.event.preventDefault();
     points.push(movepoint);
@@ -314,15 +314,15 @@ edit_mode = function() {
   });
   svg.on('mousemove', function() {
     var attr, e, element, movepoint, x, y, _i, _j, _len, _len1, _results;
-    movepoint = d3.mouse(this);
-    if (dist(movepoint, downpoint) < 10.0) {
-      clearTimeout(modetimeout);
-    }
     if (!downpoint) {
       return;
     }
     if (!moving) {
       return;
+    }
+    movepoint = d3.mouse(this);
+    if (dist(movepoint, downpoint) < 10.0) {
+      clearTimeout(modetimeout);
     }
     $('#searchtext').val("move-move selected = " + selected.length);
     _results = [];
