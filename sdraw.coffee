@@ -59,7 +59,9 @@ $ ->
 # 
 mode = 'draw' # または 'edit' または 'move'
 $('#draw').on 'click', -> draw_mode()
-$('#edit').on 'click', -> edit_mode()
+$('#edit').on 'click', ->
+  selected = []
+  edit_mode()
 
 $('#delete').on 'click', ->
   for element in selected
@@ -91,15 +93,6 @@ $('#test').on 'click', ->
     .attr "y", 100
     .attr "font-size", '60px'
     .attr "fill", "blue"
-
-############################################################################
-#
-# 背景テンプレートはグループでまとめる
-# (SVGの機能で <g>....</g> でグループ化できるらしい)
-# まとめてtransformできたりする
-# このグループのtemplateを書きかえるとバックグラウンドが書き変わる
-#
-window.template = svg.append "g"
 
 ############################################################################
 #
@@ -139,9 +132,14 @@ window.line = d3.svg.line()
   .x (d) -> d[0]
   .y (d) -> d[1]
 
-##
-## テンプレート領域
-##
+############################################################################
+#
+# 背景テンプレート
+# 
+# SVGの機能で <g>....</g> でグループ化してまとめてtransformしたりする
+# このグループのtemplateを書きかえるとバックグラウンドが書き変わる
+#
+window.template = svg.append "g"
 
 window.drawline = (x1, y1, x2, y2) ->
   template.append "polyline"
@@ -184,7 +182,7 @@ setTemplate("template3", kareobanaTemplate3)
 
 ############################################################################
 ##
-## ユーザによるお絵書き
+## ユーザによる線画お絵書き
 ## 
   
 path = null
@@ -197,12 +195,15 @@ draw = ->
     'stroke-width': 8
     fill:           "none"
 
-selfunc = (path) ->
+#
+# 描画エレメントを選択状態にする関数を返す関数
+#
+selfunc = (element) ->
   ->
     if mode == 'edit'
       return unless downpoint
-      path.attr "stroke", "yellow"
-      selected.push path unless path in selected 
+      element.attr "stroke", "yellow"
+      selected.push element unless element in selected 
 
 draw_mode = ->
   mode = 'draw'
@@ -220,13 +221,28 @@ draw_mode = ->
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
     points = [ downpoint ]
 
-    # マウスが横切ったら選択する
-    path.on 'mousemove', selfunc path  # クロージャ
-    
     path.on 'mousedown', ->
       if mode == 'edit'
         downpoint = d3.mouse(this)
+        $('#searchtext').val(downpoint[0])
+        attr = path.node().attributes
+        xisset = false
+        for x in attr
+          xisset = true if x.nodeName == 'x'
+        unless xisset
+          path.attr "x", downpoint[0]
+          path.attr "y", downpoint[1]
         move_mode()
+        
+    # マウスが横切ったら選択する
+    path.on 'mousemove', selfunc path  # クロージャ
+    
+    path.on 'mouseup', ->
+      #if mode == 'move'
+      #  target = d3.event.target
+      #  for attr in target.attributes
+      #    alert attr.nodeName
+      drawpoint = null
 
   svg.on 'mouseup', ->
     return unless downpoint
@@ -246,7 +262,7 @@ draw_mode = ->
     draw()
 
 edit_mode = ->
-  selected = []
+  # selected = []
   mode = 'edit'
   strokes = []
 
@@ -273,16 +289,41 @@ move_mode = ->
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
+    $('#searchtext').val('move-down')
 
   svg.on 'mousemove', ->
     return unless downpoint
     movepoint = d3.mouse(this)
+    $('#searchtext').val("move-move selected = #{selected.length}")
     for element in selected
-      element.attr "transform", "translate(#{movepoint[0]-downpoint[0]},#{movepoint[0]-downpoint[1]})"
+      # element.attr "transform", "translate(#{movepoint[0]-downpoint[0]},#{movepoint[1]-downpoint[1]})"
+      attr = element.node().attributes
+      x = 0
+      y = 0
+      for e in attr
+        x = e.value if e.nodeName == 'x'
+        y = e.value if e.nodeName == 'y'
+      $('#searchtext').val("move-move #{x}, #{y}")
+      element.attr "transform", "translate(#{movepoint[0]-x},#{movepoint[1]-y})"
 
   svg.on 'mouseup', ->
     return unless downpoint
     d3.event.preventDefault()
+    $('#searchtext').val('move-up')
+    uppoint = d3.mouse(this)
+    for element in selected
+      element.attr 'x', uppoint[0]
+      element.attr 'y', uppoint[1]
+      
+      #attr = element.node().attributes
+      #a = element.attr().property()
+      #a = element.attr()
+      #for x, y of attr
+      #  alert "#{x} => #{y}"
+      #for x in attr
+      #  alert x.nodeName
+      #  alert x.value
+    
     downpoint = null
     edit_mode()
 
@@ -380,21 +421,36 @@ recognition = ->
     candelement.on 'mousedown', ->
       d3.event.preventDefault()
       downpoint = d3.mouse(this)
-      strokes = []
+      strokes = [] # 候補選択したらストローク情報はクリアする
       target = d3.event.target
-      copied_element = svg.append target.nodeName
+      #
+      # 候補情報をコピーして描画領域に貼り付ける
+      # 
+      copied_element = svg.append target.nodeName # "text", "path", etc.
       for attr in target.attributes
         copied_element.attr attr.nodeName, attr.value
       copied_element.text target.innerHTML if target.innerHTML
 
-    candelement.on 'mousemove', ->
-      return unless downpoint
-      d3.event.preventDefault()
-      $('#searchtext').val(elementy)
-      [x, y] = d3.mouse(this)
-      copied_element.attr "transform", "translate(#{x - downpoint[0]},#{y - downpoint[1]})"
+      # マウスが横切ったら選択する
+      copied_element.on 'mousemove', selfunc copied_element
+    
+      copied_element.on 'mousedown', ->
+        return unless mode == 'edit'
+        d3.event.preventDefault()
+        downpoint = d3.mouse(this)
+        move_mode()
 
     candelement.on 'mouseup', ->
       return unless downpoint
       d3.event.preventDefault()
       downpoint = null
+
+    #candelement.on 'mousemove', ->
+    #  return unless downpoint
+    #  d3.event.preventDefault()
+    #  $('#searchtext').val(elementy)
+    #  [x, y] = d3.mouse(this)
+    #  copied_element.attr "transform", "translate(#{x - downpoint[0]},#{y - downpoint[1]})"
+
+
+

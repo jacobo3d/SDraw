@@ -96,8 +96,6 @@ $('#test').on('click', function() {
   return svg.append("text").text("テキストを表示できます").attr("x", 50).attr("y", 100).attr("font-size", '60px').attr("fill", "blue");
 });
 
-window.template = svg.append("g");
-
 candsearch = function() {
   var query;
   query = $('#searchtext').val();
@@ -129,6 +127,8 @@ window.line = d3.svg.line().interpolate('cardinal').x(function(d) {
 }).y(function(d) {
   return d[1];
 });
+
+window.template = svg.append("g");
 
 window.drawline = function(x1, y1, x2, y2) {
   return template.append("polyline").attr({
@@ -190,15 +190,15 @@ draw = function() {
   });
 };
 
-selfunc = function(path) {
+selfunc = function(element) {
   return function() {
     if (mode === 'edit') {
       if (!downpoint) {
         return;
       }
-      path.attr("stroke", "yellow");
-      if (__indexOf.call(selected, path) < 0) {
-        return selected.push(path);
+      element.attr("stroke", "yellow");
+      if (__indexOf.call(selected, element) < 0) {
+        return selected.push(element);
       }
     }
   };
@@ -214,12 +214,30 @@ draw_mode = function() {
     downpoint = d3.mouse(this);
     path = svg.append('path');
     points = [downpoint];
-    path.on('mousemove', selfunc(path));
-    return path.on('mousedown', function() {
+    path.on('mousedown', function() {
+      var attr, x, xisset, _i, _len;
       if (mode === 'edit') {
         downpoint = d3.mouse(this);
+        $('#searchtext').val(downpoint[0]);
+        attr = path.node().attributes;
+        xisset = false;
+        for (_i = 0, _len = attr.length; _i < _len; _i++) {
+          x = attr[_i];
+          if (x.nodeName === 'x') {
+            xisset = true;
+          }
+        }
+        if (!xisset) {
+          path.attr("x", downpoint[0]);
+          path.attr("y", downpoint[1]);
+        }
         return move_mode();
       }
+    });
+    path.on('mousemove', selfunc(path));
+    return path.on('mouseup', function() {
+      var drawpoint;
+      return drawpoint = null;
     });
   });
   svg.on('mouseup', function() {
@@ -246,7 +264,6 @@ draw_mode = function() {
 };
 
 edit_mode = function() {
-  selected = [];
   mode = 'edit';
   strokes = [];
   template.selectAll("*").remove();
@@ -269,26 +286,49 @@ move_mode = function() {
   template.selectAll("*").remove();
   svg.on('mousedown', function() {
     d3.event.preventDefault();
-    return downpoint = d3.mouse(this);
+    downpoint = d3.mouse(this);
+    return $('#searchtext').val('move-down');
   });
   svg.on('mousemove', function() {
-    var element, movepoint, _i, _len, _results;
+    var attr, e, element, movepoint, x, y, _i, _j, _len, _len1, _results;
     if (!downpoint) {
       return;
     }
     movepoint = d3.mouse(this);
+    $('#searchtext').val("move-move selected = " + selected.length);
     _results = [];
     for (_i = 0, _len = selected.length; _i < _len; _i++) {
       element = selected[_i];
-      _results.push(element.attr("transform", "translate(" + (movepoint[0] - downpoint[0]) + "," + (movepoint[0] - downpoint[1]) + ")"));
+      attr = element.node().attributes;
+      x = 0;
+      y = 0;
+      for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
+        e = attr[_j];
+        if (e.nodeName === 'x') {
+          x = e.value;
+        }
+        if (e.nodeName === 'y') {
+          y = e.value;
+        }
+      }
+      $('#searchtext').val("move-move " + x + ", " + y);
+      _results.push(element.attr("transform", "translate(" + (movepoint[0] - x) + "," + (movepoint[1] - y) + ")"));
     }
     return _results;
   });
   return svg.on('mouseup', function() {
+    var element, uppoint, _i, _len;
     if (!downpoint) {
       return;
     }
     d3.event.preventDefault();
+    $('#searchtext').val('move-up');
+    uppoint = d3.mouse(this);
+    for (_i = 0, _len = selected.length; _i < _len; _i++) {
+      element = selected[_i];
+      element.attr('x', uppoint[0]);
+      element.attr('y', uppoint[1]);
+    }
     downpoint = null;
     return edit_mode();
   });
@@ -414,18 +454,17 @@ recognition = function() {
         copied_element.attr(attr.nodeName, attr.value);
       }
       if (target.innerHTML) {
-        return copied_element.text(target.innerHTML);
+        copied_element.text(target.innerHTML);
       }
-    });
-    candelement.on('mousemove', function() {
-      var x, y, _ref3;
-      if (!downpoint) {
-        return;
-      }
-      d3.event.preventDefault();
-      $('#searchtext').val(elementy);
-      _ref3 = d3.mouse(this), x = _ref3[0], y = _ref3[1];
-      return copied_element.attr("transform", "translate(" + (x - downpoint[0]) + "," + (y - downpoint[1]) + ")");
+      copied_element.on('mousemove', selfunc(copied_element));
+      return copied_element.on('mousedown', function() {
+        if (mode !== 'edit') {
+          return;
+        }
+        d3.event.preventDefault();
+        downpoint = d3.mouse(this);
+        return move_mode();
+      });
     });
     return candelement.on('mouseup', function() {
       if (!downpoint) {
