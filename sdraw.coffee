@@ -253,14 +253,6 @@ draw_mode = ->
     path.on 'mousemove', selfunc path  # クロージャ
     
     path.on 'mouseup', ->
-      #if mode == 'move'
-      #  target = d3.event.target
-      #  for attr in target.attributes
-      #    alert attr.nodeName
-
-      # これらはsvg.on('mouseup')でセットする
-      #drawpoint = null
-      #moving = false
 
   svg.on 'mouseup', ->
     return unless downpoint
@@ -431,46 +423,37 @@ recognition = ->
       copied_element.on 'mousemove', selfunc copied_element
     
       copied_element.on 'mousedown', ->
-        return unless mode == 'edit'
-        d3.event.preventDefault()
-        downpoint = d3.mouse(this)
-
-        x = 0.0
-        y = 0.0
-        for e in attr
-          x = Number(e.value) if e.nodeName == 'xx'
-          y = Number(e.value) if e.nodeName == 'yy'
-        path.attr 'xx', x
-        path.attr 'yy', y
+      #  #return unless mode == 'edit'
+      #  #d3.event.preventDefault()
+      #  #downpoint = d3.mouse(this)
+      #  #
+      #  #attr = copied_element.node().attributes
+      #  #x = 0.0
+      #  #y = 0.0
+      #  #for e in attr
+      #  #  x = Number(e.value) if e.nodeName == 'xx'
+      #  #  y = Number(e.value) if e.nodeName == 'yy'
+      #  #copied_element.attr 'xx', x
+      #  #copied_element.attr 'yy', y
 
         moving = true
         
-      copied_element.on 'mouseup', ->
-        return unless downpoint
-        d3.event.preventDefault()
-        uppoint = d3.mouse(this)
-        if moving
-          for element in selected
-            attr = element.node().attributes
-            x = 0.0
-            y = 0.0
-            for e in attr
-              x = Number(e.value) if e.nodeName == 'xx'
-              y = Number(e.value) if e.nodeName == 'yy'
-            element.attr 'xx', x+uppoint[0]-downpoint[0]
-            element.attr 'yy', y+uppoint[1]-downpoint[1]
+      #copied_element.on 'mouseup', ->
+      #  #return unless downpoint
+      #  #d3.event.preventDefault()
+      #  #uppoint = d3.mouse(this)
+      #  #if moving
+      #  #  for element in selected
+      #  #    attr = element.node().attributes
+      #  #    x = 0.0
+      #  #    y = 0.0
+      #  #    for e in attr
+      #  #      x = Number(e.value) if e.nodeName == 'xx'
+      #  #      y = Number(e.value) if e.nodeName == 'yy'
+      #  #    element.attr 'xx', x+uppoint[0]-downpoint[0]
+      #  #    element.attr 'yy', y+uppoint[1]-downpoint[1]
 
     candelement.on 'mouseup', ->
       return unless downpoint
       d3.event.preventDefault()
       downpoint = null
-
-    #candelement.on 'mousemove', ->
-    #  return unless downpoint
-    #  d3.event.preventDefault()
-    #  $('#searchtext').val(elementy)
-    #  [x, y] = d3.mouse(this)
-    #  copied_element.attr "transform", "translate(#{x - downpoint[0]},#{y - downpoint[1]})"
-
-
-

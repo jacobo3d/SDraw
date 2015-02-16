@@ -459,56 +459,8 @@ recognition = function() {
         copied_element.text(target.innerHTML);
       }
       copied_element.on('mousemove', selfunc(copied_element));
-      copied_element.on('mousedown', function() {
-        var e, x, y, _len5, _q;
-        if (mode !== 'edit') {
-          return;
-        }
-        d3.event.preventDefault();
-        downpoint = d3.mouse(this);
-        x = 0.0;
-        y = 0.0;
-        for (_q = 0, _len5 = attr.length; _q < _len5; _q++) {
-          e = attr[_q];
-          if (e.nodeName === 'xx') {
-            x = Number(e.value);
-          }
-          if (e.nodeName === 'yy') {
-            y = Number(e.value);
-          }
-        }
-        path.attr('xx', x);
-        path.attr('yy', y);
+      return copied_element.on('mousedown', function() {
         return moving = true;
-      });
-      return copied_element.on('mouseup', function() {
-        var e, element, uppoint, x, y, _len5, _len6, _q, _r, _results3;
-        if (!downpoint) {
-          return;
-        }
-        d3.event.preventDefault();
-        uppoint = d3.mouse(this);
-        if (moving) {
-          _results3 = [];
-          for (_q = 0, _len5 = selected.length; _q < _len5; _q++) {
-            element = selected[_q];
-            attr = element.node().attributes;
-            x = 0.0;
-            y = 0.0;
-            for (_r = 0, _len6 = attr.length; _r < _len6; _r++) {
-              e = attr[_r];
-              if (e.nodeName === 'xx') {
-                x = Number(e.value);
-              }
-              if (e.nodeName === 'yy') {
-                y = Number(e.value);
-              }
-            }
-            element.attr('xx', x + uppoint[0] - downpoint[0]);
-            _results3.push(element.attr('yy', y + uppoint[1] - downpoint[1]));
-          }
-          return _results3;
-        }
       });
     });
     return candelement.on('mouseup', function() {
