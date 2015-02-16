@@ -91,15 +91,21 @@ $('#dup').on('click', function() {
         y = Number(e.value);
       }
     }
-    cloned.attr("transform", "translate(" + (30 + x) + "," + (30 + y) + ")");
+    cloned.attr("xx", x + 30);
+    cloned.attr("yy", y + 30);
+    cloned.attr("transform", "translate(" + (x + 30) + "," + (y + 30) + ")");
+    if (node_name === 'text') {
+      cloned.text(element.text());
+    }
     cloned.on('mousedown', function() {
-      if (mode === 'edit') {
-        return downpoint = d3.mouse(this);
+      if (mode !== 'edit') {
+        return;
       }
+      downpoint = d3.mouse(this);
+      return moving = true;
     });
     cloned.on('mousemove', selfunc(cloned));
-    selected.push(cloned);
-    _results.push(alert(selected.length));
+    _results.push(selected.push(cloned));
   }
   return _results;
 });
@@ -227,12 +233,11 @@ draw_mode = function() {
     path = svg.append('path');
     points = [downpoint];
     path.on('mousedown', function() {
-      var attr, e, element, x, y, _i, _j, _len, _len1, _results;
+      var attr, e, element, x, y, _i, _j, _len, _len1;
       if (mode !== 'edit') {
         return;
       }
       downpoint = d3.mouse(this);
-      _results = [];
       for (_i = 0, _len = selected.length; _i < _len; _i++) {
         element = selected[_i];
         attr = element.node().attributes;
@@ -249,9 +254,8 @@ draw_mode = function() {
         }
         element.attr("xx", x);
         element.attr("yy", y);
-        _results.push(moving = true);
       }
-      return _results;
+      return moving = true;
     });
     path.on('mousemove', selfunc(path));
     return path.on('mouseup', function() {});

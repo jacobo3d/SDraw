@@ -82,15 +82,19 @@ $('#dup').on 'click', ->
       cloned.attr e.nodeName, e.value
       x = Number(e.value) if e.nodeName == 'xx'
       y = Number(e.value) if e.nodeName == 'yy'
-    cloned.attr "transform", "translate(#{30+x},#{30+y})"
+    cloned.attr "xx", x+30
+    cloned.attr "yy", y+30
+    cloned.attr "transform", "translate(#{x+30},#{y+30})"
+    cloned.text element.text() if node_name == 'text'
+    
     cloned.on 'mousedown', ->
-      if mode == 'edit'
-        downpoint = d3.mouse(this)
+      return unless mode == 'edit'
+      downpoint = d3.mouse(this)
+      moving = true
 
     cloned.on 'mousemove', selfunc cloned
 
     selected.push cloned
-    alert selected.length
 
 $('#test').on 'click', ->
   svg.append "text"
@@ -253,15 +257,7 @@ draw_mode = ->
           y = Number(e.value) if e.nodeName == 'yy'
         element.attr "xx", x
         element.attr "yy", y
-
-        #xisset = false
-        #for x in attr
-        #  xisset = true if x.nodeName == 'xx'
-        #unless xisset
-        #  element.attr "xx", 0.0 # downpoint[0]
-        #  element.attr "yy", 0.0 # downpoint[1]
-          
-        moving = true
+      moving = true
         
     # マウスが横切ったら選択する
     path.on 'mousemove', selfunc path  # クロージャ
@@ -437,35 +433,7 @@ recognition = ->
       copied_element.on 'mousemove', selfunc copied_element
     
       copied_element.on 'mousedown', ->
-      #  #return unless mode == 'edit'
-      #  #d3.event.preventDefault()
-      #  #downpoint = d3.mouse(this)
-      #  #
-      #  #attr = copied_element.node().attributes
-      #  #x = 0.0
-      #  #y = 0.0
-      #  #for e in attr
-      #  #  x = Number(e.value) if e.nodeName == 'xx'
-      #  #  y = Number(e.value) if e.nodeName == 'yy'
-      #  #copied_element.attr 'xx', x
-      #  #copied_element.attr 'yy', y
-
         moving = true
-        
-      #copied_element.on 'mouseup', ->
-      #  #return unless downpoint
-      #  #d3.event.preventDefault()
-      #  #uppoint = d3.mouse(this)
-      #  #if moving
-      #  #  for element in selected
-      #  #    attr = element.node().attributes
-      #  #    x = 0.0
-      #  #    y = 0.0
-      #  #    for e in attr
-      #  #      x = Number(e.value) if e.nodeName == 'xx'
-      #  #      y = Number(e.value) if e.nodeName == 'yy'
-      #  #    element.attr 'xx', x+uppoint[0]-downpoint[0]
-      #  #    element.attr 'yy', y+uppoint[1]-downpoint[1]
 
     candelement.on 'mouseup', ->
       return unless downpoint
