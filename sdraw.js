@@ -70,15 +70,6 @@ $(function() {
 
 mode = 'draw';
 
-$('#draw').on('click', function() {
-  return draw_mode();
-});
-
-$('#edit').on('click', function() {
-  selected = [];
-  return edit_mode();
-});
-
 $('#delete').on('click', function() {
   var element, _i, _len, _results;
   _results = [];
@@ -90,8 +81,8 @@ $('#delete').on('click', function() {
 });
 
 $('#dup').on('click', function() {
-  var attr, cloned, e, element, node_name, parent, x, y, _i, _j, _len, _len1, _results;
-  _results = [];
+  var attr, cloned, e, element, newselected, node_name, parent, x, y, _i, _j, _len, _len1;
+  newselected = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
     attr = element.node().attributes;
@@ -110,6 +101,7 @@ $('#dup').on('click', function() {
         y = Number(e.value);
       }
     }
+    element.attr('stroke', 'blue');
     cloned.attr("xx", x + 30);
     cloned.attr("yy", y + 30);
     cloned.attr("transform", "translate(" + (x + 30) + "," + (y + 30) + ")");
@@ -124,9 +116,9 @@ $('#dup').on('click', function() {
       return moving = true;
     });
     cloned.on('mousemove', selfunc(cloned));
-    _results.push(selected.push(cloned));
+    newselected.push(cloned);
   }
-  return _results;
+  return selected = newselected;
 });
 
 $('#repeat').on('click', function() {});

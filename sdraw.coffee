@@ -74,17 +74,18 @@ $ ->
 # 編集モード/描画モード
 # 
 mode = 'draw' # または 'edit'
-$('#draw').on 'click', ->
-  draw_mode()
-$('#edit').on 'click', ->
-  selected = []
-  edit_mode()
+# $('#draw').on 'click', ->
+#   draw_mode()
+# $('#edit').on 'click', ->
+#   selected = []
+#   edit_mode()
 
 $('#delete').on 'click', ->
   for element in selected
     element.remove()
 
 $('#dup').on 'click', ->
+  newselected = []
   for element in selected
     attr = element.node().attributes
     node_name = element.property "nodeName"
@@ -97,6 +98,7 @@ $('#dup').on 'click', ->
       cloned.attr e.nodeName, e.value
       x = Number(e.value) if e.nodeName == 'xx'
       y = Number(e.value) if e.nodeName == 'yy'
+    element.attr 'stroke', 'blue' # コピー元は青に戻す
     cloned.attr "xx", x+30
     cloned.attr "yy", y+30
     cloned.attr "transform", "translate(#{x+30},#{y+30})"
@@ -108,7 +110,8 @@ $('#dup').on 'click', ->
       moving = true
     cloned.on 'mousemove', selfunc cloned
     
-    selected.push cloned
+    newselected.push cloned
+  selected = newselected
 
 #
 # 繰り返し操作サポート
