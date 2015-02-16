@@ -55,17 +55,25 @@
     width: 130px;
     height:130px;
   }
+  input.button {
+    padding: 2px;
+    margin: 3px;
+    width: 90px;
+    height: 35px;
+    background-color: "yellow";
+    font-size:18pt;
+  }
   </style>
 </head>
 <body style="padding:0; margin:0; background-color:#ffffff">
   <div style="float:left;width:70%">
-    <input type="button" value="描画"     id="draw">
-    <input type="button" value="編集"     id="edit">
+    <input class="button" type="button" value="描画"   id="draw">
+    <input class="button" type="button" value="編集"   id="edit">
     　
-    <input type="button" value="削除"     id="delete">
-    <input type="button" value="複製"     id="dup">
-    <input type="button" value="繰り返し" id="repeat">
-    <input type="button" value="テスト"   id="test">
+    <input class="button" type="button" value="削除"   id="delete">
+    <input class="button" type="button" value="複製"   id="dup">
+    <input class="button" type="button" value="繰返し" id="repeat">
+    <input class="button" type="button" value="テスト" id="test">
     <svg></svg>
   </div>
   <div style="float:left;width:30%;">

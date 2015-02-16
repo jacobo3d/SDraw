@@ -110,9 +110,7 @@ $('#dup').on('click', function() {
   return _results;
 });
 
-$('#test').on('click', function() {
-  return svg.append("text").text("テキストを表示できます").attr("x", 50).attr("y", 100).attr("font-size", '60px').attr("fill", "blue");
-});
+$('#repeat').on('click', function() {});
 
 candsearch = function() {
   var query;
