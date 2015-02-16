@@ -30,6 +30,7 @@ window.browserHeight = ->
   window.innerHeight || document.body.clientHeight
 
 window.hypot = (x, y) -> Math.sqrt(x * x + y * y)
+window.dist = (p1, p2) -> hypot p1[0]-p2[0], p1[1]-p2[1]
 
 resize = ->
   window.drawWidth = browserWidth() * 0.69
@@ -222,22 +223,10 @@ selfunc = (element) ->
     if mode == 'edit'
       return unless downpoint
       element.attr "stroke", "yellow"
-      selected.push element unless element in selected 
+      selected.push element unless element in selected
 
-#downfunc = (element) ->
-#  ->
-#    return unless mode == 'edit'
-#    downpoint = d3.mouse(this)
-#    $('#searchtext').val(downpoint[0])
-#    attr = element.node().attributes
-#    xisset = false
-#    for x in attr
-#      xisset = true if x.nodeName == 'xx'
-#    unless xisset
-#      element.attr "xx", 0.0 # downpoint[0]
-#      element.attr "yy", 0.0 # downpoint[1]
-#    moving = true
-      
+modetimeout = null
+
 draw_mode = ->
   mode = 'draw'
 
@@ -251,6 +240,12 @@ draw_mode = ->
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
+    
+    modetimeout = setTimeout -> # 300msじっとしてると編集モードになるとか
+      selected = []
+      edit_mode()
+    , 300
+    
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
     points = [ downpoint ]
 
@@ -286,9 +281,11 @@ draw_mode = ->
     recognition() # !!!!!
 
   svg.on 'mousemove', ->
+    movepoint = d3.mouse(this)
+    clearTimeout modetimeout if dist(movepoint,downpoint) < 10.0
     return unless downpoint
     d3.event.preventDefault()
-    points.push d3.mouse(this)
+    points.push movepoint
     draw()
 
 edit_mode = ->
@@ -300,12 +297,17 @@ edit_mode = ->
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
-    $('#searchtext').val("edit-down")
+    modetimeout = setTimeout ->
+      downpoint = null
+      selected = []
+      draw_mode()
+    , 300
 
   svg.on 'mousemove', ->
+    movepoint = d3.mouse(this)
+    clearTimeout modetimeout if dist(movepoint,downpoint) < 10.0
     return unless downpoint
     return unless moving
-    movepoint = d3.mouse(this)
     $('#searchtext').val("move-move selected = #{selected.length}")
     for element in selected
       attr = element.node().attributes
