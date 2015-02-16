@@ -206,6 +206,20 @@ selfunc = (element) ->
       element.attr "stroke", "yellow"
       selected.push element unless element in selected 
 
+#downfunc = (element) ->
+#  ->
+#    return unless mode == 'edit'
+#    downpoint = d3.mouse(this)
+#    $('#searchtext').val(downpoint[0])
+#    attr = element.node().attributes
+#    xisset = false
+#    for x in attr
+#      xisset = true if x.nodeName == 'xx'
+#    unless xisset
+#      element.attr "xx", 0.0 # downpoint[0]
+#      element.attr "yy", 0.0 # downpoint[1]
+#    moving = true
+      
 draw_mode = ->
   mode = 'draw'
 
@@ -225,16 +239,24 @@ draw_mode = ->
     path.on 'mousedown', ->
       return unless mode == 'edit'
       downpoint = d3.mouse(this)
-      $('#searchtext').val(downpoint[0])
-      attr = path.node().attributes
-      xisset = false
-      for x in attr
-        xisset = true if x.nodeName == 'x'
-      unless xisset
-        path.attr "x", 0.0 # downpoint[0]
-        path.attr "y", 0.0 # downpoint[1]
-      moving = true
-      #move_mode()
+      for element in selected
+        attr = element.node().attributes
+        xisset = false
+        for x in attr
+          xisset = true if x.nodeName == 'xx'
+        unless xisset
+          element.attr "xx", 0.0 # downpoint[0]
+          element.attr "yy", 0.0 # downpoint[1]
+        moving = true
+      
+      #attr = path.node().attributes
+      #xisset = false
+      #for x in attr
+      #  xisset = true if x.nodeName == 'xx'
+      #unless xisset
+      #  path.attr "xx", 0.0 # downpoint[0]
+      #  path.attr "yy", 0.0 # downpoint[1]
+      #moving = true
         
     # マウスが横切ったら選択する
     path.on 'mousemove', selfunc path  # クロージャ
@@ -289,8 +311,8 @@ edit_mode = ->
       x = 0.0
       y = 0.0
       for e in attr
-        x = e.value if e.nodeName == 'x'
-        y = e.value if e.nodeName == 'y'
+        x = e.value if e.nodeName == 'xx'
+        y = e.value if e.nodeName == 'yy'
         
       #$('#searchtext').val("xy(#{x},#{y})d(#{downpoint[0]},#{downpoint[1]})m(#{movepoint[0]},#{movepoint[1]})-t(#{movepoint[0]-downpoint[0]+x},#{movepoint[1]-downpoint[1]+y})")
       $('#searchtext').val("#{movepoint[0]-downpoint[0]+Number(x)},#{movepoint[1]-downpoint[1]+Number(y)}")
@@ -303,8 +325,8 @@ edit_mode = ->
     uppoint = d3.mouse(this)
     if moving
       for element in selected
-        element.attr 'x', uppoint[0]-downpoint[0]
-        element.attr 'y', uppoint[1]-downpoint[1]
+        element.attr 'xx', uppoint[0]-downpoint[0]
+        element.attr 'yy', uppoint[1]-downpoint[1]
       
       #attr = element.node().attributes
       #a = element.attr().property()
@@ -429,7 +451,22 @@ recognition = ->
         return unless mode == 'edit'
         d3.event.preventDefault()
         downpoint = d3.mouse(this)
-        move_mode()
+        xisset = false
+        for x in attr
+          xisset = true if x.nodeName == 'xx'
+        unless xisset
+          path.attr "xx", 0.0 # downpoint[0]
+          path.attr "yy", 0.0 # downpoint[1]
+        moving = true
+        
+      copied_element.on 'mouseup', ->
+        return unless downpoint
+        d3.event.preventDefault()
+        uppoint = d3.mouse(this)
+        if moving
+          for element in selected
+            element.attr 'xx', uppoint[0]-downpoint[0]
+            element.attr 'yy', uppoint[1]-downpoint[1]
 
     candelement.on 'mouseup', ->
       return unless downpoint

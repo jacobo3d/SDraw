@@ -217,25 +217,29 @@ draw_mode = function() {
     path = svg.append('path');
     points = [downpoint];
     path.on('mousedown', function() {
-      var attr, x, xisset, _i, _len;
+      var attr, element, x, xisset, _i, _j, _len, _len1, _results;
       if (mode !== 'edit') {
         return;
       }
       downpoint = d3.mouse(this);
-      $('#searchtext').val(downpoint[0]);
-      attr = path.node().attributes;
-      xisset = false;
-      for (_i = 0, _len = attr.length; _i < _len; _i++) {
-        x = attr[_i];
-        if (x.nodeName === 'x') {
-          xisset = true;
+      _results = [];
+      for (_i = 0, _len = selected.length; _i < _len; _i++) {
+        element = selected[_i];
+        attr = element.node().attributes;
+        xisset = false;
+        for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
+          x = attr[_j];
+          if (x.nodeName === 'xx') {
+            xisset = true;
+          }
         }
+        if (!xisset) {
+          element.attr("xx", 0.0);
+          element.attr("yy", 0.0);
+        }
+        _results.push(moving = true);
       }
-      if (!xisset) {
-        path.attr("x", 0.0);
-        path.attr("y", 0.0);
-      }
-      return moving = true;
+      return _results;
     });
     path.on('mousemove', selfunc(path));
     return path.on('mouseup', function() {});
@@ -290,10 +294,10 @@ edit_mode = function() {
       y = 0.0;
       for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
         e = attr[_j];
-        if (e.nodeName === 'x') {
+        if (e.nodeName === 'xx') {
           x = e.value;
         }
-        if (e.nodeName === 'y') {
+        if (e.nodeName === 'yy') {
           y = e.value;
         }
       }
@@ -313,8 +317,8 @@ edit_mode = function() {
     if (moving) {
       for (_i = 0, _len = selected.length; _i < _len; _i++) {
         element = selected[_i];
-        element.attr('x', uppoint[0] - downpoint[0]);
-        element.attr('y', uppoint[1] - downpoint[1]);
+        element.attr('xx', uppoint[0] - downpoint[0]);
+        element.attr('yy', uppoint[1] - downpoint[1]);
       }
     }
     downpoint = null;
@@ -445,13 +449,42 @@ recognition = function() {
         copied_element.text(target.innerHTML);
       }
       copied_element.on('mousemove', selfunc(copied_element));
-      return copied_element.on('mousedown', function() {
+      copied_element.on('mousedown', function() {
+        var x, xisset, _len5, _q;
         if (mode !== 'edit') {
           return;
         }
         d3.event.preventDefault();
         downpoint = d3.mouse(this);
-        return move_mode();
+        xisset = false;
+        for (_q = 0, _len5 = attr.length; _q < _len5; _q++) {
+          x = attr[_q];
+          if (x.nodeName === 'xx') {
+            xisset = true;
+          }
+        }
+        if (!xisset) {
+          path.attr("xx", 0.0);
+          path.attr("yy", 0.0);
+        }
+        return moving = true;
+      });
+      return copied_element.on('mouseup', function() {
+        var element, uppoint, _len5, _q, _results3;
+        if (!downpoint) {
+          return;
+        }
+        d3.event.preventDefault();
+        uppoint = d3.mouse(this);
+        if (moving) {
+          _results3 = [];
+          for (_q = 0, _len5 = selected.length; _q < _len5; _q++) {
+            element = selected[_q];
+            element.attr('xx', uppoint[0] - downpoint[0]);
+            _results3.push(element.attr('yy', uppoint[1] - downpoint[1]));
+          }
+          return _results3;
+        }
       });
     });
     return candelement.on('mouseup', function() {
