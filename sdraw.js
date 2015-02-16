@@ -295,30 +295,40 @@ edit_mode = function() {
       for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
         e = attr[_j];
         if (e.nodeName === 'xx') {
-          x = e.value;
+          x = Number(e.value);
         }
         if (e.nodeName === 'yy') {
-          y = e.value;
+          y = Number(e.value);
         }
       }
-      $('#searchtext').val("" + (movepoint[0] - downpoint[0] + Number(x)) + "," + (movepoint[1] - downpoint[1] + Number(y)));
-      _results.push(element.attr("transform", "translate(" + (Number(movepoint[0]) - Number(downpoint[0]) + Number(x)) + "," + (Number(movepoint[1]) - Number(downpoint[1]) + Number(y)) + ")"));
+      _results.push(element.attr("transform", "translate(" + (x + movepoint[0] - downpoint[0]) + "," + (y + movepoint[1] - downpoint[1]) + ")"));
     }
     return _results;
   });
   return svg.on('mouseup', function() {
-    var element, uppoint, _i, _len;
+    var attr, e, element, uppoint, x, y, _i, _j, _len, _len1;
     if (!downpoint) {
       return;
     }
     d3.event.preventDefault();
-    $('#searchtext').val('move-up');
     uppoint = d3.mouse(this);
     if (moving) {
       for (_i = 0, _len = selected.length; _i < _len; _i++) {
         element = selected[_i];
-        element.attr('xx', uppoint[0] - downpoint[0]);
-        element.attr('yy', uppoint[1] - downpoint[1]);
+        attr = element.node().attributes;
+        x = 0.0;
+        y = 0.0;
+        for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
+          e = attr[_j];
+          if (e.nodeName === 'xx') {
+            x = Number(e.value);
+          }
+          if (e.nodeName === 'yy') {
+            y = Number(e.value);
+          }
+        }
+        element.attr('xx', x + uppoint[0] - downpoint[0]);
+        element.attr('yy', y + uppoint[1] - downpoint[1]);
       }
     }
     downpoint = null;
@@ -470,7 +480,7 @@ recognition = function() {
         return moving = true;
       });
       return copied_element.on('mouseup', function() {
-        var element, uppoint, _len5, _q, _results3;
+        var e, element, uppoint, x, y, _len5, _len6, _q, _r, _results3;
         if (!downpoint) {
           return;
         }
@@ -480,8 +490,20 @@ recognition = function() {
           _results3 = [];
           for (_q = 0, _len5 = selected.length; _q < _len5; _q++) {
             element = selected[_q];
-            element.attr('xx', uppoint[0] - downpoint[0]);
-            _results3.push(element.attr('yy', uppoint[1] - downpoint[1]));
+            attr = element.node().attributes;
+            x = 0.0;
+            y = 0.0;
+            for (_r = 0, _len6 = attr.length; _r < _len6; _r++) {
+              e = attr[_r];
+              if (e.nodeName === 'xx') {
+                x = e.value;
+              }
+              if (e.nodeName === 'yy') {
+                y = e.value;
+              }
+            }
+            element.attr('xx', uppoint[0] - downpoint[0] + x);
+            _results3.push(element.attr('yy', uppoint[1] - downpoint[1] + x));
           }
           return _results3;
         }

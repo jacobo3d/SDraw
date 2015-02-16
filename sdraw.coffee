@@ -248,15 +248,6 @@ draw_mode = ->
           element.attr "xx", 0.0 # downpoint[0]
           element.attr "yy", 0.0 # downpoint[1]
         moving = true
-      
-      #attr = path.node().attributes
-      #xisset = false
-      #for x in attr
-      #  xisset = true if x.nodeName == 'xx'
-      #unless xisset
-      #  path.attr "xx", 0.0 # downpoint[0]
-      #  path.attr "yy", 0.0 # downpoint[1]
-      #moving = true
         
     # マウスが横切ったら選択する
     path.on 'mousemove', selfunc path  # クロージャ
@@ -306,37 +297,29 @@ edit_mode = ->
     movepoint = d3.mouse(this)
     $('#searchtext').val("move-move selected = #{selected.length}")
     for element in selected
-      # element.attr "transform", "translate(#{movepoint[0]-downpoint[0]},#{movepoint[1]-downpoint[1]})"
       attr = element.node().attributes
       x = 0.0
       y = 0.0
       for e in attr
-        x = e.value if e.nodeName == 'xx'
-        y = e.value if e.nodeName == 'yy'
-        
-      #$('#searchtext').val("xy(#{x},#{y})d(#{downpoint[0]},#{downpoint[1]})m(#{movepoint[0]},#{movepoint[1]})-t(#{movepoint[0]-downpoint[0]+x},#{movepoint[1]-downpoint[1]+y})")
-      $('#searchtext').val("#{movepoint[0]-downpoint[0]+Number(x)},#{movepoint[1]-downpoint[1]+Number(y)}")
-      element.attr "transform", "translate(#{Number(movepoint[0])-Number(downpoint[0])+Number(x)},#{Number(movepoint[1])-Number(downpoint[1])+Number(y)})"
+        x = Number(e.value) if e.nodeName == 'xx'
+        y = Number(e.value) if e.nodeName == 'yy'
+      element.attr "transform", "translate(#{x+movepoint[0]-downpoint[0]},#{y+movepoint[1]-downpoint[1]})"
 
   svg.on 'mouseup', ->
     return unless downpoint
     d3.event.preventDefault()
-    $('#searchtext').val('move-up')
     uppoint = d3.mouse(this)
     if moving
       for element in selected
-        element.attr 'xx', uppoint[0]-downpoint[0]
-        element.attr 'yy', uppoint[1]-downpoint[1]
-      
-      #attr = element.node().attributes
-      #a = element.attr().property()
-      #a = element.attr()
-      #for x, y of attr
-      #  alert "#{x} => #{y}"
-      #for x in attr
-      #  alert x.nodeName
-      #  alert x.value
-    
+        attr = element.node().attributes
+        x = 0.0
+        y = 0.0
+        for e in attr
+          x = Number(e.value) if e.nodeName == 'xx'
+          y = Number(e.value) if e.nodeName == 'yy'
+        element.attr 'xx', x+uppoint[0]-downpoint[0]
+        element.attr 'yy', y+uppoint[1]-downpoint[1]
+
     downpoint = null
     moving = false
 
@@ -465,8 +448,14 @@ recognition = ->
         uppoint = d3.mouse(this)
         if moving
           for element in selected
-            element.attr 'xx', uppoint[0]-downpoint[0]
-            element.attr 'yy', uppoint[1]-downpoint[1]
+            attr = element.node().attributes
+            x = 0.0
+            y = 0.0
+            for e in attr
+              x = e.value if e.nodeName == 'xx'
+              y = e.value if e.nodeName == 'yy'
+            element.attr 'xx', uppoint[0]-downpoint[0]+x
+            element.attr 'yy', uppoint[1]-downpoint[1]+x
 
     candelement.on 'mouseup', ->
       return unless downpoint
