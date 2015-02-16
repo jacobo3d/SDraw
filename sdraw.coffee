@@ -11,6 +11,7 @@
 # 
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
+bgrect = svg.append 'rect'
 
 #a = svg.attr().property()
 #for x, y of a
@@ -43,10 +44,21 @@ resize = ->
     .style
       'background-color': "#ffffff"
 
+  bgrect
+    .attr
+      'x': 0
+      'y': 0
+      'width': window.drawWidth
+      'height': window.drawHeight
+      'fill': '#d0d0d0'
+      'stroke': '#ffffff'
+      'stroke-width': 0
+
   $('#candidates')
     .css 'height', drawHeight/2 - 30
   $('#suggestions')
     .css 'height', drawHeight/2 - 30
+    
 
 $ ->
   resize()
@@ -237,6 +249,7 @@ draw_mode = ->
     .remove()
   svg.selectAll "*"
     .attr "stroke", 'blue'
+  bgrect.attr "fill", "#ffffff"
 
   svg.on 'mousedown', ->
     d3.event.preventDefault()
@@ -295,6 +308,7 @@ edit_mode = ->
   
   template.selectAll "*"
     .remove()
+  bgrect.attr "fill", "#e0e0e0"
 
   svg.on 'mousedown', ->
     d3.event.preventDefault()
