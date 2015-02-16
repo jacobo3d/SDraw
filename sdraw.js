@@ -308,7 +308,6 @@ edit_mode = function() {
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
     return modetimeout = setTimeout(function() {
-      downpoint = null;
       selected = [];
       return draw_mode();
     }, 300);
