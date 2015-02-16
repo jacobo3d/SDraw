@@ -460,23 +460,25 @@ recognition = function() {
       }
       copied_element.on('mousemove', selfunc(copied_element));
       copied_element.on('mousedown', function() {
-        var x, xisset, _len5, _q;
+        var e, x, y, _len5, _q;
         if (mode !== 'edit') {
           return;
         }
         d3.event.preventDefault();
         downpoint = d3.mouse(this);
-        xisset = false;
+        x = 0.0;
+        y = 0.0;
         for (_q = 0, _len5 = attr.length; _q < _len5; _q++) {
-          x = attr[_q];
-          if (x.nodeName === 'xx') {
-            xisset = true;
+          e = attr[_q];
+          if (e.nodeName === 'xx') {
+            x = Number(e.value);
+          }
+          if (e.nodeName === 'yy') {
+            y = Number(e.value);
           }
         }
-        if (!xisset) {
-          path.attr("xx", 0.0);
-          path.attr("yy", 0.0);
-        }
+        path.attr('xx', x);
+        path.attr('yy', y);
         return moving = true;
       });
       return copied_element.on('mouseup', function() {
@@ -496,14 +498,14 @@ recognition = function() {
             for (_r = 0, _len6 = attr.length; _r < _len6; _r++) {
               e = attr[_r];
               if (e.nodeName === 'xx') {
-                x = e.value;
+                x = Number(e.value);
               }
               if (e.nodeName === 'yy') {
-                y = e.value;
+                y = Number(e.value);
               }
             }
-            element.attr('xx', uppoint[0] - downpoint[0] + x);
-            _results3.push(element.attr('yy', uppoint[1] - downpoint[1] + x));
+            element.attr('xx', x + uppoint[0] - downpoint[0]);
+            _results3.push(element.attr('yy', y + uppoint[1] - downpoint[1]));
           }
           return _results3;
         }

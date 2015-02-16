@@ -301,7 +301,7 @@ edit_mode = ->
       x = 0.0
       y = 0.0
       for e in attr
-        x = Number(e.value) if e.nodeName == 'xx'
+        x = Number(e.value) if e.nodeName == 'xx' # 何故か文字列になってしまうことがあるため
         y = Number(e.value) if e.nodeName == 'yy'
       element.attr "transform", "translate(#{x+movepoint[0]-downpoint[0]},#{y+movepoint[1]-downpoint[1]})"
 
@@ -434,12 +434,15 @@ recognition = ->
         return unless mode == 'edit'
         d3.event.preventDefault()
         downpoint = d3.mouse(this)
-        xisset = false
-        for x in attr
-          xisset = true if x.nodeName == 'xx'
-        unless xisset
-          path.attr "xx", 0.0 # downpoint[0]
-          path.attr "yy", 0.0 # downpoint[1]
+
+        x = 0.0
+        y = 0.0
+        for e in attr
+          x = Number(e.value) if e.nodeName == 'xx'
+          y = Number(e.value) if e.nodeName == 'yy'
+        path.attr 'xx', x
+        path.attr 'yy', y
+
         moving = true
         
       copied_element.on 'mouseup', ->
@@ -452,10 +455,10 @@ recognition = ->
             x = 0.0
             y = 0.0
             for e in attr
-              x = e.value if e.nodeName == 'xx'
-              y = e.value if e.nodeName == 'yy'
-            element.attr 'xx', uppoint[0]-downpoint[0]+x
-            element.attr 'yy', uppoint[1]-downpoint[1]+x
+              x = Number(e.value) if e.nodeName == 'xx'
+              y = Number(e.value) if e.nodeName == 'yy'
+            element.attr 'xx', x+uppoint[0]-downpoint[0]
+            element.attr 'yy', y+uppoint[1]-downpoint[1]
 
     candelement.on 'mouseup', ->
       return unless downpoint
