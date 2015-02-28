@@ -17,6 +17,7 @@ selected = []     # 選択された要素列
 points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
 moving = false    # 選択要素を移動中かどうか
+moved = null      # 移動操作したときの移動量
 
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
@@ -78,6 +79,9 @@ $('#delete').on 'click', ->
   selected = []
 
 $('#dup').on 'click', ->
+  clone 30, 30
+
+clone = (dx, dy) ->
   newselected = []
   for element in selected
     attr = element.node().attributes
@@ -92,9 +96,9 @@ $('#dup').on 'click', ->
       x = Number(e.value) if e.nodeName == 'xx'
       y = Number(e.value) if e.nodeName == 'yy'
     element.attr 'stroke', 'blue' # コピー元は青に戻す
-    cloned.attr "xx", x+30
-    cloned.attr "yy", y+30
-    cloned.attr "transform", "translate(#{x+30},#{y+30})"
+    cloned.attr "xx", x+dx
+    cloned.attr "yy", y+dy
+    cloned.attr "transform", "translate(#{x+dx},#{y+dy})"
     cloned.text element.text() if node_name == 'text'
     
     cloned.on 'mousedown', ->
@@ -112,8 +116,11 @@ $('#dup').on 'click', ->
 # コピーする
 # ... というのはやめて
 # selectedを単純に複製すればいいかも
+# (OmniGraffle式)
 #
 $('#repeat').on 'click', ->
+  if moved
+    clone moved[0]+30, moved[1]+30
 
 ############################################################################
 #
@@ -223,7 +230,7 @@ selfunc = (element) ->
   ->
     if mode == 'edit'
       return unless downpoint
-      return if moving
+      return if moving   # 移動中は選択しない
       element.attr "stroke", "yellow"
       selected.push element unless element in selected
 
@@ -232,6 +239,7 @@ downtime = null
 
 draw_mode = ->
   mode = 'draw'
+  moved = null
 
   strokes = []
 
@@ -307,8 +315,9 @@ edit_mode = ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
     downtime = new Date()
+    moved = null
 
-  svg.on 'mousemove', ->
+  svg.on 'mousemove', -> # 項目移動
     return unless downpoint
     return unless moving
     movepoint = d3.mouse(this)
@@ -338,8 +347,9 @@ edit_mode = ->
         element.attr 'xx', x+uppoint[0]-downpoint[0]
         element.attr 'yy', y+uppoint[1]-downpoint[1]
 
-    downpoint = null
+    moved = [uppoint[0]-downpoint[0], uppoint[1]-downpoint[1]]
     moving = false
+    downpoint = null
 
     uptime = new Date()
     if uptime - downtime < 300
