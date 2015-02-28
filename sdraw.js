@@ -248,7 +248,7 @@ draw_mode = function() {
     modetimeout = setTimeout(function() {
       selected = [];
       return edit_mode();
-    }, 300);
+    }, 1000);
     path = svg.append('path');
     points = [downpoint];
     path.on('mousedown', function() {
@@ -280,12 +280,14 @@ draw_mode = function() {
     return path.on('mouseup', function() {});
   });
   svg.on('mouseup', function() {
-    var uppoint;
+    var uppoint, uptime;
     if (!downpoint) {
       return;
     }
     d3.event.preventDefault();
     uppoint = d3.mouse(this);
+    uptime = new Date();
+    clearTimeout(modetimeout);
     points.push(uppoint);
     draw();
     strokes.push([downpoint, uppoint]);

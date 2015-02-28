@@ -262,7 +262,7 @@ draw_mode = ->
     modetimeout = setTimeout -> # 300msじっとしてると編集モードになるとか
       selected = []
       edit_mode()
-    , 300
+    , 1000
     
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
     points = [ downpoint ]
@@ -290,6 +290,9 @@ draw_mode = ->
     return unless downpoint
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
+    uptime = new Date()
+    clearTimeout modetimeout
+
     points.push uppoint
     draw()
     strokes.push [ downpoint, uppoint ]
