@@ -83,6 +83,7 @@ mode = 'draw' # または 'edit'
 $('#delete').on 'click', ->
   for element in selected
     element.remove()
+  selected = []
 
 $('#dup').on 'click', ->
   newselected = []

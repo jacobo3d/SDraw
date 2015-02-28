@@ -71,13 +71,12 @@ $(function() {
 mode = 'draw';
 
 $('#delete').on('click', function() {
-  var element, _i, _len, _results;
-  _results = [];
+  var element, _i, _len;
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
-    _results.push(element.remove());
+    element.remove();
   }
-  return _results;
+  return selected = [];
 });
 
 $('#dup').on('click', function() {
