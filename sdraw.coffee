@@ -8,15 +8,9 @@
 # グローバル変数は window.xxxx みたいに指定する
 # このファイル中のみのグローバル変数は関数定義の外で初期化しておく
 #
-# 
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
 bgrect = svg.append 'rect'
-
-#a = svg.attr().property()
-#for x, y of a
-#  alert "#{x} => #{y}"
-#
 
 downpoint = null  # mousedown時の座標
 selected = []     # 選択された要素列
@@ -74,12 +68,10 @@ $ ->
 # 編集モード/描画モード
 # 
 mode = 'draw' # または 'edit'
-# $('#draw').on 'click', ->
-#   draw_mode()
-# $('#edit').on 'click', ->
-#   selected = []
-#   edit_mode()
 
+#
+# メニューボタン
+#
 $('#delete').on 'click', ->
   for element in selected
     element.remove()
@@ -120,15 +112,6 @@ $('#dup').on 'click', ->
 # コピーする
 #
 $('#repeat').on 'click', ->
-
-  
-#$('#test').on 'click', ->
-#  svg.append "text"
-#    .text "テキストを表示できます"
-#    .attr "x", 50
-#    .attr "y", 100
-#    .attr "font-size", '60px'
-#    .attr "fill", "blue"
 
 ############################################################################
 #
@@ -366,9 +349,9 @@ edit_mode = ->
           element.attr "stroke", "blue"
         selected = []
 
-###############
-
-copied_element = null
+#
+# 文字認識
+# 
 recognition = ->
   #
   # strokesを正規化する。
