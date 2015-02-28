@@ -16,7 +16,7 @@ downpoint = null  # mousedown時の座標
 selected = []     # 選択された要素列
 points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
-moving = false
+moving = false    # 選択要素を移動中かどうか
 
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
@@ -110,6 +110,8 @@ $('#dup').on 'click', ->
 # 繰り返し操作サポート
 # selected[n] と selected[n+1]が同じものであり、座標だけ違う場合は
 # コピーする
+# ... というのはやめて
+# selectedを単純に複製すればいいかも
 #
 $('#repeat').on 'click', ->
 
@@ -221,6 +223,7 @@ selfunc = (element) ->
   ->
     if mode == 'edit'
       return unless downpoint
+      return if moving
       element.attr "stroke", "yellow"
       selected.push element unless element in selected
 

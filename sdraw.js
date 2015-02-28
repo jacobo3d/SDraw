@@ -222,6 +222,9 @@ selfunc = function(element) {
       if (!downpoint) {
         return;
       }
+      if (moving) {
+        return;
+      }
       element.attr("stroke", "yellow");
       if (__indexOf.call(selected, element) < 0) {
         return selected.push(element);
