@@ -13,6 +13,7 @@ svg =  d3.select "svg"
 bgrect = svg.append 'rect'
 
 downpoint = null  # mousedown時の座標
+elements = []     # 描画された要素列
 selected = []     # 選択された要素列
 points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
@@ -74,9 +75,13 @@ mode = 'draw' # または 'edit'
 # メニューボタン
 #
 $('#delete').on 'click', ->
+  newelements = []
+  for element in elements
+    newelements.push element unless element in selected
   for element in selected
     element.remove()
   selected = []
+  elements = newelements
 
 $('#dup').on 'click', ->
   clone 30, 30
@@ -108,6 +113,7 @@ clone = (dx, dy) ->
     cloned.on 'mousemove', selfunc cloned
     
     newselected.push cloned
+    elements.push cloned
   selected = newselected
 
 #
@@ -122,6 +128,18 @@ $('#repeat').on 'click', ->
   if moved
     clone moved[0]+30, moved[1]+30
 
+$('#selectall').on 'click', ->
+  edit_mode()
+  svg.selectAll "*"
+    .attr "stroke", "yellow"
+  selected = elements
+  
+#  svg.selectAll "*"
+#    .remove()
+    
+#  for element in selected
+#    element.attr "stroke", "yellow"
+  
 ############################################################################
 #
 # 候補領域
@@ -257,9 +275,10 @@ draw_mode = ->
     modetimeout = setTimeout -> # 300msじっとしてると編集モードになるとか
       selected = []
       edit_mode()
-    , 1000
+    , 700
     
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
+    elements.push path
     points = [ downpoint ]
 
     path.on 'mousedown', ->
