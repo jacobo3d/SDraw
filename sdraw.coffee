@@ -320,10 +320,6 @@ edit_mode = ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
     downtime = new Date()
-    #modetimeout = setTimeout ->
-    #  selected = []
-    #  draw_mode()
-    #, 300
 
   svg.on 'mousemove', ->
     return unless downpoint
@@ -360,9 +356,14 @@ edit_mode = ->
 
     uptime = new Date()
     if uptime - downtime < 300
-      selected = []
-      strokes = []
-      draw_mode()
+      if selected.length == 0
+        selected = []
+        strokes = []
+        draw_mode()
+      else
+        for element in selected
+          element.attr "stroke", "blue"
+        selected = []
 
 ###############
 

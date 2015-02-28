@@ -352,7 +352,7 @@ edit_mode = function() {
     return _results;
   });
   return svg.on('mouseup', function() {
-    var attr, e, element, uppoint, uptime, x, y, _i, _j, _len, _len1;
+    var attr, e, element, uppoint, uptime, x, y, _i, _j, _k, _len, _len1, _len2;
     if (!downpoint) {
       return;
     }
@@ -381,9 +381,17 @@ edit_mode = function() {
     moving = false;
     uptime = new Date();
     if (uptime - downtime < 300) {
-      selected = [];
-      strokes = [];
-      return draw_mode();
+      if (selected.length === 0) {
+        selected = [];
+        strokes = [];
+        return draw_mode();
+      } else {
+        for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
+          element = selected[_k];
+          element.attr("stroke", "blue");
+        }
+        return selected = [];
+      }
     }
   });
 };
