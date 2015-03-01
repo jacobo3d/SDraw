@@ -501,8 +501,14 @@ recognition = ->
     candelement.on 'mousedown', ->
       d3.event.preventDefault()
       downpoint = d3.mouse(this)
-      strokes = [] # 候補選択したらストローク情報はクリアする
       target = d3.event.target
+      #
+      # Strokesを消す
+      # 
+      [0...strokes.length].forEach (i) ->
+        element = elements.pop()
+        element.remove()
+      strokes = []
       #
       # 候補情報をコピーして描画領域に貼り付ける
       # 
@@ -514,6 +520,7 @@ recognition = ->
         text = $('#searchtext').val()
         $('#searchtext').val text + target.innerHTML
       elements.push copied_element
+
       
       # マウスが横切ったら選択する
       copied_element.on 'mousemove', selfunc copied_element

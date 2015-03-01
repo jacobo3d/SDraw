@@ -562,15 +562,24 @@ recognition = function() {
       candelement.text(cand.text);
     }
     candelement.on('mousedown', function() {
-      var attr, copied_element, target, text, _len4, _p, _ref3;
+      var attr, copied_element, target, text, _len4, _p, _q, _ref3, _ref4, _results3;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
-      strokes = [];
       target = d3.event.target;
+      (function() {
+        _results3 = [];
+        for (var _p = 0, _ref3 = strokes.length; 0 <= _ref3 ? _p < _ref3 : _p > _ref3; 0 <= _ref3 ? _p++ : _p--){ _results3.push(_p); }
+        return _results3;
+      }).apply(this).forEach(function(i) {
+        var element;
+        element = elements.pop();
+        return element.remove();
+      });
+      strokes = [];
       copied_element = svg.append(target.nodeName);
-      _ref3 = target.attributes;
-      for (_p = 0, _len4 = _ref3.length; _p < _len4; _p++) {
-        attr = _ref3[_p];
+      _ref4 = target.attributes;
+      for (_q = 0, _len4 = _ref4.length; _q < _len4; _q++) {
+        attr = _ref4[_q];
         copied_element.attr(attr.nodeName, attr.value);
       }
       if (target.innerHTML) {
