@@ -157,14 +157,17 @@ candsearch = ->
     # flickr_search query, (data) ->
     bing_search query, (data) ->
       data.map (url, i) ->
-        cand = $("#cand#{i}")
-        cand.children().remove()
-        img = $("<img>")
-        img.attr 'class', 'candimage'
-        img.attr 'src', url
-        cand.append img
+        cand = d3.select("#cand#{i}")
+        cand.selectAll('*').remove()
+        cand.append 'image'
+          .attr
+            'xlink:href': url
+            x: 0
+            y: 0
+            width: 120
+            height: 120
+            preserveAspectRatio: "meet"
 
-        # $("#cand#{i}").attr 'src', url
 $('#searchbutton').on 'click', candsearch
 $('#searchtext').on 'keydown', (e) ->
   candsearch() if e.keyCode == 13

@@ -162,13 +162,17 @@ candsearch = function() {
   if (query.length > 0) {
     return bing_search(query, function(data) {
       return data.map(function(url, i) {
-        var cand, img;
-        cand = $("#cand" + i);
-        cand.children().remove();
-        img = $("<img>");
-        img.attr('class', 'candimage');
-        img.attr('src', url);
-        return cand.append(img);
+        var cand;
+        cand = d3.select("#cand" + i);
+        cand.selectAll('*').remove();
+        return cand.append('image').attr({
+          'xlink:href': url,
+          x: 0,
+          y: 0,
+          width: 120,
+          height: 120,
+          preserveAspectRatio: "meet"
+        });
       });
     });
   }
