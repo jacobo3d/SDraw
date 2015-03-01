@@ -87,6 +87,8 @@ $('#delete').on 'click', ->
   elements = newelements
   if elements.length == 0
     draw_mode()
+  #else
+  #  alert elements.length        ****** おかしい
 
 $('#dup').on 'click', ->
   clone 30, 30
@@ -257,7 +259,8 @@ selfunc = (element) ->
       element.attr "stroke", "yellow"
       selected.push element unless element in selected
 
-modetimeout = null
+modetimeout = null    # 長押しで編集モードにするため
+resettimeout = null   # 時間がたつと候補リセット
 downtime = null
 
 draw_mode = ->
@@ -277,9 +280,9 @@ draw_mode = ->
     
     downpoint = d3.mouse(this)
     downtime = new Date()
-    modetimeout = setTimeout -> # 300msじっとしてると編集モードになるとか
+    modetimeout = setTimeout -> # 500msじっとしてると編集モードになるとか
       selected = []
-      path.remove()
+      path.remove()   # drawmodeで描いていた線を消す
       edit_mode()
     , 500
     
@@ -312,6 +315,15 @@ draw_mode = ->
     uppoint = d3.mouse(this)
     uptime = new Date()
     clearTimeout modetimeout
+    clearTimeout resettimeout if resettimeout
+    resettimeout = setTimeout -> # 2秒じっとしていると候補を消す
+      strokes = []
+      points = []
+      [0..5].forEach (i) ->
+        candsvg = d3.select "#cand#{i}"
+        candsvg.selectAll "*"
+          .remove()
+    , 2000
 
     points.push uppoint
     draw()
@@ -346,8 +358,8 @@ edit_mode = ->
     return unless downpoint
     return unless moving
     movepoint = d3.mouse(this)
-    clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
-    $('#searchtext').val("move-move selected = #{selected.length}")
+    # clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
+    # $('#searchtext').val("move-move selected = #{selected.length}")
     for element in selected
       attr = element.node().attributes
       x = 0.0
