@@ -92,7 +92,10 @@ $('#delete').on('click', function() {
     element.remove();
   }
   selected = [];
-  return elements = newelements;
+  elements = newelements;
+  if (elements.length === 0) {
+    return draw_mode();
+  }
 });
 
 $('#dup').on('click', function() {
@@ -283,7 +286,7 @@ draw_mode = function() {
       selected = [];
       path.remove();
       return edit_mode();
-    }, 700);
+    }, 500);
     path = svg.append('path');
     elements.push(path);
     points = [downpoint];

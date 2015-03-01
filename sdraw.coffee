@@ -85,6 +85,8 @@ $('#delete').on 'click', ->
     element.remove()
   selected = []
   elements = newelements
+  if elements.length == 0
+    draw_mode()
 
 $('#dup').on 'click', ->
   clone 30, 30
@@ -279,7 +281,7 @@ draw_mode = ->
       selected = []
       path.remove()
       edit_mode()
-    , 700
+    , 500
     
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
     elements.push path
