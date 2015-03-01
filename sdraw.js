@@ -74,6 +74,10 @@ $(function() {
 
 mode = 'draw';
 
+$('#edit').on('click', function() {
+  return edit_mode();
+});
+
 $('#delete').on('click', function() {
   var element, newelements, _i, _j, _len, _len1;
   newelements = [];
@@ -549,6 +553,7 @@ recognition = function() {
       if (target.innerHTML) {
         copied_element.text(target.innerHTML);
       }
+      elements.push(copied_element);
       copied_element.on('mousemove', selfunc(copied_element));
       return copied_element.on('mousedown', function() {
         return moving = true;

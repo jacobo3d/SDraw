@@ -74,6 +74,9 @@ mode = 'draw' # または 'edit'
 #
 # メニューボタン
 #
+$('#edit').on 'click', ->
+  edit_mode()
+  
 $('#delete').on 'click', ->
   newelements = []
   for element in elements
@@ -484,6 +487,7 @@ recognition = ->
       for attr in target.attributes
         copied_element.attr attr.nodeName, attr.value
       copied_element.text target.innerHTML if target.innerHTML
+      elements.push copied_element
 
       # マウスが横切ったら選択する
       copied_element.on 'mousemove', selfunc copied_element
