@@ -78,17 +78,21 @@ $('#edit').on 'click', ->
   edit_mode()
   
 $('#delete').on 'click', ->
-  newelements = []
-  for element in elements
-    newelements.push element unless element in selected
-  for element in selected
-    element.remove()
-  selected = []
-  elements = newelements
-  if elements.length == 0
-    draw_mode()
-  #else
-  #  alert elements.length        ****** おかしい
+  if selected.length == 0
+    query = $('#searchtext').val()
+    $('#searchtext').val(query[0..-2]) # 最後の文字を消す
+  else
+    newelements = []
+    for element in elements
+      newelements.push element unless element in selected
+    for element in selected
+      element.remove()
+    selected = []
+    elements = newelements
+    if elements.length == 0
+      draw_mode()
+    #else
+    #  alert elements.length        ****** おかしい
 
 $('#dup').on 'click', ->
   clone 30, 30

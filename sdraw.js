@@ -79,22 +79,27 @@ $('#edit').on('click', function() {
 });
 
 $('#delete').on('click', function() {
-  var element, newelements, _i, _j, _len, _len1;
-  newelements = [];
-  for (_i = 0, _len = elements.length; _i < _len; _i++) {
-    element = elements[_i];
-    if (__indexOf.call(selected, element) < 0) {
-      newelements.push(element);
+  var element, newelements, query, _i, _j, _len, _len1;
+  if (selected.length === 0) {
+    query = $('#searchtext').val();
+    return $('#searchtext').val(query.slice(0, -1));
+  } else {
+    newelements = [];
+    for (_i = 0, _len = elements.length; _i < _len; _i++) {
+      element = elements[_i];
+      if (__indexOf.call(selected, element) < 0) {
+        newelements.push(element);
+      }
     }
-  }
-  for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
-    element = selected[_j];
-    element.remove();
-  }
-  selected = [];
-  elements = newelements;
-  if (elements.length === 0) {
-    return draw_mode();
+    for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
+      element = selected[_j];
+      element.remove();
+    }
+    selected = [];
+    elements = newelements;
+    if (elements.length === 0) {
+      return draw_mode();
+    }
   }
 });
 
