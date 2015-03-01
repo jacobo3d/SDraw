@@ -499,10 +499,11 @@ recognition = function() {
         for (var _m = 0; 0 <= nstrokes ? _m < nstrokes : _m > nstrokes; 0 <= nstrokes ? _m++ : _m--){ _results.push(_m); }
         return _results;
       }).apply(this).forEach(function(i) {
-        points = kstrokes[i];
+        var ppoints;
+        ppoints = kstrokes[i];
         stroke = [];
-        stroke[0] = points[0];
-        stroke[1] = points[points.length - 1];
+        stroke[0] = ppoints[0];
+        stroke[1] = ppoints[ppoints.length - 1];
         minx = Math.min(minx, stroke[0][0]);
         maxx = Math.max(maxx, stroke[0][0]);
         minx = Math.min(minx, stroke[1][0]);
@@ -521,10 +522,11 @@ recognition = function() {
         for (var _n = 0; 0 <= nstrokes ? _n < nstrokes : _n > nstrokes; 0 <= nstrokes ? _n++ : _n--){ _results1.push(_n); }
         return _results1;
       }).apply(this).forEach(function(i) {
-        points = kstrokes[i];
+        var ppoints;
+        ppoints = kstrokes[i];
         stroke = [];
-        stroke[0] = points[0];
-        stroke[1] = points[points.length - 1];
+        stroke[0] = ppoints[0];
+        stroke[1] = ppoints[ppoints.length - 1];
         x0 = (stroke[0][0] - minx) * 1000.0 / size;
         y0 = (stroke[0][1] - miny) * 1000.0 / size;
         x1 = (stroke[1][0] - minx) * 1000.0 / size;
@@ -562,10 +564,12 @@ recognition = function() {
       candelement.text(cand.text);
     }
     candelement.on('mousedown', function() {
-      var attr, copied_element, target, text, _len4, _p, _q, _ref3, _ref4, _results3;
+      var attr, copied_element, target, text, xx, yy, _len4, _p, _q, _ref3, _ref4, _results3;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       target = d3.event.target;
+      xx = strokes[0][0][0];
+      yy = strokes[0][0][1];
       (function() {
         _results3 = [];
         for (var _p = 0, _ref3 = strokes.length; 0 <= _ref3 ? _p < _ref3 : _p > _ref3; 0 <= _ref3 ? _p++ : _p--){ _results3.push(_p); }
@@ -581,6 +585,12 @@ recognition = function() {
       for (_q = 0, _len4 = _ref4.length; _q < _len4; _q++) {
         attr = _ref4[_q];
         copied_element.attr(attr.nodeName, attr.value);
+        if (attr.nodeName === 'x') {
+          copied_element.attr('x', xx);
+        }
+        if (attr.nodeName === 'y') {
+          copied_element.attr('y', yy);
+        }
       }
       if (target.innerHTML) {
         copied_element.text(target.innerHTML);

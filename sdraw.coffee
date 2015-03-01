@@ -444,10 +444,10 @@ recognition = ->
       continue if kstrokes.length < nstrokes
       [minx, miny, maxx, maxy] = [1000, 1000, 0, 0]
       [0...nstrokes].forEach (i) ->
-        points = kstrokes[i]
+        ppoints = kstrokes[i]
         stroke = []
-        stroke[0] = points[0]
-        stroke[1] = points[points.length-1]
+        stroke[0] = ppoints[0]
+        stroke[1] = ppoints[ppoints.length-1]
         minx = Math.min minx, stroke[0][0]
         maxx = Math.max maxx, stroke[0][0]
         minx = Math.min minx, stroke[1][0]
@@ -461,10 +461,10 @@ recognition = ->
       size = Math.max width, height
       kanji_strokes = []
       [0...nstrokes].forEach (i) ->
-        points = kstrokes[i]
+        ppoints = kstrokes[i]
         stroke = []
-        stroke[0] = points[0]
-        stroke[1] = points[points.length-1]
+        stroke[0] = ppoints[0]
+        stroke[1] = ppoints[ppoints.length-1]
         x0 = (stroke[0][0]-minx) * 1000.0 / size
         y0 = (stroke[0][1]-miny) * 1000.0 / size
         x1 = (stroke[1][0]-minx) * 1000.0 / size
@@ -502,6 +502,12 @@ recognition = ->
       d3.event.preventDefault()
       downpoint = d3.mouse(this)
       target = d3.event.target
+
+      #
+      # 文字認識に使った最初のストローク位置を得る
+      # 
+      xx = strokes[0][0][0]
+      yy = strokes[0][0][1]
       #
       # Strokesを消す
       # 
@@ -515,12 +521,15 @@ recognition = ->
       copied_element = svg.append target.nodeName # "text", "path", etc.
       for attr in target.attributes
         copied_element.attr attr.nodeName, attr.value
+        if attr.nodeName == 'x'
+          copied_element.attr 'x', xx
+        if attr.nodeName == 'y'
+          copied_element.attr 'y', yy
       if target.innerHTML
         copied_element.text target.innerHTML
         text = $('#searchtext').val()
         $('#searchtext').val text + target.innerHTML
       elements.push copied_element
-
       
       # マウスが横切ったら選択する
       copied_element.on 'mousemove', selfunc copied_element
