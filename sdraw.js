@@ -281,6 +281,7 @@ draw_mode = function() {
     downtime = new Date();
     modetimeout = setTimeout(function() {
       selected = [];
+      path.remove();
       return edit_mode();
     }, 700);
     path = svg.append('path');

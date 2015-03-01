@@ -277,6 +277,7 @@ draw_mode = ->
     downtime = new Date()
     modetimeout = setTimeout -> # 300msじっとしてると編集モードになるとか
       selected = []
+      path.remove()
       edit_mode()
     , 700
     
