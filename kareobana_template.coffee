@@ -7,13 +7,13 @@ window.kareobanaTemplate =
       .remove()
     for x in [0..drawWidth / 80]
       for y in [0..drawHeight / 80]
-        p2 = {x: x * 80, y: y * 80}
-        p1 = {x: rand(drawWidth), y: rand(drawHeight)}
+        p2 = [x * 80, y * 80]
+        p1 = [rand(drawWidth), rand(drawHeight)]
         while dist(p1,p2) < 50 || dist(p1,p2) > 150
-          p1 = {x: rand(drawWidth), y: rand(drawHeight)}
-        p3 = {x: rand(drawWidth), y: rand(drawHeight)}
+          p1 = [rand(drawWidth), rand(drawHeight)]
+        p3 = [rand(drawWidth), rand(drawHeight)]
         while dist(p3,p2) < 50 || dist(p3,p2) > 150 || dist(p1,p3) < 50 || dist(p1,p3) > 150
-          p3 = {x: rand(drawWidth), y: rand(drawHeight)}
+          p3 = [rand(drawWidth), rand(drawHeight)]
         drawpoints = [p1, p2, p3]
         template.append 'path'
           .attr

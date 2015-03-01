@@ -5,19 +5,10 @@ window.kareobanaTemplate3 = {
     template.selectAll("*").remove();
     _results = [];
     for (i = _i = 0; _i <= 200; i = ++_i) {
-      p1 = {
-        x: rand(drawWidth),
-        y: rand(drawHeight)
-      };
-      p2 = {
-        x: rand(drawWidth),
-        y: rand(drawHeight)
-      };
+      p1 = [rand(drawWidth), rand(drawHeight)];
+      p2 = [rand(drawWidth), rand(drawHeight)];
       while (dist(p1, p2) < 50 || dist(p1, p2) > 120) {
-        p2 = {
-          x: rand(drawWidth),
-          y: rand(drawHeight)
-        };
+        p2 = [rand(drawWidth), rand(drawHeight)];
       }
       _results.push(template.append('path').attr({
         stroke: '#d0d0d0',

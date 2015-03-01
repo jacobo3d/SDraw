@@ -9,29 +9,14 @@ window.kareobanaTemplate = {
         var _j, _ref1, _results1;
         _results1 = [];
         for (y = _j = 0, _ref1 = drawHeight / 80; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; y = 0 <= _ref1 ? ++_j : --_j) {
-          p2 = {
-            x: x * 80,
-            y: y * 80
-          };
-          p1 = {
-            x: rand(drawWidth),
-            y: rand(drawHeight)
-          };
+          p2 = [x * 80, y * 80];
+          p1 = [rand(drawWidth), rand(drawHeight)];
           while (dist(p1, p2) < 50 || dist(p1, p2) > 150) {
-            p1 = {
-              x: rand(drawWidth),
-              y: rand(drawHeight)
-            };
+            p1 = [rand(drawWidth), rand(drawHeight)];
           }
-          p3 = {
-            x: rand(drawWidth),
-            y: rand(drawHeight)
-          };
+          p3 = [rand(drawWidth), rand(drawHeight)];
           while (dist(p3, p2) < 50 || dist(p3, p2) > 150 || dist(p1, p3) < 50 || dist(p1, p3) > 150) {
-            p3 = {
-              x: rand(drawWidth),
-              y: rand(drawHeight)
-            };
+            p3 = [rand(drawWidth), rand(drawHeight)];
           }
           drawpoints = [p1, p2, p3];
           _results1.push(template.append('path').attr({
