@@ -293,6 +293,9 @@ draw_mode = function() {
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
     downtime = new Date();
+    if (resettimeout) {
+      clearTimeout(resettimeout);
+    }
     modetimeout = setTimeout(function() {
       selected = [];
       path.remove();
@@ -337,7 +340,9 @@ draw_mode = function() {
     d3.event.preventDefault();
     uppoint = d3.mouse(this);
     uptime = new Date();
-    clearTimeout(modetimeout);
+    if (modetimeout) {
+      clearTimeout(modetimeout);
+    }
     if (resettimeout) {
       clearTimeout(resettimeout);
     }

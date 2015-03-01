@@ -287,6 +287,7 @@ draw_mode = ->
     
     downpoint = d3.mouse(this)
     downtime = new Date()
+    clearTimeout resettimeout if resettimeout
     modetimeout = setTimeout -> # 500msじっとしてると編集モードになるとか
       selected = []
       path.remove()   # drawmodeで描いていた線を消す
@@ -321,7 +322,7 @@ draw_mode = ->
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
     uptime = new Date()
-    clearTimeout modetimeout
+    clearTimeout modetimeout if modetimeout
     clearTimeout resettimeout if resettimeout
     resettimeout = setTimeout -> # 2秒じっとしていると候補を消す
       strokes = []
