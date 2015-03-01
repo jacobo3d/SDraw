@@ -557,7 +557,7 @@ recognition = function() {
       candelement.text(cand.text);
     }
     candelement.on('mousedown', function() {
-      var attr, copied_element, target, _len4, _p, _ref3;
+      var attr, copied_element, target, text, _len4, _p, _ref3;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       strokes = [];
@@ -570,6 +570,8 @@ recognition = function() {
       }
       if (target.innerHTML) {
         copied_element.text(target.innerHTML);
+        text = $('#searchtext').val();
+        $('#searchtext').val(text + target.innerHTML);
       }
       elements.push(copied_element);
       copied_element.on('mousemove', selfunc(copied_element));

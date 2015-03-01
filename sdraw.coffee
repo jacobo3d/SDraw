@@ -491,7 +491,8 @@ recognition = ->
       .remove()
     candelement = candsvg.append cand.type
     candelement.attr cand.attr
-    candelement.text cand.text if cand.text
+    if cand.text
+      candelement.text cand.text
 
     candelement.on 'mousedown', ->
       d3.event.preventDefault()
@@ -504,9 +505,12 @@ recognition = ->
       copied_element = svg.append target.nodeName # "text", "path", etc.
       for attr in target.attributes
         copied_element.attr attr.nodeName, attr.value
-      copied_element.text target.innerHTML if target.innerHTML
+      if target.innerHTML
+        copied_element.text target.innerHTML
+        text = $('#searchtext').val()
+        $('#searchtext').val text + target.innerHTML
       elements.push copied_element
-
+      
       # マウスが横切ったら選択する
       copied_element.on 'mousemove', selfunc copied_element
     
