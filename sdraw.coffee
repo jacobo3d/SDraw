@@ -256,6 +256,7 @@ setTemplate("template0", meshTemplate)
 setTemplate("template1", parseTemplate)
 setTemplate("template2", kareobanaTemplate)
 setTemplate("template3", kareobanaTemplate3)
+setTemplate("template4", kareobanaTemplate4)
 
 ############################################################################
 ##
@@ -302,9 +303,6 @@ draw_mode = ->
 
   template.selectAll "*"
     .remove()
-  #svg.selectAll "*"
-  #  .attr "stroke", linecolor
-
   elements.map (element) ->
     element.attr "stroke", element.attr('color')
     

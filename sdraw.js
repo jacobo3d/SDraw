@@ -278,6 +278,8 @@ setTemplate("template2", kareobanaTemplate);
 
 setTemplate("template3", kareobanaTemplate3);
 
+setTemplate("template4", kareobanaTemplate4);
+
 path = null;
 
 draw = function() {
