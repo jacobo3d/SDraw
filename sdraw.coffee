@@ -99,18 +99,12 @@ $('#delete').on 'click', ->
 $('#dup').on 'click', ->
   clone 30, 30
 
-$('#line1').on 'click', ->
-  linewidth = 3
-$('#line2').on 'click', ->
-  linewidth = 10
-$('#line3').on 'click', ->
-  linewidth = 25
-$('#color1').on 'click', ->
-  linecolor = '#ffffff'
-$('#color2').on 'click', ->
-  linecolor = '#808080'
-$('#color3').on 'click', ->
-  linecolor = '#000000'
+$('#line1').on 'click', -> linewidth = 3
+$('#line2').on 'click', -> linewidth = 10
+$('#line3').on 'click', -> linewidth = 25
+$('#color1').on 'click', -> linecolor = '#ffffff'
+$('#color2').on 'click', -> linecolor = '#808080'
+$('#color3').on 'click', -> linecolor = '#000000'
 
 clone = (dx, dy) ->
   newselected = []
@@ -162,12 +156,6 @@ $('#selectall').on 'click', ->
     .attr "stroke", "yellow"
   selected = elements
   
-#  svg.selectAll "*"
-#    .remove()
-    
-#  for element in selected
-#    element.attr "stroke", "yellow"
-  
 ############################################################################
 #
 # 候補領域
@@ -180,7 +168,7 @@ candsearch = ->
       data.map (url, i) ->
         cand = d3.select("#cand#{i}")
         cand.selectAll('*').remove()
-        cand.append 'image'
+        candimage = cand.append 'image'
           .attr
             'xlink:href': url
             x: 0
@@ -188,6 +176,36 @@ candsearch = ->
             width: 120
             height: 120
             preserveAspectRatio: "meet"
+        candimage.on 'click', ->
+          image = svg.append 'image'
+            .attr
+              'xlink:href': url
+              x: 0
+              y: 0
+              width: 240
+              height: 240
+              preserveAspectRatio: "meet"
+
+          iimage = image
+          image.on 'mousedown', ->
+            clickedelement = setfunc iimage
+            downpoint = d3.mouse(this)
+            for element in selected
+              attr = element.node().attributes
+              x = 0.0
+              y = 0.0
+              for e in attr
+                x = Number(e.value) if e.nodeName == 'xx'
+                y = Number(e.value) if e.nodeName == 'yy'
+              element.attr "xx", x
+              element.attr "yy", y
+            moving = true
+    
+          # マウスが横切ったら選択する
+          image.on 'mousemove', selfunc image  # クロージャ
+
+          image.on 'mouseup', ->
+          
 
 $('#searchbutton').on 'click', candsearch
 $('#searchtext').on 'keydown', (e) ->

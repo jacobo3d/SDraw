@@ -197,16 +197,53 @@ candsearch = function() {
   if (query.length > 0) {
     return bing_search(query, function(data) {
       return data.map(function(url, i) {
-        var cand;
+        var cand, candimage;
         cand = d3.select("#cand" + i);
         cand.selectAll('*').remove();
-        return cand.append('image').attr({
+        candimage = cand.append('image').attr({
           'xlink:href': url,
           x: 0,
           y: 0,
           width: 120,
           height: 120,
           preserveAspectRatio: "meet"
+        });
+        return candimage.on('click', function() {
+          var iimage, image;
+          image = svg.append('image').attr({
+            'xlink:href': url,
+            x: 0,
+            y: 0,
+            width: 240,
+            height: 240,
+            preserveAspectRatio: "meet"
+          });
+          iimage = image;
+          image.on('mousedown', function() {
+            var attr, clickedelement, e, element, x, y, _i, _j, _len, _len1;
+            clickedelement = setfunc(iimage);
+            downpoint = d3.mouse(this);
+            for (_i = 0, _len = selected.length; _i < _len; _i++) {
+              element = selected[_i];
+              attr = element.node().attributes;
+              x = 0.0;
+              y = 0.0;
+              for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
+                e = attr[_j];
+                if (e.nodeName === 'xx') {
+                  x = Number(e.value);
+                }
+                if (e.nodeName === 'yy') {
+                  y = Number(e.value);
+                }
+              }
+              element.attr("xx", x);
+              element.attr("yy", y);
+            }
+            return moving = true;
+          });
+          image.on('mousemove', selfunc(image));
+          return image.on('mouseup', function() {});
         });
       });
     });
