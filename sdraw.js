@@ -283,7 +283,7 @@ path = null;
 draw = function() {
   return path.attr({
     d: line(points),
-    stroke: linecolor,
+    stroke: path.attr('color'),
     'stroke-width': linewidth,
     'stroke-linecap': "round",
     fill: "none"
@@ -326,7 +326,9 @@ draw_mode = function() {
   moved = null;
   strokes = [];
   template.selectAll("*").remove();
-  svg.selectAll("*").attr("stroke", linecolor);
+  elements.map(function(element) {
+    return element.attr("stroke", element.attr('color'));
+  });
   bgrect.attr("fill", "#ffffff");
   svg.on('mousedown', function() {
     var ppath;
@@ -349,6 +351,7 @@ draw_mode = function() {
       return edit_mode();
     }, 500);
     path = svg.append('path');
+    path.attr("color", linecolor);
     elements.push(path);
     points = [downpoint];
     ppath = path;
@@ -501,7 +504,7 @@ edit_mode = function() {
       } else {
         for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
           element = selected[_k];
-          element.attr("stroke", linecolor);
+          element.attr("stroke", element.attr('color'));
         }
         return selected = [];
       }

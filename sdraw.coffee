@@ -111,7 +111,7 @@ $('#color2').on 'click', ->
   linecolor = '#808080'
 $('#color3').on 'click', ->
   linecolor = '#000000'
-  
+
 clone = (dx, dy) ->
   newselected = []
   for element in selected
@@ -268,7 +268,7 @@ path = null
 draw = ->
   path.attr
     d:                line points
-    stroke:           linecolor
+    stroke:           path.attr 'color'
     'stroke-width':   linewidth
     'stroke-linecap': "round"
     fill:             "none"
@@ -302,8 +302,12 @@ draw_mode = ->
 
   template.selectAll "*"
     .remove()
-  svg.selectAll "*"
-    .attr "stroke", linecolor
+  #svg.selectAll "*"
+  #  .attr "stroke", linecolor
+
+  elements.map (element) ->
+    element.attr "stroke", element.attr('color')
+    
   bgrect.attr "fill", "#ffffff"
 
   svg.on 'mousedown', ->
@@ -324,6 +328,7 @@ draw_mode = ->
     , 500
     
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)
+    path.attr "color", linecolor
     elements.push path
     points = [ downpoint ]
 
@@ -437,7 +442,7 @@ edit_mode = ->
         draw_mode()
       else
         for element in selected
-          element.attr "stroke", linecolor
+          element.attr "stroke", element.attr('color')
         selected = []
 
 #
