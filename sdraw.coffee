@@ -20,6 +20,7 @@ strokes = []      # 始点と終点の組の列
 moving = false    # 選択要素を移動中かどうか
 moved = null      # 移動操作したときの移動量
 linewidth = 10
+linecolor = '#000000'
 
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
@@ -104,6 +105,12 @@ $('#line2').on 'click', ->
   linewidth = 10
 $('#line3').on 'click', ->
   linewidth = 25
+$('#color1').on 'click', ->
+  linecolor = '#ffffff'
+$('#color2').on 'click', ->
+  linecolor = '#808080'
+$('#color3').on 'click', ->
+  linecolor = '#000000'
   
 clone = (dx, dy) ->
   newselected = []
@@ -119,7 +126,7 @@ clone = (dx, dy) ->
       cloned.attr e.nodeName, e.value
       x = Number(e.value) if e.nodeName == 'xx'
       y = Number(e.value) if e.nodeName == 'yy'
-    element.attr 'stroke', 'blue' # コピー元は青に戻す
+    element.attr 'stroke', linecolor # コピー元は青に戻す
     cloned.attr "xx", x+dx
     cloned.attr "yy", y+dy
     cloned.attr "transform", "translate(#{x+dx},#{y+dy})"
@@ -261,7 +268,7 @@ path = null
 draw = ->
   path.attr
     d:                line points
-    stroke:           'blue'
+    stroke:           linecolor
     'stroke-width':   linewidth
     'stroke-linecap': "round"
     fill:             "none"
@@ -296,7 +303,7 @@ draw_mode = ->
   template.selectAll "*"
     .remove()
   svg.selectAll "*"
-    .attr "stroke", 'blue'
+    .attr "stroke", linecolor
   bgrect.attr "fill", "#ffffff"
 
   svg.on 'mousedown', ->
@@ -430,7 +437,7 @@ edit_mode = ->
         draw_mode()
       else
         for element in selected
-          element.attr "stroke", "blue"
+          element.attr "stroke", linecolor
         selected = []
 
 #
