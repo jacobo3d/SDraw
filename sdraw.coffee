@@ -116,11 +116,13 @@ clone = (dx, dy) ->
     cloned.attr "yy", y+dy
     cloned.attr "transform", "translate(#{x+dx},#{y+dy})"
     cloned.text element.text() if node_name == 'text'
-    
+
     cloned.on 'mousedown', ->
       return unless mode == 'edit'
+      clickedelement = setfunc cloned
       downpoint = d3.mouse(this)
       moving = true
+      
     cloned.on 'mousemove', selfunc cloned
     
     newselected.push cloned
@@ -265,6 +267,10 @@ selfunc = (element) ->
       return if moving # 移動中は選択しない
       element.attr "stroke", "yellow"
       selected.push element unless element in selected
+      
+setfunc = (element) ->
+  ->
+    return element
 
 modetimeout = null    # 長押しで編集モードにするため
 resettimeout = null   # 時間がたつと候補リセット
@@ -294,8 +300,9 @@ draw_mode = ->
       selected = []
       path.remove()      # drawmodeで描いていた線を消す
       if clickedelement  # pathなどをクリックしてた場合は移動モードにする
-        clickedelement.attr "stroke", "yellow"
-        selected.push clickedelement
+        element = clickedelement()
+        element.attr "stroke", "yellow"
+        selected.push element
         moving = true
       edit_mode()
     , 500
@@ -304,9 +311,10 @@ draw_mode = ->
     elements.push path
     points = [ downpoint ]
 
+    ppath = path
     path.on 'mousedown', ->
       # return unless mode == 'edit'
-      clickedelement = path
+      clickedelement = setfunc ppath
       downpoint = d3.mouse(this)
       for element in selected
         attr = element.node().attributes
