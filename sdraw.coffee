@@ -19,6 +19,7 @@ points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
 moving = false    # 選択要素を移動中かどうか
 moved = null      # 移動操作したときの移動量
+linewidth = 10
 
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
@@ -97,6 +98,13 @@ $('#delete').on 'click', ->
 $('#dup').on 'click', ->
   clone 30, 30
 
+$('#line1').on 'click', ->
+  linewidth = 3
+$('#line2').on 'click', ->
+  linewidth = 10
+$('#line3').on 'click', ->
+  linewidth = 25
+  
 clone = (dx, dy) ->
   newselected = []
   for element in selected
@@ -252,10 +260,11 @@ path = null
 
 draw = ->
   path.attr
-    d:              line points
-    stroke:         'blue'
-    'stroke-width': 8
-    fill:           "none"
+    d:                line points
+    stroke:           'blue'
+    'stroke-width':   linewidth
+    'stroke-linecap': "round"
+    fill:             "none"
 
 #
 # 描画エレメントを選択状態にする関数を返す関数
