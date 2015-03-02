@@ -262,13 +262,15 @@ selfunc = (element) ->
   ->
     if mode == 'edit'
       return unless downpoint
-      return if moving   # 移動中は選択しない
+      return if moving # 移動中は選択しない
       element.attr "stroke", "yellow"
       selected.push element unless element in selected
 
 modetimeout = null    # 長押しで編集モードにするため
 resettimeout = null   # 時間がたつと候補リセット
 downtime = null
+
+clickedelement = null # クリックされたパスや文字を覚えておく
 
 draw_mode = ->
   mode = 'draw'
@@ -290,7 +292,11 @@ draw_mode = ->
     clearTimeout resettimeout if resettimeout
     modetimeout = setTimeout -> # 500msじっとしてると編集モードになるとか
       selected = []
-      path.remove()   # drawmodeで描いていた線を消す
+      path.remove()      # drawmodeで描いていた線を消す
+      if clickedelement  # pathなどをクリックしてた場合は移動モードにする
+        clickedelement.attr "stroke", "yellow"
+        selected.push clickedelement
+        moving = true
       edit_mode()
     , 500
     
@@ -299,7 +305,8 @@ draw_mode = ->
     points = [ downpoint ]
 
     path.on 'mousedown', ->
-      return unless mode == 'edit'
+      # return unless mode == 'edit'
+      clickedelement = path
       downpoint = d3.mouse(this)
       for element in selected
         attr = element.node().attributes
@@ -338,6 +345,7 @@ draw_mode = ->
     strokes.push [ downpoint, uppoint ]
     downpoint = null
     moving = false # ねんのため
+    clickedelement = null
 
     recognition() # !!!!!
 
@@ -395,6 +403,7 @@ edit_mode = ->
     moved = [uppoint[0]-downpoint[0], uppoint[1]-downpoint[1]]
     moving = false
     downpoint = null
+    clickedelement = null
 
     uptime = new Date()
     if uptime - downtime < 300
@@ -536,6 +545,7 @@ recognition = ->
       copied_element.on 'mousemove', selfunc copied_element
     
       copied_element.on 'mousedown', ->
+        clickedelement = copied_element
         moving = true
 
     candelement.on 'mouseup', ->
