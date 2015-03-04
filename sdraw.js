@@ -386,12 +386,16 @@ draw_mode = function() {
       clearTimeout(resettimeout);
     }
     modetimeout = setTimeout(function() {
-      var element;
+      var element, f;
       selected = [];
       path.remove();
       if (clickedelement) {
         element = clickedelement();
         element.attr("stroke", "yellow");
+        f = element.attr("fill");
+        if (f && f !== "none") {
+          element.attr("fill", "yellow");
+        }
         selected.push(element);
       }
       return edit_mode();
@@ -512,7 +516,7 @@ edit_mode = function() {
     return _results;
   });
   return svg.on('mouseup', function() {
-    var attr, e, element, uppoint, uptime, x, y, _i, _j, _k, _len, _len1, _len2;
+    var attr, e, element, f, uppoint, uptime, x, y, _i, _j, _k, _len, _len1, _len2;
     if (!downpoint) {
       return;
     }
@@ -552,6 +556,10 @@ edit_mode = function() {
         for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
           element = selected[_k];
           element.attr("stroke", element.attr('color'));
+          f = element.attr("fill");
+          if (f && f !== "none") {
+            element.attr("fill", element.attr('color'));
+          }
         }
         return selected = [];
       }
@@ -666,6 +674,8 @@ recognition = function() {
     if (cand.text) {
       candelement.text(cand.text);
     }
+    candelement.attr('fill', 'black');
+    candelement.attr('color', 'black');
     candelement.on('mousedown', function() {
       var attr, copied_element, target, text, xx, yy, _len4, _p, _q, _ref3, _ref4, _results3;
       d3.event.preventDefault();
@@ -703,7 +713,8 @@ recognition = function() {
       elements.push(copied_element);
       copied_element.on('mousemove', selfunc(copied_element));
       return copied_element.on('mousedown', function() {
-        clickedelement = copied_element;
+        clickedelement = setfunc(copied_element);
+        selected.push(copied_element);
         return moving = true;
       });
     });

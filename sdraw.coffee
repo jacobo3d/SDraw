@@ -307,7 +307,7 @@ selfunc = (element) ->
       return if moving # 移動中は選択しない
       element.attr "stroke", "yellow"
       selected.push element unless element in selected
-      
+
 setfunc = (element) ->
   ->
     return element
@@ -344,6 +344,9 @@ draw_mode = ->
       if clickedelement  # pathなどをクリックしてた場合は移動モードにする
         element = clickedelement()
         element.attr "stroke", "yellow"
+        f = element.attr "fill"
+        if f && f != "none"
+          element.attr "fill", "yellow"
         selected.push element
         # moving = true !!!!!
       edit_mode()
@@ -465,7 +468,10 @@ edit_mode = ->
         draw_mode()
       else
         for element in selected
-          element.attr "stroke", element.attr('color')
+          element.attr "stroke", element.attr('color') # 線分の色を戻す
+          f = element.attr "fill"
+          if f && f != "none"
+            element.attr "fill", element.attr('color')   # 文字の色を戻す
         selected = []
 
 #
@@ -559,6 +565,8 @@ recognition = ->
     candelement.attr cand.attr
     if cand.text
       candelement.text cand.text
+    candelement.attr 'fill', 'black'
+    candelement.attr 'color', 'black'
 
     candelement.on 'mousedown', ->
       d3.event.preventDefault()
@@ -595,9 +603,10 @@ recognition = ->
       
       # マウスが横切ったら選択する
       copied_element.on 'mousemove', selfunc copied_element
-    
+
       copied_element.on 'mousedown', ->
-        clickedelement = copied_element
+        clickedelement = setfunc copied_element
+        selected.push copied_element
         moving = true
 
     candelement.on 'mouseup', ->
