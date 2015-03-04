@@ -389,7 +389,6 @@ draw_mode = function() {
         element = clickedelement();
         element.attr("stroke", "yellow");
         selected.push(element);
-        moving = true;
       }
       return edit_mode();
     }, 500);
@@ -533,8 +532,8 @@ edit_mode = function() {
         element.attr('xx', x + uppoint[0] - downpoint[0]);
         element.attr('yy', y + uppoint[1] - downpoint[1]);
       }
+      moved = [uppoint[0] - downpoint[0], uppoint[1] - downpoint[1]];
     }
-    moved = [uppoint[0] - downpoint[0], uppoint[1] - downpoint[1]];
     moving = false;
     downpoint = null;
     clickedelement = null;
