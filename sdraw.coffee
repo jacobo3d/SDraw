@@ -19,6 +19,7 @@ points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
 moving = false    # 選択要素を移動中かどうか
 moved = null      # 移動操作したときの移動量
+duplicated = false # 複製操作の直後にtrueになる
 linewidth = 10
 linecolor = '#000000'
 
@@ -97,10 +98,11 @@ $('#delete').on 'click', ->
     #  alert elements.length        ****** おかしい
 
 $('#dup').on 'click', ->
-  if moved
+  if moved && duplicated
     clone moved[0]+30, moved[1]+30
   else
     clone 30, 30
+  duplicated = true
 
 $('#line1').on 'click', -> linewidth = 3
 $('#line2').on 'click', -> linewidth = 10
@@ -319,6 +321,7 @@ clickedelement = null # クリックされたパスや文字を覚えておく
 draw_mode = ->
   mode = 'draw'
   moved = null
+  duplicated = false
 
   strokes = []
 
@@ -455,6 +458,7 @@ edit_mode = ->
 
     uptime = new Date()
     if uptime - downtime < 300
+      duplicated = false
       if selected.length == 0
         selected = []
         strokes = []
