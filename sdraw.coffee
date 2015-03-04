@@ -97,7 +97,10 @@ $('#delete').on 'click', ->
     #  alert elements.length        ****** おかしい
 
 $('#dup').on 'click', ->
-  clone 30, 30
+  if moved
+    clone moved[0]+30, moved[1]+30
+  else
+    clone 30, 30
 
 $('#line1').on 'click', -> linewidth = 3
 $('#line2').on 'click', -> linewidth = 10

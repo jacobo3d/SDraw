@@ -108,7 +108,11 @@ $('#delete').on('click', function() {
 });
 
 $('#dup').on('click', function() {
-  return clone(30, 30);
+  if (moved) {
+    return clone(moved[0] + 30, moved[1] + 30);
+  } else {
+    return clone(30, 30);
+  }
 });
 
 $('#line1').on('click', function() {
