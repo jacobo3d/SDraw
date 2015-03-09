@@ -21,7 +21,7 @@ entry['attr'] = {
 data.push entry
 
 #
-# 座標
+# 座標 (L字)
 #
 entry = {}
 entry['strokes'] = [

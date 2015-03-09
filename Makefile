@@ -2,5 +2,6 @@ all:
 	coffee -c -b *.coffee
 
 figures.json:
-	ruby figures | jq . > figures.json
+	coffee figures.json | jq . > figures.json
+#	ruby figures | jq . > figures.json
 
