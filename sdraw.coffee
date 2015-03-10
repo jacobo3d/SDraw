@@ -54,7 +54,6 @@ resize = ->
     .css 'height', drawHeight/2 - 30
   $('#suggestions')
     .css 'height', drawHeight/2 - 30
-    
 
 $ ->
   resize()
@@ -107,17 +106,17 @@ clone = (dx, dy) ->
   newselected = []
   for element in selected
     attr = element.node().attributes
-    node_name = element.property "nodeName"
+    nodeName = element.property "nodeName"
     parent = d3.select element.node().parentNode
 
-    cloned = parent.append node_name
+    cloned = parent.append nodeName
     for e in attr
       cloned.attr e.nodeName, e.value
     element.attr 'stroke', linecolor # コピー元の色を戻す
     cloned.x = element.x + dx
     cloned.y = element.y + dy
     cloned.attr "transform", "translate(#{cloned.x},#{cloned.y})"
-    cloned.text element.text() if node_name == 'text'
+    cloned.text element.text() if nodeName == 'text'
 
     cloned.on 'mousedown', ->
       return unless mode == 'edit'
@@ -270,7 +269,7 @@ setTemplate("template4", kareobanaTemplate4)
 path = null
 # SVGElement.getScreenCTM() とか使うべきなのかも
 
-draw = (path) ->
+drawPath = (path) ->
   path.attr
     d:                line points
     stroke:           path.attr 'color'
@@ -369,7 +368,7 @@ draw_mode = ->
     , 2000
 
     points.push uppoint
-    draw path
+    drawPath path
     strokes.push [ downpoint, uppoint ]
     path.snappoints = strokes           # スナッピングする点のリスト
     downpoint = null
@@ -384,7 +383,7 @@ draw_mode = ->
     clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
     d3.event.preventDefault()
     points.push movepoint
-    draw path
+    drawPath path
 
 edit_mode = ->
   mode = 'edit'
