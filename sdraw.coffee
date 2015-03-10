@@ -23,6 +23,8 @@ duplicated = false # 複製操作の直後にtrueになる
 linewidth = 10
 linecolor = '#000000'
 
+# SVGElement.getScreenCTM() とか使うべきなのかも
+
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
 
@@ -120,7 +122,7 @@ clone = (dx, dy) ->
 
     cloned.on 'mousedown', ->
       return unless mode == 'edit'
-      clickedelement = setfunc cloned
+      clickedElement = setfunc cloned
       downpoint = d3.mouse(this)
       moving = true
       
@@ -182,7 +184,7 @@ candsearch = ->
 
           iimage = image
           image.on 'mousedown', ->
-            clickedelement = setfunc iimage
+            clickedElement = setfunc iimage
             downpoint = d3.mouse(this)
             moving = true
     
@@ -190,7 +192,6 @@ candsearch = ->
           image.on 'mousemove', selfunc image  # クロージャ
 
           image.on 'mouseup', ->
-          
 
 $('#searchbutton').on 'click', candsearch
 $('#searchtext').on 'keydown', (e) ->
@@ -267,7 +268,6 @@ setTemplate("template4", kareobanaTemplate4)
 ## 
   
 path = null
-# SVGElement.getScreenCTM() とか使うべきなのかも
 
 drawPath = (path) ->
   path.attr
@@ -298,7 +298,7 @@ modetimeout = null    # 長押しで編集モードにするため
 resettimeout = null   # 時間がたつと候補リセット
 downtime = null
 
-clickedelement = null # クリックされたパスや文字を覚えておく
+clickedElement = null # クリックされたパスや文字を覚えておく
 
 draw_mode = ->
   mode = 'draw'
@@ -323,8 +323,8 @@ draw_mode = ->
     modetimeout = setTimeout -> # 500msじっとしてると編集モードになるとか
       selected = []
       path.remove()      # drawmodeで描いていた線を消す
-      if clickedelement  # pathなどをクリックしてた場合は移動モードにする
-        element = clickedelement()
+      if clickedElement  # pathなどをクリックしてた場合は移動モードにする
+        element = clickedElement()
         element.attr "stroke", "yellow"
         f = element.attr "fill"
         if f && f != "none"
@@ -342,7 +342,7 @@ draw_mode = ->
     ppath = path
     path.on 'mousedown', ->
       # return unless mode == 'edit'
-      clickedelement = setfunc ppath
+      clickedElement = setfunc ppath
       downpoint = d3.mouse(this)
       moving = true
         
@@ -370,10 +370,10 @@ draw_mode = ->
     points.push uppoint
     drawPath path
     strokes.push [ downpoint, uppoint ]
-    path.snappoints = strokes           # スナッピングする点のリスト
+    path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
     downpoint = null
     moving = false # ねんのため
-    clickedelement = null
+    clickedElement = null
 
     recognition strokes
 
@@ -402,8 +402,10 @@ edit_mode = ->
     return unless downpoint
     return unless moving
     movepoint = d3.mouse(this)
-    # clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
-    # $('#searchtext').val("move-move selected = #{selected.length}")
+    #
+    # ここにスナッピングを入れる!
+    #
+
     for element in selected
       element.attr "transform", "translate(#{element.x+movepoint[0]-downpoint[0]},#{element.y+movepoint[1]-downpoint[1]})"
 
@@ -419,7 +421,7 @@ edit_mode = ->
       moved = [uppoint[0]-downpoint[0], uppoint[1]-downpoint[1]]
     moving = false
     downpoint = null
-    clickedelement = null
+    clickedElement = null
 
     uptime = new Date()
     if uptime - downtime < 300
@@ -494,7 +496,7 @@ recognition = (strokes) ->
       copied_element.on 'mousemove', selfunc copied_element
 
       copied_element.on 'mousedown', ->
-        clickedelement = setfunc copied_element
+        clickedElement = setfunc copied_element
         selected.push copied_element
         moving = true
 
