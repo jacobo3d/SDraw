@@ -1,4 +1,4 @@
-# SDraw
+# SDraw - Suggest-based Drawing
 
 * 何も無いところに絵を描くのは難しいが、参考になるものがあれば書きやすい。
   - 方眼紙の上に絵を描く

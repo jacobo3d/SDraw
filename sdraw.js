@@ -320,7 +320,7 @@ setTemplate("template4", kareobanaTemplate4);
 
 path = null;
 
-draw = function() {
+draw = function(path) {
   return path.attr({
     d: line(points),
     stroke: path.attr('color'),
@@ -449,12 +449,13 @@ draw_mode = function() {
       });
     }, 2000);
     points.push(uppoint);
-    draw();
+    draw(path);
     strokes.push([downpoint, uppoint]);
+    path.snappoints = strokes;
     downpoint = null;
     moving = false;
     clickedelement = null;
-    return recognition();
+    return recognition(strokes);
   });
   return svg.on('mousemove', function() {
     var movepoint;
@@ -467,7 +468,7 @@ draw_mode = function() {
     }
     d3.event.preventDefault();
     points.push(movepoint);
-    return draw();
+    return draw(path);
   });
 };
 
@@ -561,9 +562,9 @@ edit_mode = function() {
   });
 };
 
-recognition = function() {
+recognition = function(strokes) {
   var cands;
-  cands = recognize(window.kanjidata, window.figuredata);
+  cands = recognize(strokes, window.kanjidata, window.figuredata);
   return [0, 1, 2, 3, 4, 5].forEach(function(i) {
     var cand, candelement, candsvg;
     cand = cands[i][0];

@@ -7,7 +7,7 @@ $ ->
   $.getJSON "figures.json", (data) ->
     window.figuredata = data
 
-recognize = (strokedata...) ->
+recognize = (strokes, strokedata...) ->
   #
   # strokesを正規化する。
   #
