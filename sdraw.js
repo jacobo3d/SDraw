@@ -137,7 +137,7 @@ $('#color3').on('click', function() {
 });
 
 clone = function(dx, dy) {
-  var attr, cloned, e, element, newselected, node_name, parent, x, y, _i, _j, _len, _len1;
+  var attr, cloned, e, element, newselected, node_name, parent, x, y, _i, _j, _len, _len1, _ref, _ref1;
   newselected = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
@@ -145,21 +145,15 @@ clone = function(dx, dy) {
     node_name = element.property("nodeName");
     parent = d3.select(element.node().parentNode);
     cloned = parent.append(node_name);
-    x = 0.0;
-    y = 0.0;
     for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
       e = attr[_j];
       cloned.attr(e.nodeName, e.value);
-      if (e.nodeName === 'xx') {
-        x = Number(e.value);
-      }
-      if (e.nodeName === 'yy') {
-        y = Number(e.value);
-      }
     }
     element.attr('stroke', linecolor);
-    cloned.attr("xx", x + dx);
-    cloned.attr("yy", y + dy);
+    x = (_ref = element.x) != null ? _ref : 0;
+    y = (_ref1 = element.y) != null ? _ref1 : 0;
+    cloned.x = x + dx;
+    cloned.y = y + dy;
     cloned.attr("transform", "translate(" + (x + dx) + "," + (y + dy) + ")");
     if (node_name === 'text') {
       cloned.text(element.text());
@@ -221,25 +215,16 @@ candsearch = function() {
           });
           iimage = image;
           image.on('mousedown', function() {
-            var attr, clickedelement, e, element, x, y, _i, _j, _len, _len1;
+            var attr, clickedelement, element, x, y, _i, _len, _ref, _ref1;
             clickedelement = setfunc(iimage);
             downpoint = d3.mouse(this);
             for (_i = 0, _len = selected.length; _i < _len; _i++) {
               element = selected[_i];
               attr = element.node().attributes;
-              x = 0.0;
-              y = 0.0;
-              for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
-                e = attr[_j];
-                if (e.nodeName === 'xx') {
-                  x = Number(e.value);
-                }
-                if (e.nodeName === 'yy') {
-                  y = Number(e.value);
-                }
-              }
-              element.attr("xx", x);
-              element.attr("yy", y);
+              x = (_ref = element.x) != null ? _ref : 0;
+              y = (_ref1 = element.y) != null ? _ref1 : 0;
+              element.x = x;
+              element.y = y;
             }
             return moving = true;
           });
@@ -400,25 +385,16 @@ draw_mode = function() {
     points = [downpoint];
     ppath = path;
     path.on('mousedown', function() {
-      var attr, e, element, x, y, _i, _j, _len, _len1;
+      var attr, element, x, y, _i, _len, _ref, _ref1;
       clickedelement = setfunc(ppath);
       downpoint = d3.mouse(this);
       for (_i = 0, _len = selected.length; _i < _len; _i++) {
         element = selected[_i];
         attr = element.node().attributes;
-        x = 0.0;
-        y = 0.0;
-        for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
-          e = attr[_j];
-          if (e.nodeName === 'xx') {
-            x = Number(e.value);
-          }
-          if (e.nodeName === 'yy') {
-            y = Number(e.value);
-          }
-        }
-        element.attr("xx", x);
-        element.attr("yy", y);
+        x = (_ref = element.x) != null ? _ref : 0;
+        y = (_ref1 = element.y) != null ? _ref1 : 0;
+        element.x = x;
+        element.y = y;
       }
       return moving = true;
     });
@@ -483,7 +459,7 @@ edit_mode = function() {
     return moved = null;
   });
   svg.on('mousemove', function() {
-    var attr, e, element, movepoint, x, y, _i, _j, _len, _len1, _results;
+    var attr, element, movepoint, x, y, _i, _len, _ref, _ref1, _results;
     if (!downpoint) {
       return;
     }
@@ -495,23 +471,14 @@ edit_mode = function() {
     for (_i = 0, _len = selected.length; _i < _len; _i++) {
       element = selected[_i];
       attr = element.node().attributes;
-      x = 0.0;
-      y = 0.0;
-      for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
-        e = attr[_j];
-        if (e.nodeName === 'xx') {
-          x = Number(e.value);
-        }
-        if (e.nodeName === 'yy') {
-          y = Number(e.value);
-        }
-      }
+      x = (_ref = element.x) != null ? _ref : 0;
+      y = (_ref1 = element.y) != null ? _ref1 : 0;
       _results.push(element.attr("transform", "translate(" + (x + movepoint[0] - downpoint[0]) + "," + (y + movepoint[1] - downpoint[1]) + ")"));
     }
     return _results;
   });
   return svg.on('mouseup', function() {
-    var attr, e, element, f, uppoint, uptime, x, y, _i, _j, _k, _len, _len1, _len2;
+    var attr, element, f, uppoint, uptime, x, y, _i, _j, _len, _len1, _ref, _ref1;
     if (!downpoint) {
       return;
     }
@@ -521,19 +488,10 @@ edit_mode = function() {
       for (_i = 0, _len = selected.length; _i < _len; _i++) {
         element = selected[_i];
         attr = element.node().attributes;
-        x = 0.0;
-        y = 0.0;
-        for (_j = 0, _len1 = attr.length; _j < _len1; _j++) {
-          e = attr[_j];
-          if (e.nodeName === 'xx') {
-            x = Number(e.value);
-          }
-          if (e.nodeName === 'yy') {
-            y = Number(e.value);
-          }
-        }
-        element.attr('xx', x + uppoint[0] - downpoint[0]);
-        element.attr('yy', y + uppoint[1] - downpoint[1]);
+        x = (_ref = element.x) != null ? _ref : 0;
+        y = (_ref1 = element.y) != null ? _ref1 : 0;
+        element.x = x + uppoint[0] - downpoint[0];
+        element.y = y + uppoint[1] - downpoint[1];
       }
       moved = [uppoint[0] - downpoint[0], uppoint[1] - downpoint[1]];
     }
@@ -548,8 +506,8 @@ edit_mode = function() {
         strokes = [];
         return draw_mode();
       } else {
-        for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
-          element = selected[_k];
+        for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
+          element = selected[_j];
           element.attr("stroke", element.attr('color'));
           f = element.attr("fill");
           if (f && f !== "none") {

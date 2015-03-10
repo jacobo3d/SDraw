@@ -114,15 +114,13 @@ clone = (dx, dy) ->
     parent = d3.select element.node().parentNode
 
     cloned = parent.append node_name
-    x = 0.0
-    y = 0.0
     for e in attr
       cloned.attr e.nodeName, e.value
-      x = Number(e.value) if e.nodeName == 'xx'
-      y = Number(e.value) if e.nodeName == 'yy'
-    element.attr 'stroke', linecolor # コピー元は青に戻す
-    cloned.attr "xx", x+dx
-    cloned.attr "yy", y+dy
+    element.attr 'stroke', linecolor # コピー元の色を戻す
+    x = element.x ? 0
+    y = element.y ? 0
+    cloned.x = x+dx
+    cloned.y = y+dy
     cloned.attr "transform", "translate(#{x+dx},#{y+dy})"
     cloned.text element.text() if node_name == 'text'
 
@@ -192,13 +190,10 @@ candsearch = ->
             downpoint = d3.mouse(this)
             for element in selected
               attr = element.node().attributes
-              x = 0.0
-              y = 0.0
-              for e in attr
-                x = Number(e.value) if e.nodeName == 'xx'
-                y = Number(e.value) if e.nodeName == 'yy'
-              element.attr "xx", x
-              element.attr "yy", y
+              x = element.x ? 0
+              y = element.y ? 0
+              element.x = x
+              element.y = y
             moving = true
     
           # マウスが横切ったら選択する
@@ -359,13 +354,10 @@ draw_mode = ->
       downpoint = d3.mouse(this)
       for element in selected
         attr = element.node().attributes
-        x = 0.0
-        y = 0.0
-        for e in attr
-          x = Number(e.value) if e.nodeName == 'xx'
-          y = Number(e.value) if e.nodeName == 'yy'
-        element.attr "xx", x
-        element.attr "yy", y
+        x = element.x ? 0
+        y = element.y ? 0
+        element.x = x
+        element.y = y
       moving = true
         
     # マウスが横切ったら選択する
@@ -428,11 +420,8 @@ edit_mode = ->
     # $('#searchtext').val("move-move selected = #{selected.length}")
     for element in selected
       attr = element.node().attributes
-      x = 0.0
-      y = 0.0
-      for e in attr
-        x = Number(e.value) if e.nodeName == 'xx' # 何故か文字列になってしまうことがあるため
-        y = Number(e.value) if e.nodeName == 'yy'
+      x = element.x ? 0
+      y = element.y ? 0
       element.attr "transform", "translate(#{x+movepoint[0]-downpoint[0]},#{y+movepoint[1]-downpoint[1]})"
 
   svg.on 'mouseup', ->
@@ -442,13 +431,10 @@ edit_mode = ->
     if moving
       for element in selected
         attr = element.node().attributes
-        x = 0.0
-        y = 0.0
-        for e in attr
-          x = Number(e.value) if e.nodeName == 'xx'
-          y = Number(e.value) if e.nodeName == 'yy'
-        element.attr 'xx', x+uppoint[0]-downpoint[0]
-        element.attr 'yy', y+uppoint[1]-downpoint[1]
+        x = element.x ? 0
+        y = element.y ? 0
+        element.x = x+uppoint[0]-downpoint[0]
+        element.y = y+uppoint[1]-downpoint[1]
 
       moved = [uppoint[0]-downpoint[0], uppoint[1]-downpoint[1]]
     moving = false
