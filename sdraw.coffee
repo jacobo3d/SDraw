@@ -385,6 +385,9 @@ draw_mode = ->
     points.push movepoint
     drawPath path
 
+snapdx = 0
+snapdy = 0
+  
 edit_mode = ->
   mode = 'edit'
   
@@ -406,29 +409,34 @@ edit_mode = ->
     # ここにスナッピングを入れる!
     #
     d = dist movepoint, downpoint
-    dx = 0
-    dy = 0
-    if d > 200
+    snapdx = 0
+    snapdy = 0
+    if d > 100
       points = []
-      for element in selected
-        points.push [element.snappoints[0][0]+movepoint[0]-downpoint[0], element.snappoints[0][1]+movepoint[1]-downpoint[1]]
-        points.push [element.snappoints[1][0]+movepoint[0]-downpoint[0], element.snappoints[1][1]+movepoint[1]-downpoint[1]]
-      # グリッドにスナッピングしてみる
+      refpoints = []
+      for element in elements
+        if element.snappoints # 謎
+          if element in selected
+            points.push [element.snappoints[0][0]+movepoint[0]-downpoint[0], element.snappoints[0][1]+movepoint[1]-downpoint[1]]
+            points.push [element.snappoints[1][0]+movepoint[0]-downpoint[0], element.snappoints[1][1]+movepoint[1]-downpoint[1]]
+          else
+            refpoints.push [element.snappoints[0][0], element.snappoints[0][1]]
+            refpoints.push [element.snappoints[1][0], element.snappoints[1][1]]
+      #  
+      # 他のオブジェクトにスナッピング
+      # 
       d = 10000000
       p = []
       for point in points
-        [-10..10].forEach (x) ->
-          p[0] = x * 100
-          [-10..10].forEach (y) ->
-            p[1] = y * 100
-            dd = dist p, point
-            if dd < d
-              d = dd
-              dx = point[0] - p[0]
-              dy = point[1] - p[1]
+        for refpoint in refpoints
+          dd = dist point, refpoint
+          if dd < d
+            d = dd
+            snapdx = point[0] - refpoint[0]
+            snapdy = point[1] - refpoint[1]
     
     for element in selected
-      element.attr "transform", "translate(#{element.x+movepoint[0]-downpoint[0]-dx},#{element.y+movepoint[1]-downpoint[1]-dy})"
+      element.attr "transform", "translate(#{element.x+movepoint[0]-downpoint[0]-snapdx},#{element.y+movepoint[1]-downpoint[1]-snapdy})"
 
   svg.on 'mouseup', ->
     return unless downpoint
@@ -436,8 +444,8 @@ edit_mode = ->
     uppoint = d3.mouse(this)
     if moving
       for element in selected
-        element.x = element.x+uppoint[0]-downpoint[0]
-        element.y = element.y+uppoint[1]-downpoint[1]
+        element.x = element.x+uppoint[0]-downpoint[0] - snapdx
+        element.y = element.y+uppoint[1]-downpoint[1] - snapdy
 
       moved = [uppoint[0]-downpoint[0], uppoint[1]-downpoint[1]]
     moving = false
