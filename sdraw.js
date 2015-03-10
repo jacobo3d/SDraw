@@ -440,7 +440,7 @@ edit_mode = function() {
     return moved = null;
   });
   svg.on('mousemove', function() {
-    var d, dd, element, movepoint, p, point, refpoint, refpoints, _i, _j, _k, _l, _len, _len1, _len2, _len3, _results;
+    var d, dd, element, movepoint, movex, movey, point, refpoint, refpoints, _i, _j, _k, _l, _len, _len1, _len2, _len3, _results;
     if (!downpoint) {
       return;
     }
@@ -456,20 +456,17 @@ edit_mode = function() {
       refpoints = [];
       for (_i = 0, _len = elements.length; _i < _len; _i++) {
         element = elements[_i];
-        if (__indexOf.call(selected, element) >= 0) {
-          if (element.snappoints) {
+        if (element.snappoints) {
+          if (__indexOf.call(selected, element) >= 0) {
             points.push([element.snappoints[0][0] + movepoint[0] - downpoint[0], element.snappoints[0][1] + movepoint[1] - downpoint[1]]);
             points.push([element.snappoints[1][0] + movepoint[0] - downpoint[0], element.snappoints[1][1] + movepoint[1] - downpoint[1]]);
-          }
-        } else {
-          if (element.snappoints) {
+          } else {
             refpoints.push([element.snappoints[0][0], element.snappoints[0][1]]);
             refpoints.push([element.snappoints[1][0], element.snappoints[1][1]]);
           }
         }
       }
       d = 10000000;
-      p = [];
       for (_j = 0, _len1 = points.length; _j < _len1; _j++) {
         point = points[_j];
         for (_k = 0, _len2 = refpoints.length; _k < _len2; _k++) {
@@ -486,7 +483,9 @@ edit_mode = function() {
     _results = [];
     for (_l = 0, _len3 = selected.length; _l < _len3; _l++) {
       element = selected[_l];
-      _results.push(element.attr("transform", "translate(" + (element.x + movepoint[0] - downpoint[0] - snapdx) + "," + (element.y + movepoint[1] - downpoint[1] - snapdy) + ")"));
+      movex = element.x + movepoint[0] - downpoint[0] - snapdx;
+      movey = element.y + movepoint[1] - downpoint[1] - snapdy;
+      _results.push(element.attr("transform", "translate(" + movex + "," + movey + ")"));
     }
     return _results;
   });
@@ -502,6 +501,10 @@ edit_mode = function() {
         element = selected[_i];
         element.x = element.x + uppoint[0] - downpoint[0] - snapdx;
         element.y = element.y + uppoint[1] - downpoint[1] - snapdy;
+        element.snappoints[0][0] += uppoint[0] - downpoint[0] - snapdx;
+        element.snappoints[0][1] += uppoint[1] - downpoint[1] - snapdy;
+        element.snappoints[1][0] += uppoint[0] - downpoint[0] - snapdx;
+        element.snappoints[1][1] += uppoint[1] - downpoint[1] - snapdy;
       }
       moved = [uppoint[0] - downpoint[0], uppoint[1] - downpoint[1]];
     }

@@ -406,16 +406,16 @@ edit_mode = ->
     return unless moving
     movepoint = d3.mouse(this)
     #
-    # ここにスナッピングを入れる!
+    # スナッピング処理
     #
     d = dist movepoint, downpoint
     snapdx = 0
     snapdy = 0
     if d > 100
-      points = []
-      refpoints = []
+      points = []     # 移動オブジェクトの端点リスト
+      refpoints = []  # それ以外のオブジェクトの端点リスト
       for element in elements
-        if element.snappoints # 謎
+        if element.snappoints # 謎...
           if element in selected
             points.push [element.snappoints[0][0]+movepoint[0]-downpoint[0], element.snappoints[0][1]+movepoint[1]-downpoint[1]]
             points.push [element.snappoints[1][0]+movepoint[0]-downpoint[0], element.snappoints[1][1]+movepoint[1]-downpoint[1]]
@@ -426,7 +426,6 @@ edit_mode = ->
       # 他のオブジェクトにスナッピング
       # 
       d = 10000000
-      p = []
       for point in points
         for refpoint in refpoints
           dd = dist point, refpoint
@@ -434,9 +433,11 @@ edit_mode = ->
             d = dd
             snapdx = point[0] - refpoint[0]
             snapdy = point[1] - refpoint[1]
-    
+
     for element in selected
-      element.attr "transform", "translate(#{element.x+movepoint[0]-downpoint[0]-snapdx},#{element.y+movepoint[1]-downpoint[1]-snapdy})"
+      movex = element.x+movepoint[0]-downpoint[0]-snapdx
+      movey = element.y+movepoint[1]-downpoint[1]-snapdy
+      element.attr "transform", "translate(#{movex},#{movey})"
 
   svg.on 'mouseup', ->
     return unless downpoint
@@ -446,6 +447,11 @@ edit_mode = ->
       for element in selected
         element.x = element.x+uppoint[0]-downpoint[0] - snapdx
         element.y = element.y+uppoint[1]-downpoint[1] - snapdy
+        
+        element.snappoints[0][0] += (uppoint[0]-downpoint[0]-snapdx)
+        element.snappoints[0][1] += (uppoint[1]-downpoint[1]-snapdy)
+        element.snappoints[1][0] += (uppoint[0]-downpoint[0]-snapdx)
+        element.snappoints[1][1] += (uppoint[1]-downpoint[1]-snapdy)
 
       moved = [uppoint[0]-downpoint[0], uppoint[1]-downpoint[1]]
     moving = false
