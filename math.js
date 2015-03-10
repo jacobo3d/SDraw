@@ -14,5 +14,5 @@ window.hypot = function(x, y) {
 };
 
 window.dist = function(p1, p2) {
-  return hypot(p1.x - p2.x, p1.y - p2.y);
+  return Math.hypot(p1[0] - p2[0], p1[1] - p2[1]);
 };

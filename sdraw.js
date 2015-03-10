@@ -36,14 +36,6 @@ window.browserHeight = function() {
   return window.innerHeight || document.body.clientHeight;
 };
 
-window.hypot = function(x, y) {
-  return Math.sqrt(x * x + y * y);
-};
-
-window.dist = function(p1, p2) {
-  return hypot(p1[0] - p2[0], p1[1] - p2[1]);
-};
-
 resize = function() {
   window.drawWidth = browserWidth() * 0.69;
   window.drawHeight = browserHeight();
@@ -137,7 +129,7 @@ $('#color3').on('click', function() {
 });
 
 clone = function(dx, dy) {
-  var attr, cloned, e, element, newselected, node_name, parent, x, y, _i, _j, _len, _len1, _ref, _ref1;
+  var attr, cloned, e, element, newselected, node_name, parent, _i, _j, _len, _len1;
   newselected = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
@@ -150,11 +142,9 @@ clone = function(dx, dy) {
       cloned.attr(e.nodeName, e.value);
     }
     element.attr('stroke', linecolor);
-    x = (_ref = element.x) != null ? _ref : 0;
-    y = (_ref1 = element.y) != null ? _ref1 : 0;
-    cloned.x = x + dx;
-    cloned.y = y + dy;
-    cloned.attr("transform", "translate(" + (x + dx) + "," + (y + dy) + ")");
+    cloned.x = element.x + dx;
+    cloned.y = element.y + dy;
+    cloned.attr("transform", "translate(" + cloned.x + "," + cloned.y + ")");
     if (node_name === 'text') {
       cloned.text(element.text());
     }
@@ -203,6 +193,8 @@ candsearch = function() {
           height: 120,
           preserveAspectRatio: "meet"
         });
+        candimag.x = 0;
+        candimag.y = 0;
         return candimage.on('click', function() {
           var iimage, image;
           image = svg.append('image').attr({
@@ -215,17 +207,9 @@ candsearch = function() {
           });
           iimage = image;
           image.on('mousedown', function() {
-            var attr, clickedelement, element, x, y, _i, _len, _ref, _ref1;
+            var clickedelement;
             clickedelement = setfunc(iimage);
             downpoint = d3.mouse(this);
-            for (_i = 0, _len = selected.length; _i < _len; _i++) {
-              element = selected[_i];
-              attr = element.node().attributes;
-              x = (_ref = element.x) != null ? _ref : 0;
-              y = (_ref1 = element.y) != null ? _ref1 : 0;
-              element.x = x;
-              element.y = y;
-            }
             return moving = true;
           });
           image.on('mousemove', selfunc(image));
@@ -306,13 +290,15 @@ setTemplate("template4", kareobanaTemplate4);
 path = null;
 
 draw = function(path) {
-  return path.attr({
+  path.attr({
     d: line(points),
     stroke: path.attr('color'),
     'stroke-width': linewidth,
     'stroke-linecap': "round",
     fill: "none"
   });
+  path.x = 0;
+  return path.y = 0;
 };
 
 selfunc = function(element) {
@@ -385,17 +371,8 @@ draw_mode = function() {
     points = [downpoint];
     ppath = path;
     path.on('mousedown', function() {
-      var attr, element, x, y, _i, _len, _ref, _ref1;
       clickedelement = setfunc(ppath);
       downpoint = d3.mouse(this);
-      for (_i = 0, _len = selected.length; _i < _len; _i++) {
-        element = selected[_i];
-        attr = element.node().attributes;
-        x = (_ref = element.x) != null ? _ref : 0;
-        y = (_ref1 = element.y) != null ? _ref1 : 0;
-        element.x = x;
-        element.y = y;
-      }
       return moving = true;
     });
     path.on('mousemove', selfunc(path));
@@ -459,7 +436,7 @@ edit_mode = function() {
     return moved = null;
   });
   svg.on('mousemove', function() {
-    var attr, element, movepoint, x, y, _i, _len, _ref, _ref1, _results;
+    var element, movepoint, _i, _len, _results;
     if (!downpoint) {
       return;
     }
@@ -470,15 +447,12 @@ edit_mode = function() {
     _results = [];
     for (_i = 0, _len = selected.length; _i < _len; _i++) {
       element = selected[_i];
-      attr = element.node().attributes;
-      x = (_ref = element.x) != null ? _ref : 0;
-      y = (_ref1 = element.y) != null ? _ref1 : 0;
-      _results.push(element.attr("transform", "translate(" + (x + movepoint[0] - downpoint[0]) + "," + (y + movepoint[1] - downpoint[1]) + ")"));
+      _results.push(element.attr("transform", "translate(" + (element.x + movepoint[0] - downpoint[0]) + "," + (element.y + movepoint[1] - downpoint[1]) + ")"));
     }
     return _results;
   });
   return svg.on('mouseup', function() {
-    var attr, element, f, uppoint, uptime, x, y, _i, _j, _len, _len1, _ref, _ref1;
+    var element, f, uppoint, uptime, _i, _j, _len, _len1;
     if (!downpoint) {
       return;
     }
@@ -487,11 +461,8 @@ edit_mode = function() {
     if (moving) {
       for (_i = 0, _len = selected.length; _i < _len; _i++) {
         element = selected[_i];
-        attr = element.node().attributes;
-        x = (_ref = element.x) != null ? _ref : 0;
-        y = (_ref1 = element.y) != null ? _ref1 : 0;
-        element.x = x + uppoint[0] - downpoint[0];
-        element.y = y + uppoint[1] - downpoint[1];
+        element.x = element.x + uppoint[0] - downpoint[0];
+        element.y = element.y + uppoint[1] - downpoint[1];
       }
       moved = [uppoint[0] - downpoint[0], uppoint[1] - downpoint[1]];
     }

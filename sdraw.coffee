@@ -29,9 +29,6 @@ window.browserWidth = ->
 window.browserHeight = ->
   window.innerHeight || document.body.clientHeight
 
-window.hypot = (x, y) -> Math.sqrt(x * x + y * y)
-window.dist = (p1, p2) -> hypot p1[0]-p2[0], p1[1]-p2[1]
-
 resize = ->
   window.drawWidth = browserWidth() * 0.69
   window.drawHeight = browserHeight()
@@ -117,11 +114,9 @@ clone = (dx, dy) ->
     for e in attr
       cloned.attr e.nodeName, e.value
     element.attr 'stroke', linecolor # コピー元の色を戻す
-    x = element.x ? 0
-    y = element.y ? 0
-    cloned.x = x+dx
-    cloned.y = y+dy
-    cloned.attr "transform", "translate(#{x+dx},#{y+dy})"
+    cloned.x = element.x + dx
+    cloned.y = element.y + dy
+    cloned.attr "transform", "translate(#{cloned.x},#{cloned.y})"
     cloned.text element.text() if node_name == 'text'
 
     cloned.on 'mousedown', ->
@@ -174,6 +169,8 @@ candsearch = ->
             width: 120
             height: 120
             preserveAspectRatio: "meet"
+        candimag.x = 0
+        candimag.y = 0
         candimage.on 'click', ->
           image = svg.append 'image'
             .attr
@@ -188,12 +185,6 @@ candsearch = ->
           image.on 'mousedown', ->
             clickedelement = setfunc iimage
             downpoint = d3.mouse(this)
-            for element in selected
-              attr = element.node().attributes
-              x = element.x ? 0
-              y = element.y ? 0
-              element.x = x
-              element.y = y
             moving = true
     
           # マウスが横切ったら選択する
@@ -286,6 +277,8 @@ draw = (path) ->
     'stroke-width':   linewidth
     'stroke-linecap': "round"
     fill:             "none"
+  path.x = 0
+  path.y = 0
 
 #
 # 描画エレメントを選択状態にする関数を返す関数
@@ -352,12 +345,6 @@ draw_mode = ->
       # return unless mode == 'edit'
       clickedelement = setfunc ppath
       downpoint = d3.mouse(this)
-      for element in selected
-        attr = element.node().attributes
-        x = element.x ? 0
-        y = element.y ? 0
-        element.x = x
-        element.y = y
       moving = true
         
     # マウスが横切ったら選択する
@@ -412,17 +399,14 @@ edit_mode = ->
     downtime = new Date()
     moved = null
 
-  svg.on 'mousemove', -> # 項目移動
+  svg.on 'mousemove', -> # 選択項目移動
     return unless downpoint
     return unless moving
     movepoint = d3.mouse(this)
     # clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
     # $('#searchtext').val("move-move selected = #{selected.length}")
     for element in selected
-      attr = element.node().attributes
-      x = element.x ? 0
-      y = element.y ? 0
-      element.attr "transform", "translate(#{x+movepoint[0]-downpoint[0]},#{y+movepoint[1]-downpoint[1]})"
+      element.attr "transform", "translate(#{element.x+movepoint[0]-downpoint[0]},#{element.y+movepoint[1]-downpoint[1]})"
 
   svg.on 'mouseup', ->
     return unless downpoint
@@ -430,11 +414,8 @@ edit_mode = ->
     uppoint = d3.mouse(this)
     if moving
       for element in selected
-        attr = element.node().attributes
-        x = element.x ? 0
-        y = element.y ? 0
-        element.x = x+uppoint[0]-downpoint[0]
-        element.y = y+uppoint[1]-downpoint[1]
+        element.x = element.x+uppoint[0]-downpoint[0]
+        element.y = element.y+uppoint[1]-downpoint[1]
 
       moved = [uppoint[0]-downpoint[0], uppoint[1]-downpoint[1]]
     moving = false
