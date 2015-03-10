@@ -477,6 +477,8 @@ recognition = (strokes) ->
       # 候補情報をコピーして描画領域に貼り付ける
       # 
       copied_element = svg.append target.nodeName # "text", "path", etc.
+      copied_element.x = 0
+      copied_element.y = 0
       for attr in target.attributes
         copied_element.attr attr.nodeName, attr.value
         if attr.nodeName == 'x'

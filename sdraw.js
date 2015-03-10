@@ -524,6 +524,8 @@ recognition = function(strokes) {
       });
       strokes = [];
       copied_element = svg.append(target.nodeName);
+      copied_element.x = 0;
+      copied_element.y = 0;
       _ref1 = target.attributes;
       for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
         attr = _ref1[_j];
