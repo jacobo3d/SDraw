@@ -436,7 +436,7 @@ edit_mode = function() {
     return moved = null;
   });
   svg.on('mousemove', function() {
-    var element, movepoint, _i, _len, _results;
+    var d, dx, dy, element, movepoint, p, point, _i, _j, _k, _len, _len1, _len2, _results;
     if (!downpoint) {
       return;
     }
@@ -444,10 +444,39 @@ edit_mode = function() {
       return;
     }
     movepoint = d3.mouse(this);
+    d = dist(movepoint, downpoint);
+    dx = 0;
+    dy = 0;
+    if (d > 200) {
+      points = [];
+      for (_i = 0, _len = selected.length; _i < _len; _i++) {
+        element = selected[_i];
+        points.push([element.snappoints[0][0] + movepoint[0] - downpoint[0], element.snappoints[0][1] + movepoint[1] - downpoint[1]]);
+        points.push([element.snappoints[1][0] + movepoint[0] - downpoint[0], element.snappoints[1][1] + movepoint[1] - downpoint[1]]);
+      }
+      d = 10000000;
+      p = [];
+      for (_j = 0, _len1 = points.length; _j < _len1; _j++) {
+        point = points[_j];
+        [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function(x) {
+          p[0] = x * 100;
+          return [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(function(y) {
+            var dd;
+            p[1] = y * 100;
+            dd = dist(p, point);
+            if (dd < d) {
+              d = dd;
+              dx = point[0] - p[0];
+              return dy = point[1] - p[1];
+            }
+          });
+        });
+      }
+    }
     _results = [];
-    for (_i = 0, _len = selected.length; _i < _len; _i++) {
-      element = selected[_i];
-      _results.push(element.attr("transform", "translate(" + (element.x + movepoint[0] - downpoint[0]) + "," + (element.y + movepoint[1] - downpoint[1]) + ")"));
+    for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
+      element = selected[_k];
+      _results.push(element.attr("transform", "translate(" + (element.x + movepoint[0] - downpoint[0] - dx) + "," + (element.y + movepoint[1] - downpoint[1] - dy) + ")"));
     }
     return _results;
   });

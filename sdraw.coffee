@@ -405,9 +405,30 @@ edit_mode = ->
     #
     # ここにスナッピングを入れる!
     #
-
+    d = dist movepoint, downpoint
+    dx = 0
+    dy = 0
+    if d > 200
+      points = []
+      for element in selected
+        points.push [element.snappoints[0][0]+movepoint[0]-downpoint[0], element.snappoints[0][1]+movepoint[1]-downpoint[1]]
+        points.push [element.snappoints[1][0]+movepoint[0]-downpoint[0], element.snappoints[1][1]+movepoint[1]-downpoint[1]]
+      # グリッドにスナッピングしてみる
+      d = 10000000
+      p = []
+      for point in points
+        [-10..10].forEach (x) ->
+          p[0] = x * 100
+          [-10..10].forEach (y) ->
+            p[1] = y * 100
+            dd = dist p, point
+            if dd < d
+              d = dd
+              dx = point[0] - p[0]
+              dy = point[1] - p[1]
+    
     for element in selected
-      element.attr "transform", "translate(#{element.x+movepoint[0]-downpoint[0]},#{element.y+movepoint[1]-downpoint[1]})"
+      element.attr "transform", "translate(#{element.x+movepoint[0]-downpoint[0]-dx},#{element.y+movepoint[1]-downpoint[1]-dy})"
 
   svg.on 'mouseup', ->
     return unless downpoint
