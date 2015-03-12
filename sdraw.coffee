@@ -424,11 +424,11 @@ edit_mode = ->
       for element in elements
         if element.snappoints # 謎...
           if element in selected
-            points.push [element.snappoints[0][0]+movepoint[0]-downpoint[0], element.snappoints[0][1]+movepoint[1]-downpoint[1]]
-            points.push [element.snappoints[1][0]+movepoint[0]-downpoint[0], element.snappoints[1][1]+movepoint[1]-downpoint[1]]
+            for snappoint in element.snappoints
+              points.push [snappoint[0]+movepoint[0]-downpoint[0], snappoint[1]+movepoint[1]-downpoint[1]]
           else
-            refpoints.push [element.snappoints[0][0], element.snappoints[0][1]]
-            refpoints.push [element.snappoints[1][0], element.snappoints[1][1]]
+            for snappoint in element.snappoints
+              refpoints.push [snappoint[0], snappoint[1]]
       #  
       # 他のオブジェクトにスナッピング
       # 
@@ -498,6 +498,8 @@ recognition = (strokes) ->
       .remove()
     candelement = candsvg.append cand.type
     candelement.attr cand.attr
+    if cand.snappoints
+      candelement.snappoints = cand.snappoints
     if cand.text
       candelement.text cand.text
     # candelement.attr 'fill', 'black'

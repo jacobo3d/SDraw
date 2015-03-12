@@ -447,7 +447,7 @@ edit_mode = function() {
     return moved = null;
   });
   svg.on('mousemove', function() {
-    var d, dd, element, movepoint, movex, movey, point, refpoint, refpoints, _i, _j, _k, _l, _len, _len1, _len2, _len3, _results;
+    var d, dd, element, movepoint, movex, movey, point, refpoint, refpoints, snappoint, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _m, _n, _ref, _ref1, _results;
     if (!downpoint) {
       return;
     }
@@ -465,19 +465,25 @@ edit_mode = function() {
         element = elements[_i];
         if (element.snappoints) {
           if (__indexOf.call(selected, element) >= 0) {
-            points.push([element.snappoints[0][0] + movepoint[0] - downpoint[0], element.snappoints[0][1] + movepoint[1] - downpoint[1]]);
-            points.push([element.snappoints[1][0] + movepoint[0] - downpoint[0], element.snappoints[1][1] + movepoint[1] - downpoint[1]]);
+            _ref = element.snappoints;
+            for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+              snappoint = _ref[_j];
+              points.push([snappoint[0] + movepoint[0] - downpoint[0], snappoint[1] + movepoint[1] - downpoint[1]]);
+            }
           } else {
-            refpoints.push([element.snappoints[0][0], element.snappoints[0][1]]);
-            refpoints.push([element.snappoints[1][0], element.snappoints[1][1]]);
+            _ref1 = element.snappoints;
+            for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+              snappoint = _ref1[_k];
+              refpoints.push([snappoint[0], snappoint[1]]);
+            }
           }
         }
       }
       d = 10000000;
-      for (_j = 0, _len1 = points.length; _j < _len1; _j++) {
-        point = points[_j];
-        for (_k = 0, _len2 = refpoints.length; _k < _len2; _k++) {
-          refpoint = refpoints[_k];
+      for (_l = 0, _len3 = points.length; _l < _len3; _l++) {
+        point = points[_l];
+        for (_m = 0, _len4 = refpoints.length; _m < _len4; _m++) {
+          refpoint = refpoints[_m];
           dd = dist(point, refpoint);
           if (dd < d) {
             d = dd;
@@ -492,8 +498,8 @@ edit_mode = function() {
       snapdy = 0;
     }
     _results = [];
-    for (_l = 0, _len3 = selected.length; _l < _len3; _l++) {
-      element = selected[_l];
+    for (_n = 0, _len5 = selected.length; _n < _len5; _n++) {
+      element = selected[_n];
       movex = element.x + movepoint[0] - downpoint[0] - snapdx;
       movey = element.y + movepoint[1] - downpoint[1] - snapdy;
       _results.push(element.attr("transform", "translate(" + movex + "," + movey + ")"));
@@ -556,6 +562,9 @@ recognition = function(strokes) {
     candsvg.selectAll("*").remove();
     candelement = candsvg.append(cand.type);
     candelement.attr(cand.attr);
+    if (cand.snappoints) {
+      candelement.snappoints = cand.snappoints;
+    }
     if (cand.text) {
       candelement.text(cand.text);
     }
