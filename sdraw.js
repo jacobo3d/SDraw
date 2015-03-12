@@ -501,10 +501,12 @@ edit_mode = function() {
         element = selected[_i];
         element.x = element.x + uppoint[0] - downpoint[0] - snapdx;
         element.y = element.y + uppoint[1] - downpoint[1] - snapdy;
-        element.snappoints[0][0] += uppoint[0] - downpoint[0] - snapdx;
-        element.snappoints[0][1] += uppoint[1] - downpoint[1] - snapdy;
-        element.snappoints[1][0] += uppoint[0] - downpoint[0] - snapdx;
-        element.snappoints[1][1] += uppoint[1] - downpoint[1] - snapdy;
+        if (element.snappoints) {
+          element.snappoints[0][0] += uppoint[0] - downpoint[0] - snapdx;
+          element.snappoints[0][1] += uppoint[1] - downpoint[1] - snapdy;
+          element.snappoints[1][0] += uppoint[0] - downpoint[0] - snapdx;
+          element.snappoints[1][1] += uppoint[1] - downpoint[1] - snapdy;
+        }
       }
       moved = [uppoint[0] - downpoint[0], uppoint[1] - downpoint[1]];
     }
