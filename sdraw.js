@@ -511,7 +511,7 @@ edit_mode = function() {
     return _results;
   });
   return svg.on('mouseup', function() {
-    var element, f, uppoint, uptime, _i, _j, _len, _len1;
+    var element, f, snappoint, uppoint, uptime, _i, _j, _k, _len, _len1, _len2, _ref;
     if (!downpoint) {
       return;
     }
@@ -523,10 +523,12 @@ edit_mode = function() {
         element.x = element.x + uppoint[0] - downpoint[0] - snapdx;
         element.y = element.y + uppoint[1] - downpoint[1] - snapdy;
         if (element.snappoints) {
-          element.snappoints[0][0] += uppoint[0] - downpoint[0] - snapdx;
-          element.snappoints[0][1] += uppoint[1] - downpoint[1] - snapdy;
-          element.snappoints[1][0] += uppoint[0] - downpoint[0] - snapdx;
-          element.snappoints[1][1] += uppoint[1] - downpoint[1] - snapdy;
+          _ref = element.snappoints;
+          for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+            snappoint = _ref[_j];
+            snappoint[0] += uppoint[0] - downpoint[0] - snapdx;
+            snappoint[1] += uppoint[1] - downpoint[1] - snapdx;
+          }
         }
       }
       moved = [uppoint[0] - downpoint[0], uppoint[1] - downpoint[1]];
@@ -542,8 +544,8 @@ edit_mode = function() {
         strokes = [];
         return draw_mode();
       } else {
-        for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
-          element = selected[_j];
+        for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
+          element = selected[_k];
           element.attr("stroke", element.attr('color'));
           f = element.attr("fill");
           if (f && f !== "none") {

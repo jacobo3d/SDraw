@@ -458,10 +458,9 @@ edit_mode = ->
         element.y = element.y+uppoint[1]-downpoint[1] - snapdy
 
         if element.snappoints
-          element.snappoints[0][0] += (uppoint[0]-downpoint[0]-snapdx)
-          element.snappoints[0][1] += (uppoint[1]-downpoint[1]-snapdy)
-          element.snappoints[1][0] += (uppoint[0]-downpoint[0]-snapdx)
-          element.snappoints[1][1] += (uppoint[1]-downpoint[1]-snapdy)
+          for snappoint in element.snappoints
+            snappoint[0] += (uppoint[0]-downpoint[0]-snapdx)
+            snappoint[1] += (uppoint[1]-downpoint[1]-snapdx)
 
       moved = [uppoint[0]-downpoint[0], uppoint[1]-downpoint[1]]
     moving = false
