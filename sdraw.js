@@ -567,7 +567,7 @@ recognition = function(strokes) {
     candElement = candsvg.append(cand.type);
     candElement.attr(cand.attr);
     if (cand.snappoints) {
-      candElement.snappoints = cand.snappoints;
+      candElement.attr('snappoints', JSON.stringify(cand.snappoints));
     }
     if (cand.text) {
       candElement.text(cand.text);
@@ -597,6 +597,9 @@ recognition = function(strokes) {
       for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
         attr = _ref1[_j];
         copiedElement.attr(attr.nodeName, attr.value);
+        if (attr.nodeName === 'snappoints') {
+          copiedElement.snappoints = JSON.parse(attr.value);
+        }
         if (attr.nodeName === 'x') {
           copiedElement.attr('x', xx);
         }
@@ -610,7 +613,6 @@ recognition = function(strokes) {
         $('#searchtext').val(text + target.innerHTML);
       }
       elements.push(copiedElement);
-      copiedElement.snappoints = target.snappoints;
       copiedElement.on('mousemove', selfunc(copiedElement));
       return copiedElement.on('mousedown', function() {
         clickedElement = setfunc(copiedElement);

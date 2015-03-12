@@ -498,7 +498,8 @@ recognition = (strokes) ->
     candElement = candsvg.append cand.type
     candElement.attr cand.attr
     if cand.snappoints
-      candElement.snappoints = cand.snappoints
+      # candElement.snappoints = cand.snappoints # 何故これで駄目なのかわからない
+      candElement.attr 'snappoints', JSON.stringify(cand.snappoints)
     if cand.text
       candElement.text cand.text
     # candElement.attr 'fill', 'black'
@@ -529,6 +530,8 @@ recognition = (strokes) ->
       copiedElement.y = 0
       for attr in target.attributes
         copiedElement.attr attr.nodeName, attr.value
+        if attr.nodeName == 'snappoints'
+          copiedElement.snappoints = JSON.parse(attr.value)
         if attr.nodeName == 'x'
           copiedElement.attr 'x', xx
         if attr.nodeName == 'y'
@@ -538,7 +541,7 @@ recognition = (strokes) ->
         text = $('#searchtext').val()
         $('#searchtext').val text + target.innerHTML
       elements.push copiedElement
-      copiedElement.snappoints = target.snappoints ########!!!!!!
+      ## copiedElement.snappoints = target.snappoints ########!!!!!!
       
       # マウスが横切ったら選択する
       copiedElement.on 'mousemove', selfunc copiedElement
