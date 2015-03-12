@@ -117,13 +117,12 @@ clone = (dx, dy) ->
     element.attr 'stroke', linecolor # コピー元の色を戻す
     cloned.x = element.x + dx
     cloned.y = element.y + dy
-    cloned.snappoints = []
-    cloned.snappoints[0] = element.snappoints[0].concat() # 複製を作る
-    cloned.snappoints[1] = element.snappoints[1].concat()
-    cloned.snappoints[0][0] += dx
-    cloned.snappoints[0][1] += dy
-    cloned.snappoints[1][0] += dx
-    cloned.snappoints[1][1] += dy
+    if element.snappoints
+      cloned.snappoints = element.snappoints.map (point) ->
+        point.concat() # 複製を作る
+      for snappoint in cloned.snappoints
+        snappoint[0] += dx
+        snappoint[1] += dy
     cloned.attr "transform", "translate(#{cloned.x},#{cloned.y})"
     cloned.text element.text() if nodeName == 'text'
 
@@ -441,7 +440,7 @@ edit_mode = ->
             snapdx = point[0] - refpoint[0]
             snapdy = point[1] - refpoint[1]
 
-    if Math.abs(snapdx) > 50 || Math.abs (snapdy) > 50
+    if Math.abs(snapdx) > 50 || Math.abs (snapdy) > 50 # 遠いときはスナップしない
       snapdx = 0
       snapdy = 0
     for element in selected
@@ -496,16 +495,16 @@ recognition = (strokes) ->
     candsvg = d3.select "#cand#{i}"
     candsvg.selectAll "*"
       .remove()
-    candelement = candsvg.append cand.type
-    candelement.attr cand.attr
+    candElement = candsvg.append cand.type
+    candElement.attr cand.attr
     if cand.snappoints
-      candelement.snappoints = cand.snappoints
+      candElement.snappoints = cand.snappoints
     if cand.text
-      candelement.text cand.text
-    # candelement.attr 'fill', 'black'
-    candelement.attr 'color', 'black'
+      candElement.text cand.text
+    # candElement.attr 'fill', 'black'
+    candElement.attr 'color', 'black'
 
-    candelement.on 'mousedown', ->
+    candElement.on 'mousedown', ->
       d3.event.preventDefault()
       downpoint = d3.mouse(this)
       target = d3.event.target
@@ -525,30 +524,31 @@ recognition = (strokes) ->
       #
       # 候補情報をコピーして描画領域に貼り付ける
       # 
-      copied_element = svg.append target.nodeName # "text", "path", etc.
-      copied_element.x = 0
-      copied_element.y = 0
+      copiedElement = svg.append target.nodeName # "text", "path", etc.
+      copiedElement.x = 0
+      copiedElement.y = 0
       for attr in target.attributes
-        copied_element.attr attr.nodeName, attr.value
+        copiedElement.attr attr.nodeName, attr.value
         if attr.nodeName == 'x'
-          copied_element.attr 'x', xx
+          copiedElement.attr 'x', xx
         if attr.nodeName == 'y'
-          copied_element.attr 'y', yy
+          copiedElement.attr 'y', yy
       if target.innerHTML
-        copied_element.text target.innerHTML
+        copiedElement.text target.innerHTML
         text = $('#searchtext').val()
         $('#searchtext').val text + target.innerHTML
-      elements.push copied_element
+      elements.push copiedElement
+      copiedElement.snappoints = target.snappoints ########!!!!!!
       
       # マウスが横切ったら選択する
-      copied_element.on 'mousemove', selfunc copied_element
+      copiedElement.on 'mousemove', selfunc copiedElement
 
-      copied_element.on 'mousedown', ->
-        clickedElement = setfunc copied_element
-        selected.push copied_element
+      copiedElement.on 'mousedown', ->
+        clickedElement = setfunc copiedElement
+        selected.push copiedElement
         moving = true
 
-    candelement.on 'mouseup', ->
+    candElement.on 'mouseup', ->
       return unless downpoint
       d3.event.preventDefault()
       downpoint = null

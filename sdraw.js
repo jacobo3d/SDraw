@@ -129,7 +129,7 @@ $('#color3').on('click', function() {
 });
 
 clone = function(dx, dy) {
-  var attr, cloned, e, element, newselected, nodeName, parent, _i, _j, _len, _len1;
+  var attr, cloned, e, element, newselected, nodeName, parent, snappoint, _i, _j, _k, _len, _len1, _len2, _ref;
   newselected = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
@@ -144,13 +144,17 @@ clone = function(dx, dy) {
     element.attr('stroke', linecolor);
     cloned.x = element.x + dx;
     cloned.y = element.y + dy;
-    cloned.snappoints = [];
-    cloned.snappoints[0] = element.snappoints[0].concat();
-    cloned.snappoints[1] = element.snappoints[1].concat();
-    cloned.snappoints[0][0] += dx;
-    cloned.snappoints[0][1] += dy;
-    cloned.snappoints[1][0] += dx;
-    cloned.snappoints[1][1] += dy;
+    if (element.snappoints) {
+      cloned.snappoints = element.snappoints.map(function(point) {
+        return point.concat();
+      });
+      _ref = cloned.snappoints;
+      for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
+        snappoint = _ref[_k];
+        snappoint[0] += dx;
+        snappoint[1] += dy;
+      }
+    }
     cloned.attr("transform", "translate(" + cloned.x + "," + cloned.y + ")");
     if (nodeName === 'text') {
       cloned.text(element.text());
@@ -556,21 +560,21 @@ recognition = function(strokes) {
   var cands;
   cands = recognize(strokes, window.kanjidata, window.figuredata);
   return [0, 1, 2, 3, 4, 5].forEach(function(i) {
-    var cand, candelement, candsvg;
+    var cand, candElement, candsvg;
     cand = cands[i];
     candsvg = d3.select("#cand" + i);
     candsvg.selectAll("*").remove();
-    candelement = candsvg.append(cand.type);
-    candelement.attr(cand.attr);
+    candElement = candsvg.append(cand.type);
+    candElement.attr(cand.attr);
     if (cand.snappoints) {
-      candelement.snappoints = cand.snappoints;
+      candElement.snappoints = cand.snappoints;
     }
     if (cand.text) {
-      candelement.text(cand.text);
+      candElement.text(cand.text);
     }
-    candelement.attr('color', 'black');
-    candelement.on('mousedown', function() {
-      var attr, copied_element, target, text, xx, yy, _i, _j, _len, _ref, _ref1, _results;
+    candElement.attr('color', 'black');
+    candElement.on('mousedown', function() {
+      var attr, copiedElement, target, text, xx, yy, _i, _j, _len, _ref, _ref1, _results;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       target = d3.event.target;
@@ -586,34 +590,35 @@ recognition = function(strokes) {
         return element.remove();
       });
       strokes = [];
-      copied_element = svg.append(target.nodeName);
-      copied_element.x = 0;
-      copied_element.y = 0;
+      copiedElement = svg.append(target.nodeName);
+      copiedElement.x = 0;
+      copiedElement.y = 0;
       _ref1 = target.attributes;
       for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
         attr = _ref1[_j];
-        copied_element.attr(attr.nodeName, attr.value);
+        copiedElement.attr(attr.nodeName, attr.value);
         if (attr.nodeName === 'x') {
-          copied_element.attr('x', xx);
+          copiedElement.attr('x', xx);
         }
         if (attr.nodeName === 'y') {
-          copied_element.attr('y', yy);
+          copiedElement.attr('y', yy);
         }
       }
       if (target.innerHTML) {
-        copied_element.text(target.innerHTML);
+        copiedElement.text(target.innerHTML);
         text = $('#searchtext').val();
         $('#searchtext').val(text + target.innerHTML);
       }
-      elements.push(copied_element);
-      copied_element.on('mousemove', selfunc(copied_element));
-      return copied_element.on('mousedown', function() {
-        clickedElement = setfunc(copied_element);
-        selected.push(copied_element);
+      elements.push(copiedElement);
+      copiedElement.snappoints = target.snappoints;
+      copiedElement.on('mousemove', selfunc(copiedElement));
+      return copiedElement.on('mousedown', function() {
+        clickedElement = setfunc(copiedElement);
+        selected.push(copiedElement);
         return moving = true;
       });
     });
-    return candelement.on('mouseup', function() {
+    return candElement.on('mouseup', function() {
       if (!downpoint) {
         return;
       }
