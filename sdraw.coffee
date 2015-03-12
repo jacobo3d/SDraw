@@ -99,12 +99,24 @@ $('#dup').on 'click', ->
     clone 30, 30
   duplicated = true
 
-$('#line1').on 'click', -> linewidth = 3
-$('#line2').on 'click', -> linewidth = 10
-$('#line3').on 'click', -> linewidth = 25
-$('#color1').on 'click', -> linecolor = '#ffffff'
-$('#color2').on 'click', -> linecolor = '#808080'
-$('#color3').on 'click', -> linecolor = '#000000'
+$('#line1').on 'click', ->
+  draw_mode()
+  linewidth = 5
+$('#line2').on 'click', ->
+  draw_mode()
+  linewidth = 10
+$('#line3').on 'click', ->
+  draw_mode()
+  linewidth = 20
+$('#color1').on 'click', ->
+  draw_mode()
+  linecolor = '#ffffff'
+$('#color2').on 'click', ->
+  draw_mode()
+  linecolor = '#808080'
+$('#color3').on 'click', ->
+  draw_mode()
+  linecolor = '#000000'
 
 clone = (dx, dy) ->
   newselected = []
@@ -131,6 +143,10 @@ clone = (dx, dy) ->
     cloned.on 'mousedown', ->
       return unless mode == 'edit'
       clickedElement = setfunc cloned
+      # 編集中にクリックしたものは選択する
+      if mode == 'edit'
+        cloned.attr "stroke", "yellow"
+        selected.push cloned unless cloned in selected
       downpoint = d3.mouse(this)
       moving = true
       
@@ -351,6 +367,12 @@ draw_mode = ->
     path.on 'mousedown', ->
       # return unless mode == 'edit'
       clickedElement = setfunc ppath
+
+      # 編集中にクリックしたものは選択する
+      if mode == 'edit'
+        ppath.attr "stroke", "yellow"
+        selected.push ppath unless ppath in selected
+      
       downpoint = d3.mouse(this)
       moving = true
         
@@ -369,11 +391,11 @@ draw_mode = ->
     resettimeout = setTimeout -> # 2秒じっとしていると候補を消す
       strokes = []
       points = []
-      [0..5].forEach (i) ->
+      [0..7].forEach (i) ->
         candsvg = d3.select "#cand#{i}"
         candsvg.selectAll "*"
           .remove()
-    , 2000
+    , 4000
 
     points.push uppoint
     drawPath path
@@ -496,7 +518,7 @@ recognition = (strokes) ->
   cands = recognize strokes, window.kanjidata, window.figuredata
 
   # 候補表示
-  [0..5].forEach (i) ->
+  [0..7].forEach (i) ->
     cand = cands[i]
     candsvg = d3.select "#cand#{i}"
     candsvg.selectAll "*"
@@ -552,9 +574,11 @@ recognition = (strokes) ->
       # マウスが横切ったら選択する
       copiedElement.on 'mousemove', selfunc copiedElement
 
+      ce = copiedElement
       copiedElement.on 'mousedown', ->
-        clickedElement = setfunc copiedElement
-        selected.push copiedElement
+        clickedElement = setfunc ce # copiedElement
+        ce.attr "stroke", "yellow"
+        selected.push ce # copiedElement
         moving = true
 
     candElement.on 'mouseup', ->

@@ -109,26 +109,32 @@ $('#dup').on('click', function() {
 });
 
 $('#line1').on('click', function() {
-  return linewidth = 3;
+  draw_mode();
+  return linewidth = 5;
 });
 
 $('#line2').on('click', function() {
+  draw_mode();
   return linewidth = 10;
 });
 
 $('#line3').on('click', function() {
-  return linewidth = 25;
+  draw_mode();
+  return linewidth = 20;
 });
 
 $('#color1').on('click', function() {
+  draw_mode();
   return linecolor = '#ffffff';
 });
 
 $('#color2').on('click', function() {
+  draw_mode();
   return linecolor = '#808080';
 });
 
 $('#color3').on('click', function() {
+  draw_mode();
   return linecolor = '#000000';
 });
 
@@ -169,6 +175,12 @@ clone = function(dx, dy) {
         return;
       }
       clickedElement = setfunc(cloned);
+      if (mode === 'edit') {
+        cloned.attr("stroke", "yellow");
+        if (__indexOf.call(selected, cloned) < 0) {
+          selected.push(cloned);
+        }
+      }
       downpoint = d3.mouse(this);
       return moving = true;
     });
@@ -387,6 +399,12 @@ draw_mode = function() {
     ppath = path;
     path.on('mousedown', function() {
       clickedElement = setfunc(ppath);
+      if (mode === 'edit') {
+        ppath.attr("stroke", "yellow");
+        if (__indexOf.call(selected, ppath) < 0) {
+          selected.push(ppath);
+        }
+      }
       downpoint = d3.mouse(this);
       return moving = true;
     });
@@ -410,12 +428,12 @@ draw_mode = function() {
     resettimeout = setTimeout(function() {
       strokes = [];
       points = [];
-      return [0, 1, 2, 3, 4, 5].forEach(function(i) {
+      return [0, 1, 2, 3, 4, 5, 6, 7].forEach(function(i) {
         var candsvg;
         candsvg = d3.select("#cand" + i);
         return candsvg.selectAll("*").remove();
       });
-    }, 2000);
+    }, 4000);
     points.push(uppoint);
     drawPath(path);
     strokes.push([downpoint, uppoint]);
@@ -569,7 +587,7 @@ edit_mode = function() {
 recognition = function(strokes) {
   var cands;
   cands = recognize(strokes, window.kanjidata, window.figuredata);
-  return [0, 1, 2, 3, 4, 5].forEach(function(i) {
+  return [0, 1, 2, 3, 4, 5, 6, 7].forEach(function(i) {
     var cand, candElement, candsvg;
     cand = cands[i];
     candsvg = d3.select("#cand" + i);
@@ -584,7 +602,7 @@ recognition = function(strokes) {
     }
     candElement.attr('color', 'black');
     candElement.on('mousedown', function() {
-      var attr, copiedElement, target, text, xx, yy, _i, _j, _len, _ref, _ref1, _results;
+      var attr, ce, copiedElement, target, text, xx, yy, _i, _j, _len, _ref, _ref1, _results;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       target = d3.event.target;
@@ -624,9 +642,11 @@ recognition = function(strokes) {
       }
       elements.push(copiedElement);
       copiedElement.on('mousemove', selfunc(copiedElement));
+      ce = copiedElement;
       return copiedElement.on('mousedown', function() {
-        clickedElement = setfunc(copiedElement);
-        selected.push(copiedElement);
+        clickedElement = setfunc(ce);
+        ce.attr("stroke", "yellow");
+        selected.push(ce);
         return moving = true;
       });
     });

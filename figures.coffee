@@ -21,7 +21,7 @@ data.push
     d: "M10,10L80,80M80,10L10,80"
     stroke: '#000000'
     fill: 'none'
-    'stroke-width': 3
+    'stroke-width': 5
 
 #
 # 座標 (L字)
@@ -32,17 +32,90 @@ data.push
     [[0, 80], [80, 80]]
   ]
   snappoints: [
-    [0, 0], [0, 80], [80, 80]
+    [10, 10], [10, 80], [80, 80]
   ]
   type: 'path'
   attr:
     d: "M10,10L10,80L80,80",
     stroke: '#000000'
     fill: 'none'
-    'stroke-width': 3
+    'stroke-width': 5
     
 #
-# AND
+# 横線
+#
+data.push
+  strokes: [
+    [[0, 0], [80, 0]]
+    [[0, 0], [80, 0]]
+  ]
+  snappoints: [
+    [10, 40], [80, 40]
+  ]
+  type: 'path'
+  attr:
+    d: "M10,40L80,40",
+    stroke: '#000000'
+    fill: 'none'
+    'stroke-width': 5
+    
+#
+# 縦線
+#
+data.push
+  strokes: [
+    [[10, 10], [10, 80]]
+    [[10, 10], [10, 80]]
+  ]
+  snappoints: [
+    [40, 10], [40, 80]
+  ]
+  type: 'path'
+  attr:
+    d: "M40,10L40,80",
+    stroke: '#000000'
+    fill: 'none'
+    'stroke-width': 5
+    
+#
+# 矩形
+#
+data.push
+  strokes: [
+    [[10, 10], [10, 80]]
+    [[10, 80], [80, 80]]
+    [[80, 80], [80, 10]]
+    [[80, 10], [10, 10]]
+  ]
+  snappoints: [
+    [10, 10], [10, 80], [80, 80], [80, 10]
+  ]
+  type: 'path'
+  attr:
+    d: "M10,10L10,80L80,80L80,10Z",
+    stroke: '#000000'
+    fill: 'none'
+    'stroke-width': 5
+    
+data.push
+  strokes: [
+    [[10, 10], [10, 80]]
+    [[10, 80], [160, 80]]
+    [[160, 80], [160, 10]]
+    [[160, 10], [10, 10]]
+  ]
+  snappoints: [
+    [10, 10], [10, 80], [160, 80], [160, 10]
+  ]
+  type: 'path'
+  attr:
+    d: "M10,10L10,80L160,80L160,10Z",
+    stroke: '#000000'
+    fill: 'none'
+    'stroke-width': 5
+    
+#
+# AND論理
 #
 # http://yamatyuu.net/computer/html/svg/arc.html
 #
@@ -51,17 +124,15 @@ data.push
 # f2:[0の時反時計回り 1の時時計回り] dx=x2-x1,dy=y2-y1
 #
 data.push
-  strokes: [
+  strokes: [  # バッテン
     [[0,  0], [80, 80]]
     [[80, 0], [0, 80]]
   ]
   snappoints: [
-    [40, 0], [40, 80]
+    [10, 25], [10, 55], [70, 40]
   ]
   type: 'path'
   attr:
-    # d: "M 40,0 a 40 40 -90 0 1 0,80"
-    #d: "M40,0a40,40,-90,0,1,0,80M0,0L40,0M0,80L40,80M0,0L0,80"
     d: "M40,10a30,30,-90,0,1,0,60 M10,10L40,10M10,70L40,70M10,10L10,70"
     stroke: '#000000'
     fill: 'none'
