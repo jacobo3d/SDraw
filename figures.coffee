@@ -65,7 +65,7 @@ data.push
     d: "M40,10a30,30,-90,0,1,0,60 M10,10L40,10M10,70L40,70M10,10L10,70"
     stroke: '#000000'
     fill: 'none'
-    'stroke-width': 3
+    'stroke-width': 5
     
 #
 # JSON出力

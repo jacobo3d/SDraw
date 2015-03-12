@@ -13,6 +13,7 @@ svg =  d3.select "svg"
 bgrect = svg.append 'rect'
 
 downpoint = null  # mousedown時の座標
+movepoint = null
 elements = []     # 描画された要素列
 selected = []     # 選択された要素列
 points = []       # ストローク座標列
@@ -393,6 +394,7 @@ draw_mode = ->
 
 snapdx = 0
 snapdy = 0
+totaldist = 0
   
 edit_mode = ->
   mode = 'edit'
@@ -404,20 +406,24 @@ edit_mode = ->
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
+    movepoint = downpoint
     downtime = new Date()
     moved = null
+    totaldist = 0
 
   svg.on 'mousemove', -> # 選択項目移動
     return unless downpoint
     return unless moving
+    oldmovepoint = movepoint
     movepoint = d3.mouse(this)
+    totaldist += dist movepoint, oldmovepoint
     #
     # スナッピング処理
     #
-    d = dist movepoint, downpoint
+    # d = dist movepoint, downpoint
     snapdx = 0
     snapdy = 0
-    if d > 100
+    if totaldist > 200
       points = []     # 移動オブジェクトの端点リスト
       refpoints = []  # それ以外のオブジェクトの端点リスト
       for element in elements
