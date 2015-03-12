@@ -14,12 +14,13 @@ bgrect = svg.append 'rect'
 
 downpoint = null  # mousedown時の座標
 movepoint = null
+uppoint = null
 elements = []     # 描画された要素列
 selected = []     # 選択された要素列
 points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
 moving = false    # 選択要素を移動中かどうか
-moved = null      # 移動操作したときの移動量
+moved = null      # 移動操作したときの移動量 (繰り返しに使う)
 duplicated = false # 複製操作の直後にtrueになる
 linewidth = 10
 linecolor = '#000000'
@@ -466,9 +467,9 @@ edit_mode = ->
         if element.snappoints
           for snappoint in element.snappoints
             snappoint[0] += (uppoint[0]-downpoint[0]-snapdx)
-            snappoint[1] += (uppoint[1]-downpoint[1]-snapdx)
+            snappoint[1] += (uppoint[1]-downpoint[1]-snapdy)
 
-      moved = [uppoint[0]-downpoint[0], uppoint[1]-downpoint[1]]
+      moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
     moving = false
     downpoint = null
     clickedElement = null
