@@ -144,6 +144,13 @@ clone = function(dx, dy) {
     element.attr('stroke', linecolor);
     cloned.x = element.x + dx;
     cloned.y = element.y + dy;
+    cloned.snappoints = [];
+    cloned.snappoints[0] = element.snappoints[0].concat();
+    cloned.snappoints[1] = element.snappoints[1].concat();
+    cloned.snappoints[0][0] += dx;
+    cloned.snappoints[0][1] += dy;
+    cloned.snappoints[1][0] += dx;
+    cloned.snappoints[1][1] += dy;
     cloned.attr("transform", "translate(" + cloned.x + "," + cloned.y + ")");
     if (nodeName === 'text') {
       cloned.text(element.text());
@@ -479,6 +486,10 @@ edit_mode = function() {
           }
         }
       }
+    }
+    if (Math.abs(snapdx) > 50 || Math.abs(snapdy > 50)) {
+      snapdx = 0;
+      snapdy = 0;
     }
     _results = [];
     for (_l = 0, _len3 = selected.length; _l < _len3; _l++) {

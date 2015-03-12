@@ -117,6 +117,13 @@ clone = (dx, dy) ->
     element.attr 'stroke', linecolor # コピー元の色を戻す
     cloned.x = element.x + dx
     cloned.y = element.y + dy
+    cloned.snappoints = []
+    cloned.snappoints[0] = element.snappoints[0].concat() # 複製を作る
+    cloned.snappoints[1] = element.snappoints[1].concat()
+    cloned.snappoints[0][0] += dx
+    cloned.snappoints[0][1] += dy
+    cloned.snappoints[1][0] += dx
+    cloned.snappoints[1][1] += dy
     cloned.attr "transform", "translate(#{cloned.x},#{cloned.y})"
     cloned.text element.text() if nodeName == 'text'
 
@@ -434,6 +441,9 @@ edit_mode = ->
             snapdx = point[0] - refpoint[0]
             snapdy = point[1] - refpoint[1]
 
+    if Math.abs(snapdx) > 50 || Math.abs (snapdy) > 50
+      snapdx = 0
+      snapdy = 0
     for element in selected
       movex = element.x+movepoint[0]-downpoint[0]-snapdx
       movey = element.y+movepoint[1]-downpoint[1]-snapdy
