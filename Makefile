@@ -1,4 +1,4 @@
-all:
+all: figures.json
 	coffee -c -b *.coffee
 
 figures.json: figures.coffee

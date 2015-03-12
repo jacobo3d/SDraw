@@ -551,7 +551,7 @@ recognition = function(strokes) {
   cands = recognize(strokes, window.kanjidata, window.figuredata);
   return [0, 1, 2, 3, 4, 5].forEach(function(i) {
     var cand, candelement, candsvg;
-    cand = cands[i][0];
+    cand = cands[i];
     candsvg = d3.select("#cand" + i);
     candsvg.selectAll("*").remove();
     candelement = candsvg.append(cand.type);
@@ -559,7 +559,6 @@ recognition = function(strokes) {
     if (cand.text) {
       candelement.text(cand.text);
     }
-    candelement.attr('fill', 'black');
     candelement.attr('color', 'black');
     candelement.on('mousedown', function() {
       var attr, copied_element, target, text, xx, yy, _i, _j, _len, _ref, _ref1, _results;

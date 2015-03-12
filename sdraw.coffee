@@ -492,7 +492,7 @@ recognition = (strokes) ->
 
   # 候補表示
   [0..5].forEach (i) ->
-    cand = cands[i][0]
+    cand = cands[i]
     candsvg = d3.select "#cand#{i}"
     candsvg.selectAll "*"
       .remove()
@@ -500,7 +500,7 @@ recognition = (strokes) ->
     candelement.attr cand.attr
     if cand.text
       candelement.text cand.text
-    candelement.attr 'fill', 'black'
+    # candelement.attr 'fill', 'black'
     candelement.attr 'color', 'black'
 
     candelement.on 'mousedown', ->

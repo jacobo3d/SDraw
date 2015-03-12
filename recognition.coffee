@@ -82,5 +82,5 @@ recognize = (strokes, strokedata...) ->
       cands.push [entry, totaldist]
 
   # スコア順にソート
-  cands.sort (a,b) ->
-    a[1] - b[1]
+  cands.sort (a,b) -> a[1] - b[1]
+    .map (e) -> e[0]

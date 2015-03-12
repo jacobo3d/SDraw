@@ -19,7 +19,7 @@ data.push
   type: 'path'
   attr:
     d: "M10,10L80,80M80,10L10,80"
-    stroke: '#008800'
+    stroke: '#000000'
     fill: 'none'
     'stroke-width': 3
 
@@ -37,7 +37,7 @@ data.push
   type: 'path'
   attr:
     d: "M10,10L10,80L80,80",
-    stroke: '#008800'
+    stroke: '#000000'
     fill: 'none'
     'stroke-width': 3
     

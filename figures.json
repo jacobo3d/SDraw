@@ -3,11 +3,11 @@
     "attr": {
       "stroke-width": 3,
       "fill": "none",
-      "stroke": "#008800",
+      "stroke": "#000000",
       "d": "M10,10L80,80M80,10L10,80"
     },
     "type": "path",
-    "pints": [
+    "snappoints": [
       [
         0,
         0
@@ -52,11 +52,11 @@
     "attr": {
       "stroke-width": 3,
       "fill": "none",
-      "stroke": "#008800",
+      "stroke": "#000000",
       "d": "M10,10L10,80L80,80"
     },
     "type": "path",
-    "pints": [
+    "snappoints": [
       [
         0,
         0
