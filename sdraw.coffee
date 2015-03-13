@@ -395,7 +395,7 @@ draw_mode = ->
         candsvg = d3.select "#cand#{i}"
         candsvg.selectAll "*"
           .remove()
-    , 4000
+    , 2500
 
     points.push uppoint
     drawPath path

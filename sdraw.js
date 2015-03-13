@@ -433,7 +433,7 @@ draw_mode = function() {
         candsvg = d3.select("#cand" + i);
         return candsvg.selectAll("*").remove();
       });
-    }, 4000);
+    }, 2500);
     points.push(uppoint);
     drawPath(path);
     strokes.push([downpoint, uppoint]);

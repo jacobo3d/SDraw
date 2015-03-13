@@ -115,6 +115,25 @@ data.push
     'stroke-width': 5
     
 #
+# 矩形波
+#
+data.push
+  strokes: [
+    [[10, 60], [40, 60]]
+    [[40, 60], [40, 10]]
+    [[40, 10], [70, 10]]
+    [[70, 10], [70, 60]]
+  ]
+  snappoints: [
+    [10, 60], [40, 60], [40, 10], [70, 10], [70, 60]
+  ]
+  type: 'path'
+  attr:
+    d: "M10,60L40,60L40,10L70,10L70,60",
+    stroke: '#000000'
+    fill: 'none'
+    'stroke-width': 5
+#
 # AND論理
 #
 # http://yamatyuu.net/computer/html/svg/arc.html
