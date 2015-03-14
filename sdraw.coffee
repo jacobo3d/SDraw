@@ -176,13 +176,13 @@ $('#selectall').on 'click', ->
   
 ############################################################################
 #
-# 候補領域
+# 画像検索
 #
-candsearch = ->
+candsearch = -> 
   query = $('#searchtext').val()
   if query.length > 0
-    # flickr_search query, (data) ->
-    bing_search query, (data) ->
+    # flickr_search query, (data) ->   # Flickr検索
+    bing_search query, (data) ->       # Bing検索
       data.map (url, i) ->
         cand = d3.select("#cand#{i}")
         cand.selectAll('*').remove()
@@ -194,8 +194,8 @@ candsearch = ->
             width: 120
             height: 120
             preserveAspectRatio: "meet"
-        candimag.x = 0
-        candimag.y = 0
+        candimage.x = 0
+        candimage.y = 0
         candimage.on 'click', ->
           image = svg.append 'image'
             .attr
@@ -512,7 +512,7 @@ edit_mode = ->
         selected = []
 
 #
-# 文字認識 + 候補表示
+# 文字/ストローク認識 + 候補表示
 # 
 recognition = (strokes) ->
   cands = recognize strokes, window.kanjidata, window.figuredata
