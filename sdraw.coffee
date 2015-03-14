@@ -533,10 +533,15 @@ recognition = (strokes) ->
     # candElement.attr 'fill', 'black'
     candElement.attr 'color', 'black'
 
-    candElement.on 'mousedown', ->
+    candselfunc = ->
       d3.event.preventDefault()
       downpoint = d3.mouse(this)
       target = d3.event.target
+
+      # 候補文字/ストロークの背景svgをクリックしたときは
+      # 候補本体を選ぶようにする
+      if target.nodeName == 'svg'
+        target = target.childNodes[0]
 
       #
       # 文字認識に使った最初のストローク位置を得る
@@ -580,6 +585,9 @@ recognition = (strokes) ->
         ce.attr "stroke", "yellow"
         selected.push ce # copiedElement
         moving = true
+      
+    candElement.on 'mousedown', candselfunc
+    candsvg.on 'mousedown', candselfunc
 
     candElement.on 'mouseup', ->
       return unless downpoint

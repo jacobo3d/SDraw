@@ -220,8 +220,8 @@ candsearch = function() {
           height: 120,
           preserveAspectRatio: "meet"
         });
-        candimag.x = 0;
-        candimag.y = 0;
+        candimage.x = 0;
+        candimage.y = 0;
         return candimage.on('click', function() {
           var iimage, image;
           image = svg.append('image').attr({
@@ -588,7 +588,7 @@ recognition = function(strokes) {
   var cands;
   cands = recognize(strokes, window.kanjidata, window.figuredata);
   return [0, 1, 2, 3, 4, 5, 6, 7].forEach(function(i) {
-    var cand, candElement, candsvg;
+    var cand, candElement, candselfunc, candsvg;
     cand = cands[i];
     candsvg = d3.select("#cand" + i);
     candsvg.selectAll("*").remove();
@@ -601,11 +601,14 @@ recognition = function(strokes) {
       candElement.text(cand.text);
     }
     candElement.attr('color', 'black');
-    candElement.on('mousedown', function() {
+    candselfunc = function() {
       var attr, ce, copiedElement, target, text, xx, yy, _i, _j, _len, _ref, _ref1, _results;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       target = d3.event.target;
+      if (target.nodeName === 'svg') {
+        target = target.childNodes[0];
+      }
       xx = strokes[0][0][0];
       yy = strokes[0][0][1];
       (function() {
@@ -649,7 +652,9 @@ recognition = function(strokes) {
         selected.push(ce);
         return moving = true;
       });
-    });
+    };
+    candElement.on('mousedown', candselfunc);
+    candsvg.on('mousedown', candselfunc);
     return candElement.on('mouseup', function() {
       if (!downpoint) {
         return;
