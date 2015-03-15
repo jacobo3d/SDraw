@@ -401,8 +401,11 @@ draw_mode = ->
           .remove()
     , 2500
 
-    points.push uppoint
-    drawPath path
+    # mouseup時にdrawPathすると端点が汚くなる。
+    # 同じ点が続くとちゃんと描画してくれないのかもしれないので除いておく
+    # points.push uppoint
+    # drawPath path
+
     strokes.push [ downpoint, uppoint ]
     path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
     downpoint = null

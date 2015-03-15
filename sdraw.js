@@ -438,8 +438,6 @@ draw_mode = function() {
         return candsvg.selectAll("*").remove();
       });
     }, 2500);
-    points.push(uppoint);
-    drawPath(path);
     strokes.push([downpoint, uppoint]);
     path.snappoints = [downpoint, uppoint];
     downpoint = null;
