@@ -558,9 +558,13 @@ recognition = (strokes) ->
 
       #
       # 文字認識に使った最初のストローク位置を得る
-      # 
-      xx = strokes[0][0][0]
-      yy = strokes[0][0][1]
+      #
+      xx = 1000
+      yy = 1000
+      for stroke in strokes
+        for point in stroke
+          xx = point[0] if point[0] < xx
+          yy = point[1] if point[1] < yy
       #
       # Strokesを消す
       # 

@@ -608,18 +608,30 @@ recognition = function(strokes) {
     scalexx = (_ref = cand.scalex) != null ? _ref : 1;
     scaleyy = (_ref1 = cand.scaley) != null ? _ref1 : 1;
     candselfunc = function() {
-      var attr, ce, copiedElement, snappoint, target, text, xx, yy, _i, _j, _k, _len, _len1, _ref2, _ref3, _ref4, _results;
+      var attr, ce, copiedElement, point, snappoint, stroke, target, text, xx, yy, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _ref2, _ref3, _ref4, _results;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       target = d3.event.target;
       if (target.nodeName === 'svg') {
         target = target.childNodes[0];
       }
-      xx = strokes[0][0][0];
-      yy = strokes[0][0][1];
+      xx = 1000;
+      yy = 1000;
+      for (_i = 0, _len = strokes.length; _i < _len; _i++) {
+        stroke = strokes[_i];
+        for (_j = 0, _len1 = stroke.length; _j < _len1; _j++) {
+          point = stroke[_j];
+          if (point[0] < xx) {
+            xx = point[0];
+          }
+          if (point[1] < yy) {
+            yy = point[1];
+          }
+        }
+      }
       (function() {
         _results = [];
-        for (var _i = 0, _ref2 = strokes.length; 0 <= _ref2 ? _i < _ref2 : _i > _ref2; 0 <= _ref2 ? _i++ : _i--){ _results.push(_i); }
+        for (var _k = 0, _ref2 = strokes.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; 0 <= _ref2 ? _k++ : _k--){ _results.push(_k); }
         return _results;
       }).apply(this).forEach(function(i) {
         var element;
@@ -630,8 +642,8 @@ recognition = function(strokes) {
       copiedElement.x = 0;
       copiedElement.y = 0;
       _ref3 = target.attributes;
-      for (_j = 0, _len = _ref3.length; _j < _len; _j++) {
-        attr = _ref3[_j];
+      for (_l = 0, _len2 = _ref3.length; _l < _len2; _l++) {
+        attr = _ref3[_l];
         copiedElement.attr(attr.nodeName, attr.value);
         if (attr.nodeName === 'snappoints') {
           copiedElement.snappoints = JSON.parse(attr.value);
@@ -642,8 +654,8 @@ recognition = function(strokes) {
       if (target.nodeName === 'path') {
         copiedElement.attr("transform", "translate(" + xx + "," + yy + ") scale(" + scalexx + "," + scaleyy + ")");
         _ref4 = copiedElement.snappoints;
-        for (_k = 0, _len1 = _ref4.length; _k < _len1; _k++) {
-          snappoint = _ref4[_k];
+        for (_m = 0, _len3 = _ref4.length; _m < _len3; _m++) {
+          snappoint = _ref4[_m];
           snappoint[0] *= scalexx;
           snappoint[1] *= scaleyy;
           snappoint[0] += xx;
