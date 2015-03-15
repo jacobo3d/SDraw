@@ -12,7 +12,7 @@ $(function() {
 });
 
 recognize = function() {
-  var cands, data, entry, height, hline, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, size, stroke, strokedata, strokes, totaldist, width, x0, x1, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _n, _o, _ref, _ref1, _results, _results1, _results2;
+  var cands, data, entry, height, hline, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, size, stroke, strokedata, strokeheight, strokes, strokewidth, totaldist, vline, width, x0, x1, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _n, _o, _ref, _ref1, _results, _results1, _results2;
   strokes = arguments[0], strokedata = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
   nstrokes = strokes.length;
   _ref = [1000, 1000, 0, 0], minx = _ref[0], miny = _ref[1], maxx = _ref[2], maxy = _ref[3];
@@ -27,9 +27,9 @@ recognize = function() {
     miny = Math.min(miny, stroke[1][1]);
     maxy = Math.max(maxy, stroke[1][1]);
   }
-  width = maxx - minx;
-  height = maxy - miny;
-  size = Math.max(width, height);
+  strokewidth = maxx - minx;
+  strokeheight = maxy - miny;
+  size = Math.max(strokewidth, strokeheight);
   normalized_strokes = [];
   for (_j = 0, _len1 = strokes.length; _j < _len1; _j++) {
     stroke = strokes[_j];
@@ -40,13 +40,13 @@ recognize = function() {
     normalized_strokes.push([[x0, y0], [x1, y1]]);
   }
   cands = [];
-  if (nstrokes === 1 && width > 100 && height / width < 0.1) {
+  if (nstrokes === 1 && strokewidth > 100 && strokeheight / strokewidth < 0.1) {
     hline = {
       strokes: [[[0, 0], [80, 0]], [[0, 0], [80, 0]]],
-      snappoints: [[10, 40], [width, 40]],
+      snappoints: [[10, 40], [strokewidth, 40]],
       type: 'path',
       attr: {
-        d: "M10,40L" + width + ",40",
+        d: "M10,40L" + strokewidth + ",40",
         stroke: '#000000',
         fill: 'none',
         'stroke-width': 5
@@ -54,19 +54,19 @@ recognize = function() {
     };
     cands.push([hline, 0]);
   }
-  if (nstrokes === 1 && height > 100 && width / height < 0.1) {
-    hline = {
+  if (nstrokes === 1 && strokeheight > 100 && strokewidth / strokeheight < 0.1) {
+    vline = {
       strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]],
-      snappoints: [[40, 10], [40, height]],
+      snappoints: [[40, 10], [40, strokeheight]],
       type: 'path',
       attr: {
-        d: "M40,10L40," + height,
+        d: "M40,10L40," + strokeheight,
         stroke: '#000000',
         fill: 'none',
         'stroke-width': 5
       }
     };
-    cands.push([hline, 0]);
+    cands.push([vline, 0]);
   }
   for (_k = 0, _len2 = strokedata.length; _k < _len2; _k++) {
     data = strokedata[_k];
@@ -99,6 +99,9 @@ recognize = function() {
       width = maxx - minx;
       height = maxy - miny;
       size = Math.max(width, height);
+      entry.scalex = strokewidth / width;
+      entry.scaley = strokeheight / height;
+      strokes = [];
       kanji_strokes = [];
       (function() {
         _results1 = [];

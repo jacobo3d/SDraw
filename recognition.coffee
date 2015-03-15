@@ -22,9 +22,9 @@ recognize = (strokes, strokedata...) -> # strokedataは可変個引数
     maxy = Math.max maxy, stroke[0][1]
     miny = Math.min miny, stroke[1][1]
     maxy = Math.max maxy, stroke[1][1]
-  width = maxx - minx
-  height = maxy - miny
-  size = Math.max width, height
+  strokewidth = maxx - minx
+  strokeheight = maxy - miny
+  size = Math.max strokewidth, strokeheight
   normalized_strokes = []
   for stroke in strokes
     x0 = (stroke[0][0]-minx) * 1000.0 / size
@@ -38,29 +38,29 @@ recognize = (strokes, strokedata...) -> # strokedataは可変個引数
   # 直線データは特別扱い
   #
   # 横一直線
-  if nstrokes == 1 && width > 100 && height/width < 0.1
+  if nstrokes == 1 && strokewidth > 100 && strokeheight/strokewidth < 0.1
     hline = 
       strokes: [[[0, 0], [80, 0]], [[0, 0], [80, 0]]]
-      snappoints: [[10, 40], [width, 40]]
+      snappoints: [[10, 40], [strokewidth, 40]]
       type: 'path'
       attr:
-        d: "M10,40L#{width},40",
+        d: "M10,40L#{strokewidth},40",
         stroke: '#000000'
         fill: 'none'
         'stroke-width': 5
     cands.push [hline, 0]
   # 縦一直線
-  if nstrokes == 1 && height > 100 && width/height < 0.1
-    hline = 
+  if nstrokes == 1 && strokeheight > 100 && strokewidth/strokeheight < 0.1
+    vline = 
       strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]]
-      snappoints: [[40, 10], [40, height]]
+      snappoints: [[40, 10], [40, strokeheight]]
       type: 'path'
       attr:
-        d: "M40,10L40,#{height}",
+        d: "M40,10L40,#{strokeheight}",
         stroke: '#000000'
         fill: 'none'
         'stroke-width': 5
-    cands.push [hline, 0]
+    cands.push [vline, 0]
 
   #
   # 漢字/図形ストロークデータとマッチングをとる
@@ -86,6 +86,9 @@ recognize = (strokes, strokedata...) -> # strokedataは可変個引数
       width = maxx - minx
       height = maxy - miny
       size = Math.max width, height
+      entry.scalex = strokewidth / width
+      entry.scaley = strokeheight / height
+      strokes = []
       kanji_strokes = []
       [0...nstrokes].forEach (i) ->
         ppoints = kstrokes[i]

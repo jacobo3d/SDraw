@@ -482,7 +482,8 @@ edit_mode = ->
     for element in selected
       movex = element.x+movepoint[0]-downpoint[0]-snapdx
       movey = element.y+movepoint[1]-downpoint[1]-snapdy
-      element.attr "transform", "translate(#{movex},#{movey})"
+      element.attr "transform", "translate(#{movex},#{movey}) scale(#{element.scalex ? 1},#{element.scaley ? 1})"
+      #alert element.attr('scalex')
               
   svg.on 'mouseup', ->
     return unless downpoint
@@ -541,6 +542,8 @@ recognition = (strokes) ->
     # candElement.attr 'fill', 'black'
     candElement.attr 'color', 'black'
 
+    scalexx = cand.scalex ? 1
+    scaleyy = cand.scaley ? 1
     candselfunc = ->
       d3.event.preventDefault()
       downpoint = d3.mouse(this)
@@ -562,10 +565,9 @@ recognition = (strokes) ->
       [0...strokes.length].forEach (i) ->
         element = elements.pop()
         element.remove()
-      strokes = []
       #
       # 候補情報をコピーして描画領域に貼り付ける
-      # 
+      #
       copiedElement = svg.append target.nodeName # "text", "path", etc.
       copiedElement.x = 0
       copiedElement.y = 0
@@ -581,12 +583,16 @@ recognition = (strokes) ->
       copiedElement.attr 'y', yy
       # if copiedElement.property("nodeName") == 'path'
       if target.nodeName == 'path'
-        copiedElement.attr "transform", "translate(#{xx},#{yy})"
+        copiedElement.attr "transform", "translate(#{xx},#{yy}) scale(#{scalexx},#{scaleyy})"
         for snappoint in copiedElement.snappoints
           snappoint[0] += xx
           snappoint[1] += yy
         copiedElement.x = xx
         copiedElement.y = yy
+      copiedElement.attr 'scalex', scalexx
+      copiedElement.scalex = scalexx
+      copiedElement.attr 'scaley', scaleyy
+      copiedElement.scaley = scaleyy
       if target.innerHTML
         copiedElement.text target.innerHTML
         text = $('#searchtext').val()
@@ -603,6 +609,8 @@ recognition = (strokes) ->
         ce.attr "stroke", "yellow"
         selected.push ce unless ce in selected
         moving = true
+        
+      strokes = []
 
     candElement.on 'mousedown', candselfunc
     candsvg.on 'mousedown', candselfunc
