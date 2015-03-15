@@ -12,8 +12,8 @@ $(function() {
 });
 
 recognize = function() {
-  var cands, data, entry, height, hline, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, size, stroke, strokedata, strokeheight, strokes, strokewidth, totaldist, vline, width, x0, x1, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _n, _o, _ref, _ref1, _results, _results1, _results2;
-  strokes = arguments[0], strokedata = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+  var cands, cline, data, endx, endy, entry, height, hline, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, point, points, rx, ry, size, startx, starty, stroke, strokedata, strokeheight, strokes, strokewidth, totaldist, vline, width, x0, x1, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _n, _o, _p, _ref, _ref1, _results, _results1, _results2;
+  strokes = arguments[0], points = arguments[1], strokedata = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
   nstrokes = strokes.length;
   _ref = [1000, 1000, 0, 0], minx = _ref[0], miny = _ref[1], maxx = _ref[2], maxy = _ref[3];
   for (_i = 0, _len = strokes.length; _i < _len; _i++) {
@@ -68,10 +68,49 @@ recognize = function() {
     };
     cands.push([vline, 0]);
   }
-  for (_k = 0, _len2 = strokedata.length; _k < _len2; _k++) {
-    data = strokedata[_k];
-    for (_l = 0, _len3 = data.length; _l < _len3; _l++) {
-      entry = data[_l];
+  minx = 1000;
+  miny = 1000;
+  maxx = -1000;
+  maxy = -1000;
+  for (_k = 0, _len2 = points.length; _k < _len2; _k++) {
+    point = points[_k];
+    if (point[0] < minx) {
+      minx = point[0];
+    }
+    if (point[1] < miny) {
+      miny = point[1];
+    }
+    if (point[0] > maxx) {
+      maxx = point[0];
+    }
+    if (point[1] > maxy) {
+      maxy = point[1];
+    }
+  }
+  if (nstrokes === 1 && maxx - minx > 50 && maxy - miny > 50 && dist(strokes[0][0], strokes[0][1]) < 40) {
+    rx = (maxx - minx) / 2;
+    ry = (maxy - miny) / 2;
+    startx = minx;
+    starty = miny + ry;
+    endx = maxx;
+    endy = starty;
+    cline = {
+      strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]],
+      snappoints: [[40, 10], [40, strokeheight]],
+      type: 'path',
+      attr: {
+        d: "M " + startx + "," + starty + " A " + rx + "," + ry + " 0 1,1 " + endx + "," + endy + " A " + rx + "," + ry + " 0 1,1 " + startx + "," + starty + " z",
+        stroke: '#000000',
+        fill: 'none',
+        'stroke-width': 5
+      }
+    };
+    cands.push([cline, 0]);
+  }
+  for (_l = 0, _len3 = strokedata.length; _l < _len3; _l++) {
+    data = strokedata[_l];
+    for (_m = 0, _len4 = data.length; _m < _len4; _m++) {
+      entry = data[_m];
       kstrokes = entry.strokes;
       if (kstrokes.length < nstrokes) {
         continue;
@@ -79,7 +118,7 @@ recognize = function() {
       _ref1 = [1000, 1000, 0, 0], minx = _ref1[0], miny = _ref1[1], maxx = _ref1[2], maxy = _ref1[3];
       (function() {
         _results = [];
-        for (var _m = 0; 0 <= nstrokes ? _m < nstrokes : _m > nstrokes; 0 <= nstrokes ? _m++ : _m--){ _results.push(_m); }
+        for (var _n = 0; 0 <= nstrokes ? _n < nstrokes : _n > nstrokes; 0 <= nstrokes ? _n++ : _n--){ _results.push(_n); }
         return _results;
       }).apply(this).forEach(function(i) {
         var ppoints;
@@ -99,13 +138,18 @@ recognize = function() {
       width = maxx - minx;
       height = maxy - miny;
       size = Math.max(width, height);
-      entry.scalex = strokewidth / width;
-      entry.scaley = strokeheight / height;
+      if (entry.type === 'path') {
+        entry.scalex = strokewidth / width;
+        entry.scaley = strokeheight / height;
+      } else {
+        entry.scalex = 1;
+        entry.scaley = 1;
+      }
       strokes = [];
       kanji_strokes = [];
       (function() {
         _results1 = [];
-        for (var _n = 0; 0 <= nstrokes ? _n < nstrokes : _n > nstrokes; 0 <= nstrokes ? _n++ : _n--){ _results1.push(_n); }
+        for (var _o = 0; 0 <= nstrokes ? _o < nstrokes : _o > nstrokes; 0 <= nstrokes ? _o++ : _o--){ _results1.push(_o); }
         return _results1;
       }).apply(this).forEach(function(i) {
         var ppoints;
@@ -122,7 +166,7 @@ recognize = function() {
       totaldist = 0.0;
       (function() {
         _results2 = [];
-        for (var _o = 0; 0 <= nstrokes ? _o < nstrokes : _o > nstrokes; 0 <= nstrokes ? _o++ : _o--){ _results2.push(_o); }
+        for (var _p = 0; 0 <= nstrokes ? _p < nstrokes : _p > nstrokes; 0 <= nstrokes ? _p++ : _p--){ _results2.push(_p); }
         return _results2;
       }).apply(this).forEach(function(i) {
         var dx, dy;

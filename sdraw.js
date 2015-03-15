@@ -590,7 +590,7 @@ edit_mode = function() {
 
 recognition = function(strokes) {
   var cands;
-  cands = recognize(strokes, window.kanjidata, window.figuredata);
+  cands = recognize(strokes, points, window.kanjidata, window.figuredata);
   return [0, 1, 2, 3, 4, 5, 6, 7].forEach(function(i) {
     var cand, candElement, candselfunc, candsvg, scalexx, scaleyy, _ref, _ref1;
     cand = cands[i];
