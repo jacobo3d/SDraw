@@ -3,6 +3,7 @@
 ##
 ## Toshiyuki Masui 2015/01/08 21:02:36
 ##
+#      $('#searchtext').val(element.attr "transform")
 
 # 
 # グローバル変数は window.xxxx みたいに指定する
@@ -25,6 +26,9 @@ duplicated = false # 複製操作の直後にtrueになる
 linewidth = 10
 linecolor = '#000000'
 
+debug = (s) ->
+  $('#searchtext').val(s)
+      
 # SVGElement.getScreenCTM() とか使うべきなのかも
 
 window.browserWidth = ->
@@ -409,7 +413,7 @@ draw_mode = ->
 
   svg.on 'mousemove', ->
     return unless downpoint
-    movepoint = d3.mouse(this)
+    movepoint = d3.mous(this)
     clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
     d3.event.preventDefault()
     points.push movepoint
@@ -476,22 +480,22 @@ edit_mode = ->
       movex = element.x+movepoint[0]-downpoint[0]-snapdx
       movey = element.y+movepoint[1]-downpoint[1]-snapdy
       element.attr "transform", "translate(#{movex},#{movey})"
-
+              
   svg.on 'mouseup', ->
     return unless downpoint
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
     if moving
+      moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
       for element in selected
-        element.x = element.x+uppoint[0]-downpoint[0] - snapdx
-        element.y = element.y+uppoint[1]-downpoint[1] - snapdy
+        element.x += moved[0]
+        element.y += moved[1]
 
         if element.snappoints
           for snappoint in element.snappoints
-            snappoint[0] += (uppoint[0]-downpoint[0]-snapdx)
-            snappoint[1] += (uppoint[1]-downpoint[1]-snapdy)
+            snappoint[0] += moved[0]
+            snappoint[1] += moved[1]
 
-      moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
     moving = false
     downpoint = null
     clickedElement = null
@@ -566,10 +570,20 @@ recognition = (strokes) ->
         copiedElement.attr attr.nodeName, attr.value
         if attr.nodeName == 'snappoints'
           copiedElement.snappoints = JSON.parse(attr.value)
-        if attr.nodeName == 'x'
-          copiedElement.attr 'x', xx
-        if attr.nodeName == 'y'
-          copiedElement.attr 'y', yy
+      #  if attr.nodeName == 'x'
+      #    copiedElement.attr 'x', xx
+      #  if attr.nodeName == 'y'
+      #    copiedElement.attr 'y', yy
+      copiedElement.attr 'x', xx
+      copiedElement.attr 'y', yy
+      # if copiedElement.property("nodeName") == 'path'
+      if target.nodeName == 'path'
+        copiedElement.attr "transform", "translate(#{xx},#{yy})"
+        for snappoint in copiedElement.snappoints
+          snappoint[0] += xx
+          snappoint[1] += yy
+        copiedElement.x = xx
+        copiedElement.y = yy
       if target.innerHTML
         copiedElement.text target.innerHTML
         text = $('#searchtext').val()
@@ -584,9 +598,9 @@ recognition = (strokes) ->
       copiedElement.on 'mousedown', ->
         clickedElement = setfunc ce # copiedElement
         ce.attr "stroke", "yellow"
-        selected.push ce # copiedElement
+        selected.push ce unless ce in selected
         moving = true
-      
+
     candElement.on 'mousedown', candselfunc
     candsvg.on 'mousedown', candselfunc
 
