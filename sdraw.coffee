@@ -135,13 +135,15 @@ clone = (dx, dy) ->
     element.attr 'stroke', linecolor # コピー元の色を戻す
     cloned.x = element.x + dx
     cloned.y = element.y + dy
+    cloned.scalex = element.scalex
+    cloned.scaley = element.scaley
     if element.snappoints
       cloned.snappoints = element.snappoints.map (point) ->
         point.concat() # 複製を作る
       for snappoint in cloned.snappoints
         snappoint[0] += dx
         snappoint[1] += dy
-    cloned.attr "transform", "translate(#{cloned.x},#{cloned.y})"
+    cloned.attr "transform", "translate(#{cloned.x},#{cloned.y}) scale(#{cloned.scalex},#{cloned.scaley})"
     cloned.text element.text() if nodeName == 'text'
 
     cloned.on 'mousedown', ->
@@ -575,16 +577,14 @@ recognition = (strokes) ->
         copiedElement.attr attr.nodeName, attr.value
         if attr.nodeName == 'snappoints'
           copiedElement.snappoints = JSON.parse(attr.value)
-      #  if attr.nodeName == 'x'
-      #    copiedElement.attr 'x', xx
-      #  if attr.nodeName == 'y'
-      #    copiedElement.attr 'y', yy
       copiedElement.attr 'x', xx
       copiedElement.attr 'y', yy
       # if copiedElement.property("nodeName") == 'path'
       if target.nodeName == 'path'
         copiedElement.attr "transform", "translate(#{xx},#{yy}) scale(#{scalexx},#{scaleyy})"
         for snappoint in copiedElement.snappoints
+          snappoint[0] *= scalexx
+          snappoint[1] *= scaleyy
           snappoint[0] += xx
           snappoint[1] += yy
         copiedElement.x = xx

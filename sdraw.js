@@ -158,6 +158,8 @@ clone = function(dx, dy) {
     element.attr('stroke', linecolor);
     cloned.x = element.x + dx;
     cloned.y = element.y + dy;
+    cloned.scalex = element.scalex;
+    cloned.scaley = element.scaley;
     if (element.snappoints) {
       cloned.snappoints = element.snappoints.map(function(point) {
         return point.concat();
@@ -169,7 +171,7 @@ clone = function(dx, dy) {
         snappoint[1] += dy;
       }
     }
-    cloned.attr("transform", "translate(" + cloned.x + "," + cloned.y + ")");
+    cloned.attr("transform", "translate(" + cloned.x + "," + cloned.y + ") scale(" + cloned.scalex + "," + cloned.scaley + ")");
     if (nodeName === 'text') {
       cloned.text(element.text());
     }
@@ -642,6 +644,8 @@ recognition = function(strokes) {
         _ref4 = copiedElement.snappoints;
         for (_k = 0, _len1 = _ref4.length; _k < _len1; _k++) {
           snappoint = _ref4[_k];
+          snappoint[0] *= scalexx;
+          snappoint[1] *= scaleyy;
           snappoint[0] += xx;
           snappoint[1] += yy;
         }
