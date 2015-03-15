@@ -413,7 +413,7 @@ draw_mode = ->
 
   svg.on 'mousemove', ->
     return unless downpoint
-    movepoint = d3.mous(this)
+    movepoint = d3.mouse(this)
     clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
     d3.event.preventDefault()
     points.push movepoint

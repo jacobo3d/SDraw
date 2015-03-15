@@ -451,7 +451,7 @@ draw_mode = function() {
     if (!downpoint) {
       return;
     }
-    movepoint = d3.mous(this);
+    movepoint = d3.mouse(this);
     if (dist(movepoint, downpoint) > 20.0) {
       clearTimeout(modetimeout);
     }
