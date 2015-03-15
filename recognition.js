@@ -90,13 +90,13 @@ recognize = function() {
   if (nstrokes === 1 && maxx - minx > 50 && maxy - miny > 50 && dist(strokes[0][0], strokes[0][1]) < 40) {
     rx = (maxx - minx) / 2;
     ry = (maxy - miny) / 2;
-    startx = minx;
-    starty = miny + ry;
-    endx = maxx;
-    endy = starty;
+    startx = minx - minx;
+    starty = 0;
+    endx = maxx - minx;
+    endy = 0;
     cline = {
       strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]],
-      snappoints: [[40, 10], [40, strokeheight]],
+      snappoints: [[0, 0], [maxx - minx, 0]],
       type: 'path',
       attr: {
         d: "M " + startx + "," + starty + " A " + rx + "," + ry + " 0 1,1 " + endx + "," + endy + " A " + rx + "," + ry + " 0 1,1 " + startx + "," + starty + " z",
