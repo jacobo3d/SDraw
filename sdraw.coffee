@@ -515,6 +515,7 @@ edit_mode = ->
 # 文字/ストローク認識 + 候補表示
 # 
 recognition = (strokes) ->
+  # 認識アルゴリズムを読んで候補を得る
   cands = recognize strokes, window.kanjidata, window.figuredata
 
   # 候補表示

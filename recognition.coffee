@@ -7,7 +7,7 @@ $ ->
   $.getJSON "figures.json", (data) ->
     window.figuredata = data
 
-recognize = (strokes, strokedata...) ->
+recognize = (strokes, strokedata...) -> # strokedataは可変個引数
   #
   # strokesを正規化する。
   #
@@ -32,10 +32,39 @@ recognize = (strokes, strokedata...) ->
     x1 = (stroke[1][0]-minx) * 1000.0 / size
     y1 = (stroke[1][1]-miny) * 1000.0 / size
     normalized_strokes.push [[x0, y0], [x1, y1]]
+
+  cands = []
+  #
+  # 直線データは特別扱い
+  #
+  # 横一直線
+  if nstrokes == 1 && width > 100 && height/width < 0.1
+    hline = 
+      strokes: [[[0, 0], [80, 0]], [[0, 0], [80, 0]]]
+      snappoints: [[10, 40], [width, 40]]
+      type: 'path'
+      attr:
+        d: "M10,40L#{width},40",
+        stroke: '#000000'
+        fill: 'none'
+        'stroke-width': 5
+    cands.push [hline, 0]
+  # 縦一直線
+  if nstrokes == 1 && height > 100 && width/height < 0.1
+    hline = 
+      strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]]
+      snappoints: [[40, 10], [40, height]]
+      type: 'path'
+      attr:
+        d: "M40,10L40,#{height}",
+        stroke: '#000000'
+        fill: 'none'
+        'stroke-width': 5
+    cands.push [hline, 0]
+
   #
   # 漢字/図形ストロークデータとマッチングをとる
   #
-  cands = []
   for data in strokedata
     for entry in data
       kstrokes = entry.strokes
