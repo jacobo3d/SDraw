@@ -25,6 +25,7 @@ moving = false    # 選択要素を移動中かどうか
 moved = null      # 移動操作したときの移動量 (繰り返しに使う)
 duplicated = false # 複製操作の直後にtrueになる
 linewidth = 10
+fontsize = 50
 linecolor = '#000000'
 
 debug = (s) ->
@@ -106,13 +107,16 @@ $('#dup').on 'click', ->
 
 $('#line1').on 'click', ->
   draw_mode()
-  linewidth = 5
+  linewidth = 4
+  fontsize = 30
 $('#line2').on 'click', ->
   draw_mode()
   linewidth = 10
+  fontsize = 50
 $('#line3').on 'click', ->
   draw_mode()
   linewidth = 20
+  fontsize = 80
 $('#color1').on 'click', ->
   draw_mode()
   linecolor = '#ffffff'
@@ -406,7 +410,7 @@ draw_mode = ->
         candsvg = d3.select "#cand#{i}"
         candsvg.selectAll "*"
           .remove()
-    , 2500
+    , 1500
 
     # mouseup時にdrawPathすると端点が汚くなる。
     # 同じ点が続くとちゃんと描画してくれないのかもしれないので除いておく
@@ -595,6 +599,8 @@ recognition = (recogStrokes) ->
           copiedElement.snappoints = JSON.parse(attr.value)
       copiedElement.attr 'x', xx
       copiedElement.attr 'y', yy
+      copiedElement.attr 'font-size', fontsize
+      copiedElement.attr 'stroke-width', linewidth if target.nodeName != 'text'
       # if copiedElement.property("nodeName") == 'path'
       if target.nodeName == 'path'
         copiedElement.attr "transform", "translate(#{xx},#{yy}) scale(#{scalexx},#{scaleyy})"
