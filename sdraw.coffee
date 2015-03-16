@@ -337,10 +337,13 @@ downtime = null
 
 clickedElement = null # クリックされたパスや文字を覚えておく
 
+deletestate = 0 # 振ると削除するため
+
 draw_mode = ->
   mode = 'draw'
   moved = null
   duplicated = false
+  deletestate = 0
 
   strokes = []
   recogstrokes = []
@@ -456,7 +459,6 @@ draw_mode = ->
 snapdx = 0
 snapdy = 0
 totaldist = 0
-deletestate = 0 # 振ると削除するため
 shakepoint = [0, 0]
   
 edit_mode = ->

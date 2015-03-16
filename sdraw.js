@@ -370,10 +370,13 @@ downtime = null;
 
 clickedElement = null;
 
+deletestate = 0;
+
 draw_mode = function() {
   mode = 'draw';
   moved = null;
   duplicated = false;
+  deletestate = 0;
   strokes = [];
   recogstrokes = [];
   template.selectAll("*").remove();
@@ -494,8 +497,6 @@ snapdx = 0;
 snapdy = 0;
 
 totaldist = 0;
-
-deletestate = 0;
 
 shakepoint = [0, 0];
 
