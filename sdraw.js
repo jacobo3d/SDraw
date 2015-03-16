@@ -613,6 +613,7 @@ edit_mode = function() {
           }
         }
         selected = [];
+        draw_mode();
       }
     }
     return clickedElement = null;
@@ -696,6 +697,7 @@ recognition = function(recogStrokes) {
           snappoint[0] += xx;
           snappoint[1] += yy;
         }
+        copiedElement.attr("stroke-width", linewidth / scalexx);
         copiedElement.x = xx;
         copiedElement.y = yy;
       }

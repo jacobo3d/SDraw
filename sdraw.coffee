@@ -547,6 +547,7 @@ edit_mode = ->
           if f && f != "none"
             element.attr "fill", element.attr('color')   # 文字の色を戻す
         selected = []
+        draw_mode() # 選択物がなくなったら描画モードに戻してみる
      
     clickedElement = null
 
@@ -622,6 +623,7 @@ recognition = (recogStrokes) ->
           snappoint[1] *= scaleyy
           snappoint[0] += xx
           snappoint[1] += yy
+        copiedElement.attr "stroke-width", linewidth / scalexx
         copiedElement.x = xx
         copiedElement.y = yy
       if target.nodeName == 'text'
