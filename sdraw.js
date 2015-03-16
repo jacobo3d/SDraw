@@ -428,6 +428,7 @@ draw_mode = function() {
   });
   svg.on('mouseup', function() {
     var element, f, uptime;
+    alert("mouseup");
     if (!downpoint) {
       return;
     }
@@ -500,7 +501,7 @@ totaldist = 0;
 edit_mode = function() {
   mode = 'edit';
   template.selectAll("*").remove();
-  bgrect.attr("fill", "#e0e0e0");
+  bgrect.attr("fill", "#c0c0c0");
   svg.on('mousedown', function() {
     d3.event.preventDefault();
     downpoint = d3.mouse(this);

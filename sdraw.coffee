@@ -395,6 +395,7 @@ draw_mode = ->
     path.on 'mouseup', ->
 
   svg.on 'mouseup', ->
+    alert "mouseup"
     return unless downpoint
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
@@ -460,7 +461,7 @@ edit_mode = ->
   
   template.selectAll "*"
     .remove()
-  bgrect.attr "fill", "#e0e0e0"
+  bgrect.attr "fill", "#c0c0c0"
 
   svg.on 'mousedown', ->
     d3.event.preventDefault()
