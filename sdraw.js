@@ -382,7 +382,7 @@ draw_mode = function() {
     var ppath;
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
-    downtime = new Date();
+    downtime = d3.event.timeStamp;
     downpoint.push(downtime);
     if (resettimeout) {
       clearTimeout(resettimeout);
@@ -422,13 +422,13 @@ draw_mode = function() {
     return path.on('mouseup', function() {});
   });
   svg.on('mouseup', function() {
-    var uptime;
+    var len1, len2, uptime;
     if (!downpoint) {
       return;
     }
     d3.event.preventDefault();
     uppoint = d3.mouse(this);
-    uptime = new Date();
+    uptime = d3.event.timeStamp;
     uppoint.push(uptime);
     if (modetimeout) {
       clearTimeout(modetimeout);
@@ -447,6 +447,7 @@ draw_mode = function() {
       });
     }, 2500);
     points.push(uppoint);
+    recogstrokes = recogstrokes.concat(splitstroke(points));
     strokes.push([downpoint, uppoint]);
     path.snappoints = [downpoint, uppoint];
     path.scalex = 1;
@@ -454,7 +455,12 @@ draw_mode = function() {
     downpoint = null;
     moving = false;
     clickedElement = null;
-    return recognition(strokes);
+    len1 = strokes.length;
+    recognition(recogstrokes);
+    len2 = strokes.length;
+    if (len1 !== len2) {
+      return alert("!!!!!!");
+    }
   });
   return svg.on('mousemove', function() {
     var movetime;
@@ -462,7 +468,7 @@ draw_mode = function() {
       return;
     }
     movepoint = d3.mouse(this);
-    movetime = new Date();
+    movetime = d3.event.timeStamp;
     movepoint.push(movetime);
     if (dist(movepoint, downpoint) > 20.0) {
       clearTimeout(modetimeout);
@@ -601,9 +607,9 @@ edit_mode = function() {
   });
 };
 
-recognition = function(strokes) {
+recognition = function(recogStrokes) {
   var cands;
-  cands = recognize(strokes, points, window.kanjidata, window.figuredata);
+  cands = recognize(recogStrokes, points, window.kanjidata, window.figuredata);
   return [0, 1, 2, 3, 4, 5, 6, 7].forEach(function(i) {
     var cand, candElement, candselfunc, candsvg, scalexx, scaleyy, _ref, _ref1;
     cand = cands[i];
@@ -630,8 +636,8 @@ recognition = function(strokes) {
       }
       xx = 1000;
       yy = 1000;
-      for (_i = 0, _len = strokes.length; _i < _len; _i++) {
-        stroke = strokes[_i];
+      for (_i = 0, _len = recogStrokes.length; _i < _len; _i++) {
+        stroke = recogStrokes[_i];
         for (_j = 0, _len1 = stroke.length; _j < _len1; _j++) {
           point = stroke[_j];
           if (point[0] < xx) {

@@ -350,7 +350,7 @@ draw_mode = ->
     d3.event.preventDefault()
     
     downpoint = d3.mouse(this)
-    downtime = new Date()
+    downtime = d3.event.timeStamp
     downpoint.push downtime
     clearTimeout resettimeout if resettimeout
     modetimeout = setTimeout -> # 500msじっとしてると編集モードになるとか
@@ -394,7 +394,7 @@ draw_mode = ->
     return unless downpoint
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
-    uptime = new Date()
+    uptime = d3.event.timeStamp
     uppoint.push uptime
     clearTimeout modetimeout if modetimeout
     clearTimeout resettimeout if resettimeout
@@ -413,7 +413,7 @@ draw_mode = ->
     points.push uppoint
     # drawPath path
 
-    # recogstrokes = recogstrokes.concat(splitstroke(points))
+    recogstrokes = recogstrokes.concat(splitstroke(points))
     strokes.push [ downpoint, uppoint ]
     
     path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
@@ -423,12 +423,12 @@ draw_mode = ->
     moving = false # ねんのため
     clickedElement = null
 
-    recognition strokes
+    recognition recogstrokes
 
   svg.on 'mousemove', ->
     return unless downpoint
     movepoint = d3.mouse(this)
-    movetime = new Date()
+    movetime = d3.event.timeStamp
     movepoint.push movetime
     clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
     d3.event.preventDefault()
@@ -536,9 +536,9 @@ edit_mode = ->
 #
 # 文字/ストローク認識 + 候補表示
 # 
-recognition = (strokes) ->
+recognition = (recogStrokes) ->
   # 認識アルゴリズムを読んで候補を得る
-  cands = recognize strokes, points, window.kanjidata, window.figuredata
+  cands = recognize recogStrokes, points, window.kanjidata, window.figuredata
 
   # 候補表示
   [0..7].forEach (i) ->
@@ -573,13 +573,13 @@ recognition = (strokes) ->
       #
       xx = 1000
       yy = 1000
-      for stroke in strokes
+      for stroke in recogStrokes
         for point in stroke
           xx = point[0] if point[0] < xx
           yy = point[1] if point[1] < yy
       #
       # Strokesを消す
-      # 
+      #
       [0...strokes.length].forEach (i) ->
         element = elements.pop()
         element.remove()
