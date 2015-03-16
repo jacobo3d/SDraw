@@ -427,7 +427,7 @@ draw_mode = function() {
     return path.on('mouseup', function() {});
   });
   svg.on('mouseup', function() {
-    var uptime;
+    var element, f, uptime;
     if (!downpoint) {
       return;
     }
@@ -451,6 +451,18 @@ draw_mode = function() {
         return candsvg.selectAll("*").remove();
       });
     }, 1500);
+    if (clickedElement && uptime - downtime < 300) {
+      selected = [];
+      path.remove();
+      element = clickedElement();
+      element.attr("stroke", "yellow");
+      f = element.attr("fill");
+      if (f && f !== "none") {
+        element.attr("fill", "yellow");
+      }
+      selected.push(element);
+      edit_mode();
+    }
     points.push(uppoint);
     recogstrokes = recogstrokes.concat(splitstroke(points));
     strokes.push([downpoint, uppoint]);

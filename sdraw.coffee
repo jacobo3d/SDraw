@@ -412,6 +412,18 @@ draw_mode = ->
           .remove()
     , 1500
 
+    if clickedElement && uptime-downtime < 300
+      selected = []
+      path.remove()      # drawmodeで描いていた線を消す
+      element = clickedElement()
+      element.attr "stroke", "yellow"
+      f = element.attr "fill"
+      if f && f != "none"
+        element.attr "fill", "yellow"
+      selected.push element
+      # moving = true !!!!!
+      edit_mode()
+        
     # mouseup時にdrawPathすると端点が汚くなる。
     # 同じ点が続くとちゃんと描画してくれないのかもしれないので除いておく
     points.push uppoint
