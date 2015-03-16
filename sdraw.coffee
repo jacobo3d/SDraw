@@ -93,10 +93,12 @@ $('#delete').on 'click', ->
       element.remove()
     selected = []
     elements = newelements
-    if elements.length == 0
-      draw_mode()
+    #if elements.length == 0
+    #  draw_mode()
+    # 
     #else
     #  alert elements.length        ****** おかしい
+  draw_mode()
 
 $('#dup').on 'click', ->
   if moved && duplicated

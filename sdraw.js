@@ -86,7 +86,7 @@ $('#delete').on('click', function() {
   var element, newelements, query, _i, _j, _len, _len1;
   if (selected.length === 0) {
     query = $('#searchtext').val();
-    return $('#searchtext').val(query.slice(0, -1));
+    $('#searchtext').val(query.slice(0, -1));
   } else {
     newelements = [];
     for (_i = 0, _len = elements.length; _i < _len; _i++) {
@@ -101,10 +101,8 @@ $('#delete').on('click', function() {
     }
     selected = [];
     elements = newelements;
-    if (elements.length === 0) {
-      return draw_mode();
-    }
   }
+  return draw_mode();
 });
 
 $('#dup').on('click', function() {
