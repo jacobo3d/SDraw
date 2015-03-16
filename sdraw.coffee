@@ -531,10 +531,9 @@ edit_mode = ->
 
     moving = false
     downpoint = null
-    clickedElement = null
 
     uptime = new Date()
-    if uptime - downtime < 300
+    if uptime - downtime < 300 && !clickedElement
       duplicated = false
       if selected.length == 0
         selected = []
@@ -548,6 +547,8 @@ edit_mode = ->
           if f && f != "none"
             element.attr "fill", element.attr('color')   # 文字の色を戻す
         selected = []
+     
+    clickedElement = null
 
 #
 # 文字/ストローク認識 + 候補表示

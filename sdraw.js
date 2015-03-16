@@ -595,15 +595,14 @@ edit_mode = function() {
     }
     moving = false;
     downpoint = null;
-    clickedElement = null;
     uptime = new Date();
-    if (uptime - downtime < 300) {
+    if (uptime - downtime < 300 && !clickedElement) {
       duplicated = false;
       if (selected.length === 0) {
         selected = [];
         strokes = [];
         recogstrokes = [];
-        return draw_mode();
+        draw_mode();
       } else {
         for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
           element = selected[_k];
@@ -613,9 +612,10 @@ edit_mode = function() {
             element.attr("fill", element.attr('color'));
           }
         }
-        return selected = [];
+        selected = [];
       }
     }
+    return clickedElement = null;
   });
 };
 
