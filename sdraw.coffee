@@ -354,9 +354,9 @@ draw_mode = ->
     downpoint.push downtime
     clearTimeout resettimeout if resettimeout
     modetimeout = setTimeout -> # 500msじっとしてると編集モードになるとか
-      selected = []
-      path.remove()      # drawmodeで描いていた線を消す
       if clickedElement  # pathなどをクリックしてた場合は移動モードにする
+        selected = []
+        path.remove()      # drawmodeで描いていた線を消す
         element = clickedElement()
         element.attr "stroke", "yellow"
         f = element.attr "fill"
@@ -364,7 +364,7 @@ draw_mode = ->
           element.attr "fill", "yellow"
         selected.push element
         # moving = true !!!!!
-      edit_mode()
+        edit_mode()
     , 500
     
     path = svg.append 'path' # SVGのpath要素 (曲線とか描ける)

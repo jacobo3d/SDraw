@@ -389,9 +389,9 @@ draw_mode = function() {
     }
     modetimeout = setTimeout(function() {
       var element, f;
-      selected = [];
-      path.remove();
       if (clickedElement) {
+        selected = [];
+        path.remove();
         element = clickedElement();
         element.attr("stroke", "yellow");
         f = element.attr("fill");
@@ -399,8 +399,8 @@ draw_mode = function() {
           element.attr("fill", "yellow");
         }
         selected.push(element);
+        return edit_mode();
       }
-      return edit_mode();
     }, 500);
     path = svg.append('path');
     path.attr("color", linecolor);
@@ -422,7 +422,7 @@ draw_mode = function() {
     return path.on('mouseup', function() {});
   });
   svg.on('mouseup', function() {
-    var len1, len2, uptime;
+    var uptime;
     if (!downpoint) {
       return;
     }
@@ -455,12 +455,7 @@ draw_mode = function() {
     downpoint = null;
     moving = false;
     clickedElement = null;
-    len1 = strokes.length;
-    recognition(recogstrokes);
-    len2 = strokes.length;
-    if (len1 !== len2) {
-      return alert("!!!!!!");
-    }
+    return recognition(recogstrokes);
   });
   return svg.on('mousemove', function() {
     var movetime;
