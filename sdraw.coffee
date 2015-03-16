@@ -456,9 +456,12 @@ draw_mode = ->
 snapdx = 0
 snapdy = 0
 totaldist = 0
+deletestate = 0 # 振ると削除するため
+shakepoint = [0, 0]
   
 edit_mode = ->
   mode = 'edit'
+  deletestate = 0
   
   template.selectAll "*"
     .remove()
@@ -471,12 +474,41 @@ edit_mode = ->
     downtime = new Date()
     moved = null
     totaldist = 0
+    deletestate = 0
+    shakepoint = downpoint
 
   svg.on 'mousemove', -> # 選択項目移動
     return unless downpoint
     return unless moving
     oldmovepoint = movepoint
     movepoint = d3.mouse(this)
+    #
+    # 削除ジェスチャ取得
+    #
+    if deletestate == 0
+      if movepoint[0] - shakepoint[0] > 50
+        deletestate = 1
+        shakepoint = movepoint
+    if deletestate == 1
+      if shakepoint[0] - movepoint[0] > 50
+        deletestate = 2
+        shakepoint = movepoint
+    if deletestate == 2
+      if movepoint[0] - shakepoint[0] > 50
+        deletestate = 3
+        shakepoint = movepoint
+    if deletestate == 3
+      if shakepoint[0] - movepoint[0] > 50
+        # 削除!
+        newelements = []
+        for element in elements
+          newelements.push element unless element in selected
+        for element in selected
+          element.remove()
+        selected = []
+        elements = newelements
+        draw_mode()
+    
     totaldist += dist movepoint, oldmovepoint
     #
     # スナッピング処理
@@ -518,6 +550,7 @@ edit_mode = ->
               
   svg.on 'mouseup', ->
     return unless downpoint
+
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
     if moving
