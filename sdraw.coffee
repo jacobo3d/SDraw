@@ -597,7 +597,7 @@ recognition = (recogStrokes) ->
         copiedElement.attr attr.nodeName, attr.value
         if attr.nodeName == 'snappoints'
           copiedElement.snappoints = JSON.parse(attr.value)
-      copiedElement.attr 'x', xx
+      copiedElement.attr 'x', xx  # コピー先の位置
       copiedElement.attr 'y', yy
       copiedElement.attr 'font-size', fontsize
       copiedElement.attr 'stroke-width', linewidth if target.nodeName != 'text'
@@ -611,6 +611,10 @@ recognition = (recogStrokes) ->
           snappoint[1] += yy
         copiedElement.x = xx
         copiedElement.y = yy
+      if target.nodeName == 'text'
+        for snappoint in copiedElement.snappoints
+          snappoint[0] += xx
+          snappoint[1] += yy
       copiedElement.attr 'scalex', scalexx
       copiedElement.scalex = scalexx
       copiedElement.attr 'scaley', scaleyy

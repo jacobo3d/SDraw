@@ -627,7 +627,7 @@ recognition = function(recogStrokes) {
     scalexx = (_ref = cand.scalex) != null ? _ref : 1;
     scaleyy = (_ref1 = cand.scaley) != null ? _ref1 : 1;
     candselfunc = function() {
-      var attr, ce, copiedElement, point, snappoint, stroke, target, text, xx, yy, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _ref2, _ref3, _ref4, _results;
+      var attr, ce, copiedElement, point, snappoint, stroke, target, text, xx, yy, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _n, _ref2, _ref3, _ref4, _ref5, _results;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       target = d3.event.target;
@@ -686,6 +686,14 @@ recognition = function(recogStrokes) {
         }
         copiedElement.x = xx;
         copiedElement.y = yy;
+      }
+      if (target.nodeName === 'text') {
+        _ref5 = copiedElement.snappoints;
+        for (_n = 0, _len4 = _ref5.length; _n < _len4; _n++) {
+          snappoint = _ref5[_n];
+          snappoint[0] += xx;
+          snappoint[1] += yy;
+        }
       }
       copiedElement.attr('scalex', scalexx);
       copiedElement.scalex = scalexx;
