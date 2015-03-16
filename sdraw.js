@@ -428,7 +428,6 @@ draw_mode = function() {
   });
   svg.on('mouseup', function() {
     var element, f, uptime;
-    alert("mouseup");
     if (!downpoint) {
       return;
     }
