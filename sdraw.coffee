@@ -20,6 +20,7 @@ elements = []     # 描画された要素列
 selected = []     # 選択された要素列
 points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
+recogstrokes = []
 moving = false    # 選択要素を移動中かどうか
 moved = null      # 移動操作したときの移動量 (繰り返しに使う)
 duplicated = false # 複製操作の直後にtrueになる
@@ -336,6 +337,7 @@ draw_mode = ->
   duplicated = false
 
   strokes = []
+  recogstrokes = []
 
   template.selectAll "*"
     .remove()
@@ -349,6 +351,7 @@ draw_mode = ->
     
     downpoint = d3.mouse(this)
     downtime = new Date()
+    downpoint.push downtime
     clearTimeout resettimeout if resettimeout
     modetimeout = setTimeout -> # 500msじっとしてると編集モードになるとか
       selected = []
@@ -392,10 +395,12 @@ draw_mode = ->
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
     uptime = new Date()
+    uppoint.push uptime
     clearTimeout modetimeout if modetimeout
     clearTimeout resettimeout if resettimeout
     resettimeout = setTimeout -> # 2秒じっとしていると候補を消す
       strokes = []
+      recogstrokes = []
       points = []
       [0..7].forEach (i) ->
         candsvg = d3.select "#cand#{i}"
@@ -405,11 +410,15 @@ draw_mode = ->
 
     # mouseup時にdrawPathすると端点が汚くなる。
     # 同じ点が続くとちゃんと描画してくれないのかもしれないので除いておく
-    # points.push uppoint
+    points.push uppoint
     # drawPath path
 
+    # recogstrokes = recogstrokes.concat(splitstroke(points))
     strokes.push [ downpoint, uppoint ]
+    
     path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
+    path.scalex = 1
+    path.scaley = 1
     downpoint = null
     moving = false # ねんのため
     clickedElement = null
@@ -419,6 +428,8 @@ draw_mode = ->
   svg.on 'mousemove', ->
     return unless downpoint
     movepoint = d3.mouse(this)
+    movetime = new Date()
+    movepoint.push movetime
     clearTimeout modetimeout if dist(movepoint,downpoint) > 20.0
     d3.event.preventDefault()
     points.push movepoint
@@ -512,6 +523,7 @@ edit_mode = ->
       if selected.length == 0
         selected = []
         strokes = []
+        recogstrokes = []
         draw_mode()
       else
         for element in selected
@@ -615,6 +627,7 @@ recognition = (strokes) ->
         moving = true
         
       strokes = []
+      recogstrokes = []
 
     candElement.on 'mousedown', candselfunc
     candsvg.on 'mousedown', candselfunc
