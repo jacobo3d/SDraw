@@ -395,8 +395,8 @@ draw_mode = ->
     path.on 'mouseup', ->
 
   svg.on 'mouseup', ->
-    alert "mouseup"
     return unless downpoint
+    alert 'mouseup'
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
     uptime = d3.event.timeStamp
