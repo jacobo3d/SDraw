@@ -89,7 +89,7 @@ canvas.on 'touchend mouseup', (e) ->
   draw e
   drawing = false
 
-  # ここで解析する
+  # ここでストローク解析する
   i = 0
   ind = 0
   slow = true
@@ -97,7 +97,7 @@ canvas.on 'touchend mouseup', (e) ->
     p0 = ipoint(i * 100)
     p1 = ipoint((i+1) * 100)
     d = dist p0, p1
-    if d > 10
+    if d > 20
       slow = false
     if d < 30 && !slow
       context.fillStyle = "rgb(255,255,255)"
