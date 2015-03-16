@@ -525,25 +525,25 @@ edit_mode = function() {
     oldmovepoint = movepoint;
     movepoint = d3.mouse(this);
     if (deletestate === 0) {
-      if (movepoint[0] - shakepoint[0] > 50) {
+      if (movepoint[0] - shakepoint[0] > 30) {
         deletestate = 1;
         shakepoint = movepoint;
       }
     }
     if (deletestate === 1) {
-      if (shakepoint[0] - movepoint[0] > 50) {
+      if (shakepoint[0] - movepoint[0] > 30) {
         deletestate = 2;
         shakepoint = movepoint;
       }
     }
     if (deletestate === 2) {
-      if (movepoint[0] - shakepoint[0] > 50) {
+      if (movepoint[0] - shakepoint[0] > 30) {
         deletestate = 3;
         shakepoint = movepoint;
       }
     }
     if (deletestate === 3) {
-      if (shakepoint[0] - movepoint[0] > 50) {
+      if (shakepoint[0] - movepoint[0] > 30) {
         newelements = [];
         for (_i = 0, _len = elements.length; _i < _len; _i++) {
           element = elements[_i];

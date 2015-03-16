@@ -486,19 +486,19 @@ edit_mode = ->
     # 削除ジェスチャ取得
     #
     if deletestate == 0
-      if movepoint[0] - shakepoint[0] > 50
+      if movepoint[0] - shakepoint[0] > 30
         deletestate = 1
         shakepoint = movepoint
     if deletestate == 1
-      if shakepoint[0] - movepoint[0] > 50
+      if shakepoint[0] - movepoint[0] > 30
         deletestate = 2
         shakepoint = movepoint
     if deletestate == 2
-      if movepoint[0] - shakepoint[0] > 50
+      if movepoint[0] - shakepoint[0] > 30
         deletestate = 3
         shakepoint = movepoint
     if deletestate == 3
-      if shakepoint[0] - movepoint[0] > 50
+      if shakepoint[0] - movepoint[0] > 30
         # 削除!
         newelements = []
         for element in elements
