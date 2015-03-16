@@ -412,7 +412,7 @@ draw_mode = ->
           .remove()
     , 1500
 
-    if clickedElement && uptime-downtime < 300
+    if clickedElement && uptime-downtime < 300 && dist(uppoint,downpoint) < 20
       selected = []
       path.remove()      # drawmodeで描いていた線を消す
       element = clickedElement()

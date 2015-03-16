@@ -451,7 +451,7 @@ draw_mode = function() {
         return candsvg.selectAll("*").remove();
       });
     }, 1500);
-    if (clickedElement && uptime - downtime < 300) {
+    if (clickedElement && uptime - downtime < 300 && dist(uppoint, downpoint) < 20) {
       selected = [];
       path.remove();
       element = clickedElement();
