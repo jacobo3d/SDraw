@@ -702,7 +702,9 @@ recognition = function(recogStrokes) {
       return recogstrokes = [];
     };
     candElement.on('mousedown', candselfunc);
-    candsvg.on('mousedown', candselfunc);
+    if (cand.type !== 'text') {
+      candsvg.on('mousedown', candselfunc);
+    }
     return candElement.on('mouseup', function() {
       if (!downpoint) {
         return;

@@ -19,6 +19,7 @@ Dir.open(".").each { |file|
       euc = $1
       text = euc2char(euc)
       entry['text'] = text
+      entry['snappoints'] = [[0, 0], [80, 0]]
       strokes = []
       File.open(file){ |f|
         stroke = []

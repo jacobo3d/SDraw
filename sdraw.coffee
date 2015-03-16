@@ -630,7 +630,8 @@ recognition = (recogStrokes) ->
       recogstrokes = []
 
     candElement.on 'mousedown', candselfunc
-    candsvg.on 'mousedown', candselfunc
+    if cand.type != 'text'
+      candsvg.on 'mousedown', candselfunc
 
     candElement.on 'mouseup', ->
       return unless downpoint
