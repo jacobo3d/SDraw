@@ -72,7 +72,6 @@ recognize = (strokes, points, strokedata...) -> # strokedataは可変個引数
     miny = point[1] if point[1] < miny
     maxx = point[0] if point[0] > maxx
     maxy = point[1] if point[1] > maxy
-  #alert "h=#{maxy-miny}, w=#{maxx-minx}, d=#{dist strokes[0][0], strokes[0][1]}"
   if nstrokes == 1 && maxx-minx > 50 && maxy-miny > 50 && dist(strokes[0][0], strokes[0][1]) < 40
     rx = (maxx - minx) / 2
     ry = (maxy - miny) / 2
@@ -83,7 +82,7 @@ recognize = (strokes, points, strokedata...) -> # strokedataは可変個引数
     #alert "M #{startx},#{starty} A #{rx},#{ry} 0 1,1 #{endx},#{endy} A #{rx},#{ry} 0 1,1 #{startx},#{starty} z"
     cline = 
       strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]]
-      snappoints: [[0, 0], [maxx-minx, 0]]
+      snappoints: [[0, 0], [maxx-minx, 0], [rx, 0]]
       type: 'path'
       attr:
         #      始点    半径 rot l swee 終点

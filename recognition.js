@@ -96,7 +96,7 @@ recognize = function() {
     endy = 0;
     cline = {
       strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]],
-      snappoints: [[0, 0], [maxx - minx, 0]],
+      snappoints: [[0, 0], [maxx - minx, 0], [rx, 0]],
       type: 'path',
       attr: {
         d: "M " + startx + "," + starty + " A " + rx + "," + ry + " 0 1,1 " + endx + "," + endy + " A " + rx + "," + ry + " 0 1,1 " + startx + "," + starty + " z",
