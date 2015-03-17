@@ -12,6 +12,7 @@ splitstroke = (points)->
     p0 = ipoint(points, i * 100)
     p1 = ipoint(points, (i+1) * 100)
     d = dist p0, p1
+    debug d
     if d > 10
       slow = false
     else
@@ -19,7 +20,10 @@ splitstroke = (points)->
         splitstrokes.push [pre, p0]
         pre = p0
         slow = true
-    break if p1[2] < 0
+    if p1[2] < 0
+      if splitstrokes.length == 0 # インチキ
+        splitstrokes = [[points[0], p0]]
+      break
     i += 1
   splitstrokes
 

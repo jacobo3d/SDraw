@@ -28,7 +28,7 @@ linewidth = 10
 fontsize = 50
 linecolor = '#000000'
 
-debug = (s) ->
+window.debug = (s) ->
   $('#searchtext').val(s)
       
 # SVGElement.getScreenCTM() とか使うべきなのかも
