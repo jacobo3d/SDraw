@@ -487,29 +487,30 @@ edit_mode = ->
     #
     # 削除ジェスチャ取得
     #
-    if deletestate == 0
-      if movepoint[0] - shakepoint[0] > 30
-        deletestate = 1
-        shakepoint = movepoint
-    if deletestate == 1
-      if shakepoint[0] - movepoint[0] > 30
-        deletestate = 2
-        shakepoint = movepoint
-    if deletestate == 2
-      if movepoint[0] - shakepoint[0] > 30
-        deletestate = 3
-        shakepoint = movepoint
-    if deletestate == 3
-      if shakepoint[0] - movepoint[0] > 30
-        # 削除!
-        newelements = []
-        for element in elements
-          newelements.push element unless element in selected
-        for element in selected
-          element.remove()
-        selected = []
-        elements = newelements
-        draw_mode()
+    switch deletestate
+      when 0
+        if movepoint[0] - shakepoint[0] > 30
+          deletestate = 1
+          shakepoint = movepoint
+      when 1
+        if shakepoint[0] - movepoint[0] > 30
+          deletestate = 2
+          shakepoint = movepoint
+      when 2
+        if movepoint[0] - shakepoint[0] > 30
+          deletestate = 3
+          shakepoint = movepoint
+      when 3
+        if shakepoint[0] - movepoint[0] > 30
+          # 削除!
+          newelements = []
+          for element in elements
+            newelements.push element unless element in selected
+          for element in selected
+            element.remove()
+          selected = []
+          elements = newelements
+          draw_mode()
     
     totaldist += dist movepoint, oldmovepoint
     #

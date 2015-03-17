@@ -525,41 +525,42 @@ edit_mode = function() {
     }
     oldmovepoint = movepoint;
     movepoint = d3.mouse(this);
-    if (deletestate === 0) {
-      if (movepoint[0] - shakepoint[0] > 30) {
-        deletestate = 1;
-        shakepoint = movepoint;
-      }
-    }
-    if (deletestate === 1) {
-      if (shakepoint[0] - movepoint[0] > 30) {
-        deletestate = 2;
-        shakepoint = movepoint;
-      }
-    }
-    if (deletestate === 2) {
-      if (movepoint[0] - shakepoint[0] > 30) {
-        deletestate = 3;
-        shakepoint = movepoint;
-      }
-    }
-    if (deletestate === 3) {
-      if (shakepoint[0] - movepoint[0] > 30) {
-        newelements = [];
-        for (_i = 0, _len = elements.length; _i < _len; _i++) {
-          element = elements[_i];
-          if (__indexOf.call(selected, element) < 0) {
-            newelements.push(element);
+    switch (deletestate) {
+      case 0:
+        if (movepoint[0] - shakepoint[0] > 30) {
+          deletestate = 1;
+          shakepoint = movepoint;
+        }
+        break;
+      case 1:
+        if (shakepoint[0] - movepoint[0] > 30) {
+          deletestate = 2;
+          shakepoint = movepoint;
+        }
+        break;
+      case 2:
+        if (movepoint[0] - shakepoint[0] > 30) {
+          deletestate = 3;
+          shakepoint = movepoint;
+        }
+        break;
+      case 3:
+        if (shakepoint[0] - movepoint[0] > 30) {
+          newelements = [];
+          for (_i = 0, _len = elements.length; _i < _len; _i++) {
+            element = elements[_i];
+            if (__indexOf.call(selected, element) < 0) {
+              newelements.push(element);
+            }
           }
+          for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
+            element = selected[_j];
+            element.remove();
+          }
+          selected = [];
+          elements = newelements;
+          draw_mode();
         }
-        for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
-          element = selected[_j];
-          element.remove();
-        }
-        selected = [];
-        elements = newelements;
-        draw_mode();
-      }
     }
     totaldist += dist(movepoint, oldmovepoint);
     snapdx = 0;
