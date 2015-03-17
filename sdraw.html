@@ -1,6 +1,6 @@
-<!DOCTYPE html>
 <html lang="ja">
 <!--
+<!DOCTYPE html>
   Suggestive-Supportive-Snapping Drawing Editor
   Toshiyuki Masui 2015/01/09 09:15:48
 -->
@@ -94,12 +94,21 @@
     <input class="button" type="button" value="複製"   id="dup">
     <!-- <input class="button" type="button" value="繰返し" id="repeat"> -->
     <input class="button" type="button" value="全選択" id="selectall">
+    <!--
     <img class="button" id="line1" src="line1.png">
     <img class="button" id="line2" src="line2.png">
     <img class="button" id="line3" src="line3.png">
     <img class="button" id="color1" src="color1.png">
     <img class="button" id="color2" src="color2.png">
     <img class="button" id="color3" src="color3.png">
+    -->
+    <div id="pen" style="position:absolute;top:0;left:320;width:300;height:35;">
+      <img id="penbg" src="pen1.png" style="position:absolute;top:0;left:0;height:35;">
+      <img id="pentop1" src="pentop1.png" style="position:absolute;top:0;left:10;height:35;">
+      <img id="pentop2" src="pentop2.png" style="position:absolute;top:0;left:35;height:35;">
+      <img id="pentop3" src="pentop2.png" style="position:absolute;top:0;left:60;height:35;">
+    </div>
+
     <svg></svg>
   </div>
   <div style="float:left;width:30%;">

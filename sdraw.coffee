@@ -129,6 +129,38 @@ $('#color3').on 'click', ->
   draw_mode()
   linecolor = '#000000'
 
+pen =  d3.select "#pen"
+pen.on 'mousedown', ->
+  downpoint = d3.mouse(this)
+  if downpoint[0] >= 140
+    $('#penbg').attr 'src', "pen3.png"
+    linecolor = '#000000'
+  if downpoint[0] > 110 && downpoint[0] < 140
+    $('#penbg').attr 'src', "pen2.png"
+    linecolor = '#808080'
+  if downpoint[0] > 80 && downpoint[0] < 110
+    $('#penbg').attr 'src', "pen1.png"
+    linecolor = '#ffffff'
+  if downpoint[0] > 50 && downpoint[0] < 80
+    $('#pentop1').attr 'src', "pentop2.png"
+    $('#pentop2').attr 'src', "pentop2.png"
+    $('#pentop3').attr 'src', "pentop1.png"
+    linewidth = 20
+    fontsize = 80
+  if downpoint[0] > 25 && downpoint[0] < 50
+    $('#pentop1').attr 'src', "pentop2.png"
+    $('#pentop2').attr 'src', "pentop1.png"
+    $('#pentop3').attr 'src', "pentop2.png"
+    linewidth = 10
+    fontsize = 50
+  if downpoint[0] > 0 && downpoint[0] < 25
+    $('#pentop1').attr 'src', "pentop1.png"
+    $('#pentop2').attr 'src', "pentop2.png"
+    $('#pentop3').attr 'src', "pentop2.png"
+    linewidth = 4
+    fontsize = 30
+  downpoint = null
+
 clone = (dx, dy) ->
   newselected = []
   for element in selected
