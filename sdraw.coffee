@@ -496,6 +496,7 @@ shakepoint = [0, 0]
 edit_mode = ->
   mode = 'edit'
   deletestate = 0
+  shakepoint = downpoint
   
   template.selectAll "*"
     .remove()

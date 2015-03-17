@@ -543,6 +543,7 @@ shakepoint = [0, 0];
 edit_mode = function() {
   mode = 'edit';
   deletestate = 0;
+  shakepoint = downpoint;
   template.selectAll("*").remove();
   bgrect.attr("fill", "#c0c0c0");
   svg.on('mousedown', function() {
