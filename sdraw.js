@@ -36,6 +36,22 @@ fontsize = 50;
 
 linecolor = '#000000';
 
+modetimeout = null;
+
+resettimeout = null;
+
+downtime = null;
+
+deletestate = 0;
+
+snapdx = 0;
+
+snapdy = 0;
+
+totaldist = 0;
+
+shakepoint = [0, 0];
+
 clickedElement = null;
 
 window.debug = function(s) {
@@ -400,14 +416,6 @@ setfunc = function(element) {
   };
 };
 
-modetimeout = null;
-
-resettimeout = null;
-
-downtime = null;
-
-deletestate = 0;
-
 draw_mode = function() {
   mode = 'draw';
   moved = null;
@@ -527,14 +535,6 @@ draw_mode = function() {
     return drawPath(path);
   });
 };
-
-snapdx = 0;
-
-snapdy = 0;
-
-totaldist = 0;
-
-shakepoint = [0, 0];
 
 edit_mode = function() {
   mode = 'edit';

@@ -29,6 +29,15 @@ linewidth = 10
 fontsize = 50
 linecolor = '#000000'
 
+modetimeout = null    # 長押しで編集モードにするため
+resettimeout = null   # 時間がたつと候補リセット
+downtime = null
+deletestate = 0 # 振ると削除するため
+snapdx = 0
+snapdy = 0
+totaldist = 0
+shakepoint = [0, 0]
+  
 clickedElement = null # クリックされたパスや文字を覚えておく
 
 window.debug = (s) ->
@@ -367,12 +376,6 @@ setfunc = (element) ->
   ->
     return element
 
-modetimeout = null    # 長押しで編集モードにするため
-resettimeout = null   # 時間がたつと候補リセット
-downtime = null
-
-deletestate = 0 # 振ると削除するため
-
 draw_mode = ->
   mode = 'draw'
   moved = null
@@ -490,11 +493,6 @@ draw_mode = ->
     points.push movepoint
     drawPath path
 
-snapdx = 0
-snapdy = 0
-totaldist = 0
-shakepoint = [0, 0]
-  
 edit_mode = ->
   mode = 'edit'
   deletestate = 0
