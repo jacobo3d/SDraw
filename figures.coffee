@@ -228,7 +228,32 @@ data.push
     'stroke-width': 2
     
 #
+# グランド
+#
+data.push
+  strokes: [
+    [[0, 40], [70, 40]]
+    [[0, 40], [15, 55]]
+    [[15, 40], [30, 55]]
+    [[30, 40], [45, 55]]
+    [[45, 40], [60, 55]]
+    [[60, 40], [75, 55]]
+  ]
+  snappoints: [
+    [35, 40]
+  ]
+  type: 'path'
+  attr:
+    d: "M0,40L70,40M0,40L15,55M15,40L30,55M30,40L45,55M45,40L60,55M60,40L75,55"
+    stroke: '#000000'
+    fill: 'none'
+    'stroke-width': 2
+    
+#
 # JSON出力
 #
 console.log JSON.stringify data
+
+
+
 
