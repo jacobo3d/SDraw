@@ -546,14 +546,14 @@ edit_mode = function() {
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
     movepoint = downpoint;
-    downtime = new Date();
+    downtime = d3.event.timeStamp;
     moved = null;
     totaldist = 0;
     deletestate = 0;
     return shakepoint = downpoint;
   });
   svg.on('mousemove', function() {
-    var d, dd, element, movex, movey, newelements, oldmovepoint, point, refpoint, refpoints, snappoint, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _results;
+    var d, dd, element, movetime, movex, movey, newelements, oldmovepoint, point, refpoint, refpoints, snappoint, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _results;
     if (!downpoint) {
       return;
     }
@@ -562,6 +562,7 @@ edit_mode = function() {
     }
     oldmovepoint = movepoint;
     movepoint = d3.mouse(this);
+    movetime = d3.event.timeStamp;
     switch (deletestate) {
       case 0:
         if (movepoint[0] - shakepoint[0] > 30) {
@@ -582,7 +583,7 @@ edit_mode = function() {
         }
         break;
       case 3:
-        if (shakepoint[0] - movepoint[0] > 30) {
+        if (shakepoint[0] - movepoint[0] > 30 && movetime - downtime < 2000) {
           newelements = [];
           for (_i = 0, _len = elements.length; _i < _len; _i++) {
             element = elements[_i];
@@ -623,6 +624,7 @@ edit_mode = function() {
           }
         }
       }
+      debug(refpoints.length);
       d = 10000000;
       for (_n = 0, _len5 = points.length; _n < _len5; _n++) {
         point = points[_n];
@@ -675,7 +677,7 @@ edit_mode = function() {
     }
     moving = false;
     downpoint = null;
-    uptime = new Date();
+    uptime = d3.event.timeStamp;
     if (uptime - downtime < 300 && !clickedElement) {
       duplicated = false;
       if (selected.length === 0) {
@@ -777,7 +779,6 @@ recognition = function(recogStrokes) {
           snappoint[0] += xx;
           snappoint[1] += yy;
         }
-        debug("" + linewidth + " / " + scalexx);
         copiedElement.attr("stroke-width", linewidth / scalexx);
         copiedElement.x = xx;
         copiedElement.y = yy;

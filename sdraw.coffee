@@ -506,7 +506,8 @@ edit_mode = ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
     movepoint = downpoint
-    downtime = new Date()
+    # downtime = new Date()
+    downtime = d3.event.timeStamp
     moved = null
     totaldist = 0
     deletestate = 0
@@ -517,6 +518,7 @@ edit_mode = ->
     return unless moving
     oldmovepoint = movepoint
     movepoint = d3.mouse(this)
+    movetime = d3.event.timeStamp
     #
     # 削除ジェスチャ取得
     #
@@ -534,7 +536,7 @@ edit_mode = ->
           deletestate = 3
           shakepoint = movepoint
       when 3
-        if shakepoint[0] - movepoint[0] > 30
+        if shakepoint[0] - movepoint[0] > 30 && movetime - downtime < 2000
           # 削除!
           newelements = []
           for element in elements
@@ -563,6 +565,7 @@ edit_mode = ->
           else
             for snappoint in element.snappoints
               refpoints.push [snappoint[0], snappoint[1]]
+      debug refpoints.length
       #  
       # 他のオブジェクトにスナッピング
       # 
@@ -603,7 +606,8 @@ edit_mode = ->
     moving = false
     downpoint = null
 
-    uptime = new Date()
+    # uptime = new Date()
+    uptime = d3.event.timeStamp
     if uptime - downtime < 300 && !clickedElement
       duplicated = false
       if selected.length == 0
