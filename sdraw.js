@@ -188,7 +188,7 @@ pen.on('mousedown', function() {
 });
 
 clone = function(dx, dy) {
-  var attr, cloned, e, element, newselected, nodeName, parent, snappoint, _i, _j, _k, _len, _len1, _len2, _ref;
+  var attr, ccloned, cloned, e, element, newselected, nodeName, parent, snappoint, _i, _j, _k, _len, _len1, _len2, _ref;
   newselected = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
@@ -220,20 +220,19 @@ clone = function(dx, dy) {
     if (nodeName === 'text') {
       cloned.text(element.text());
     }
+    ccloned = cloned;
     cloned.on('mousedown', function() {
       var clickedElement;
-      if (mode !== 'edit') {
-        return;
-      }
-      clickedElement = setfunc(cloned);
-      if (mode === 'edit') {
-        cloned.attr("stroke", "yellow");
-        if (__indexOf.call(selected, cloned) < 0) {
-          selected.push(cloned);
+      clickedElement = setfunc(ccloned);
+      if (mode === 'edit' || true) {
+        ccloned.attr("stroke", "yellow");
+        if (__indexOf.call(selected, ccloned) < 0) {
+          selected.push(ccloned);
         }
       }
       downpoint = d3.mouse(this);
-      return moving = true;
+      moving = true;
+      return edit_mode();
     });
     cloned.on('mousemove', selfunc(cloned));
     newselected.push(cloned);
@@ -784,6 +783,8 @@ recognition = function(recogStrokes) {
         copiedElement.attr("stroke-width", linewidth / scalexx);
         copiedElement.x = xx;
         copiedElement.y = yy;
+        copiedElement.attr('stroke', linecolor);
+        copiedElement.attr('color', linecolor);
       }
       if (target.nodeName === 'text') {
         _ref5 = copiedElement.snappoints;
@@ -817,7 +818,7 @@ recognition = function(recogStrokes) {
       return recogstrokes = [];
     };
     candElement.on('mousedown', candselfunc);
-    if (cand.type !== 'text') {
+    if (!cand.text) {
       candsvg.on('mousedown', candselfunc);
     }
     return candElement.on('mouseup', function() {

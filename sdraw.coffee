@@ -3,7 +3,8 @@
 ##
 ## Toshiyuki Masui 2015/01/08 21:02:36
 ##
-#      $('#searchtext').val(element.attr "transform")
+
+# 描画要素の色は path.attr 'color' で覚えておく
 
 # 
 # グローバル変数は window.xxxx みたいに指定する
@@ -185,15 +186,17 @@ clone = (dx, dy) ->
     cloned.attr "transform", "translate(#{cloned.x},#{cloned.y}) scale(#{cloned.scalex},#{cloned.scaley})"
     cloned.text element.text() if nodeName == 'text'
 
+    ccloned = cloned
     cloned.on 'mousedown', ->
-      return unless mode == 'edit'
-      clickedElement = setfunc cloned
+      #return unless mode == 'edit'
+      clickedElement = setfunc ccloned
       # 編集中にクリックしたものは選択する
-      if mode == 'edit'
-        cloned.attr "stroke", "yellow"
-        selected.push cloned unless cloned in selected
+      if mode == 'edit' || true
+        ccloned.attr "stroke", "yellow"
+        selected.push ccloned unless ccloned in selected
       downpoint = d3.mouse(this)
       moving = true
+      edit_mode()
       
     cloned.on 'mousemove', selfunc cloned
     
@@ -697,6 +700,9 @@ recognition = (recogStrokes) ->
         copiedElement.attr "stroke-width", linewidth / scalexx
         copiedElement.x = xx
         copiedElement.y = yy
+        copiedElement.attr 'stroke', linecolor
+        copiedElement.attr 'color', linecolor
+
       if target.nodeName == 'text'
         for snappoint in copiedElement.snappoints
           snappoint[0] += xx
@@ -726,7 +732,8 @@ recognition = (recogStrokes) ->
       recogstrokes = []
 
     candElement.on 'mousedown', candselfunc
-    if cand.type != 'text'
+    #if cand.type == 'path'
+    if ! cand.text
       candsvg.on 'mousedown', candselfunc
 
     candElement.on 'mouseup', ->

@@ -12,7 +12,6 @@ splitstroke = (points)->
     p0 = ipoint(points, i * 100)
     p1 = ipoint(points, (i+1) * 100)
     d = dist p0, p1
-    debug d
     if d > 10
       slow = false
     else
