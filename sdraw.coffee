@@ -646,7 +646,8 @@ edit_mode = ->
 # 
 recognition = (recogStrokes) ->
   # 認識アルゴリズムを読んで候補を得る
-  cands = recognize recogStrokes, points, window.kanjidata, window.figuredata
+  #cands = recognize recogStrokes, points, window.kanjidata, window.figuredata
+  cands = recognize recogStrokes, points, window.figuredata
 
   # 候補表示
   [0..7].forEach (i) ->
