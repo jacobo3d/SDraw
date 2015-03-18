@@ -694,6 +694,7 @@ recognition = (recogStrokes) ->
           snappoint[1] *= scaleyy
           snappoint[0] += xx
           snappoint[1] += yy
+        debug "#{linewidth} / #{scalexx}"
         copiedElement.attr "stroke-width", linewidth / scalexx
         copiedElement.x = xx
         copiedElement.y = yy
