@@ -203,11 +203,32 @@ data.push
     stroke: '#000000'
     fill: 'none'
     'stroke-width': 2
+
+#
+# トランジスタ 
+#
+data.push
+  strokes: [
+    [[35, 18], [35, 62]]
+    [[46, 18], [46, 62]]
+    [[15, 40], [35, 40]]
+    [[46, 18], [65, 18]]
+    [[65, 18], [65, 5]]
+    [[46, 62], [65, 62]]
+    [[65, 62], [65, 75]]
+  ]
+  snappoints: [
+    [15, 40], [65, 5], [65, 75]
+  ]
+  type: 'path'
+  attr:
+    d: "M35,18L35,62M46,18L46,62M15,40L35,40M46,18L65,18L65,5M46,62L65,62L65,75"
+    stroke: '#000000'
+    fill: 'none'
+    'stroke-width': 2
     
 #
 # JSON出力
 #
 console.log JSON.stringify data
-
-
 
