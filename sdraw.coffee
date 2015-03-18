@@ -99,12 +99,21 @@ $('#delete').on 'click', ->
     $('#searchtext').val(query[0..-2]) # 最後の文字を消す
   else
     newelements = []
+    #nselected = selected.length
+    #nelements = elements.length
+    # for element in elements
+    #  newelements.push element unless element in selected
+    #for element in selected
+    #  element.remove()
     for element in elements
-      newelements.push element unless element in selected
-    for element in selected
-      element.remove()
+      if element in selected
+        element.remove()
+      else
+        newelements.push element
+        
     selected = []
     elements = newelements
+    # debug "#{nelements},  #{nselected}, #{elements.length}"
     #if elements.length == 0
     #  draw_mode()
     # 
@@ -457,6 +466,13 @@ draw_mode = ->
     if clickedElement && uptime-downtime < 300 && dist(uppoint,downpoint) < 20
       selected = []
       path.remove()      # drawmodeで描いていた線を消す
+
+      ##### pathを消す
+      newelements = []
+      for element in elements
+        newelements.push element unless element == path
+      elements = newelements
+      
       element = clickedElement()
       element.attr "stroke", "yellow"
       f = element.attr "fill"
@@ -565,7 +581,6 @@ edit_mode = ->
           else
             for snappoint in element.snappoints
               refpoints.push [snappoint[0], snappoint[1]]
-      debug refpoints.length
       #  
       # 他のオブジェクトにスナッピング
       # 

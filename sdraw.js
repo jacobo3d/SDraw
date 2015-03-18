@@ -101,7 +101,7 @@ $('#edit').on('click', function() {
 });
 
 $('#delete').on('click', function() {
-  var element, newelements, query, _i, _j, _len, _len1;
+  var element, newelements, query, _i, _len;
   if (selected.length === 0) {
     query = $('#searchtext').val();
     $('#searchtext').val(query.slice(0, -1));
@@ -109,13 +109,11 @@ $('#delete').on('click', function() {
     newelements = [];
     for (_i = 0, _len = elements.length; _i < _len; _i++) {
       element = elements[_i];
-      if (__indexOf.call(selected, element) < 0) {
+      if (__indexOf.call(selected, element) >= 0) {
+        element.remove();
+      } else {
         newelements.push(element);
       }
-    }
-    for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
-      element = selected[_j];
-      element.remove();
     }
     selected = [];
     elements = newelements;
@@ -472,7 +470,7 @@ draw_mode = function() {
     return path.on('mouseup', function() {});
   });
   svg.on('mouseup', function() {
-    var element, f, uptime;
+    var element, f, newelements, uptime, _i, _len;
     if (!downpoint) {
       return;
     }
@@ -499,6 +497,14 @@ draw_mode = function() {
     if (clickedElement && uptime - downtime < 300 && dist(uppoint, downpoint) < 20) {
       selected = [];
       path.remove();
+      newelements = [];
+      for (_i = 0, _len = elements.length; _i < _len; _i++) {
+        element = elements[_i];
+        if (element !== path) {
+          newelements.push(element);
+        }
+      }
+      elements = newelements;
       element = clickedElement();
       element.attr("stroke", "yellow");
       f = element.attr("fill");
@@ -624,7 +630,6 @@ edit_mode = function() {
           }
         }
       }
-      debug(refpoints.length);
       d = 10000000;
       for (_n = 0, _len5 = points.length; _n < _len5; _n++) {
         point = points[_n];
