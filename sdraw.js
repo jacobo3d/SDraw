@@ -36,6 +36,8 @@ fontsize = 50;
 
 linecolor = '#000000';
 
+clickedElement = null;
+
 window.debug = function(s) {
   return $('#searchtext').val(s);
 };
@@ -222,17 +224,15 @@ clone = function(dx, dy) {
     }
     ccloned = cloned;
     cloned.on('mousedown', function() {
-      var clickedElement;
       clickedElement = setfunc(ccloned);
-      if (mode === 'edit' || true) {
+      if (mode === 'edit') {
         ccloned.attr("stroke", "yellow");
         if (__indexOf.call(selected, ccloned) < 0) {
           selected.push(ccloned);
         }
       }
       downpoint = d3.mouse(this);
-      moving = true;
-      return edit_mode();
+      return moving = true;
     });
     cloned.on('mousemove', selfunc(cloned));
     newselected.push(cloned);
@@ -284,7 +284,6 @@ candsearch = function() {
           });
           iimage = image;
           image.on('mousedown', function() {
-            var clickedElement;
             clickedElement = setfunc(iimage);
             downpoint = d3.mouse(this);
             return moving = true;
@@ -406,8 +405,6 @@ modetimeout = null;
 resettimeout = null;
 
 downtime = null;
-
-clickedElement = null;
 
 deletestate = 0;
 

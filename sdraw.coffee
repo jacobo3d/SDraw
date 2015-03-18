@@ -29,6 +29,8 @@ linewidth = 10
 fontsize = 50
 linecolor = '#000000'
 
+clickedElement = null # クリックされたパスや文字を覚えておく
+
 window.debug = (s) ->
   $('#searchtext').val(s)
       
@@ -191,12 +193,11 @@ clone = (dx, dy) ->
       #return unless mode == 'edit'
       clickedElement = setfunc ccloned
       # 編集中にクリックしたものは選択する
-      if mode == 'edit' || true
+      if mode == 'edit'
         ccloned.attr "stroke", "yellow"
         selected.push ccloned unless ccloned in selected
       downpoint = d3.mouse(this)
       moving = true
-      edit_mode()
       
     cloned.on 'mousemove', selfunc cloned
     
@@ -369,8 +370,6 @@ setfunc = (element) ->
 modetimeout = null    # 長押しで編集モードにするため
 resettimeout = null   # 時間がたつと候補リセット
 downtime = null
-
-clickedElement = null # クリックされたパスや文字を覚えておく
 
 deletestate = 0 # 振ると削除するため
 
