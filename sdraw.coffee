@@ -572,6 +572,9 @@ edit_mode = ->
     .remove()
   bgrect.attr "fill", "#c0c0c0"
 
+  for element in selected
+    element.attr 'origpoints', (element.attr 'points')
+
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
@@ -582,6 +585,10 @@ edit_mode = ->
     totaldist = 0
     deletestate = 0
     shakepoint = downpoint
+    
+    for element in selected
+      element.attr 'origpoints', (element.attr 'points')
+    
 
   svg.on 'mousemove', -> # 選択項目移動
     return unless downpoint
@@ -596,12 +603,21 @@ edit_mode = ->
         sizesquare.attr
           d: "M#{movepoint[0]-10},#{movepoint[1]-10}L#{movepoint[0]-10},#{movepoint[1]+10}L#{movepoint[0]+10},#{movepoint[1]+10}L#{movepoint[0]+10},#{movepoint[1]-10}Z"
         for element in selected
-          # element.x, element.scalex
+          # scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
+          # scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
+          # posx = zoomorigx + (element.x-zoomorigx) * scalex
+          # posy = zoomorigy + (element.y-zoomorigy) * scaley
+          # element.attr "transform", "translate(#{posx},#{posy}) scale(#{scalex},#{scaley})"
+          
           scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
           scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
-          posx = zoomorigx + (element.x-zoomorigx) * scalex
-          posy = zoomorigy + (element.y-zoomorigy) * scaley
-          element.attr "transform", "translate(#{posx},#{posy}) scale(#{scalex},#{scaley})"
+          points = []
+          for point in JSON.parse(element.attr('origpoints'))
+            point[0] = zoomorigx + (point[0]-zoomorigx) * scalex
+            point[1] = zoomorigy + (point[1]-zoomorigy) * scaley
+            points.push point
+          element.attr 'points', JSON.stringify points
+          element.attr 'd', line points
       return
 
     if moving
@@ -667,9 +683,24 @@ edit_mode = ->
         snapdx = 0
         snapdy = 0
       for element in selected
-        movex = element.x+movepoint[0]-downpoint[0]-snapdx
-        movey = element.y+movepoint[1]-downpoint[1]-snapdy
-        element.attr "transform", "translate(#{movex},#{movey}) scale(#{element.scalex ? 1},#{element.scaley ? 1})"
+        movex = movepoint[0]-downpoint[0]-snapdx
+        movey = movepoint[1]-downpoint[1]-snapdy
+        points = []
+        for point in JSON.parse(element.attr('origpoints'))
+          point[0] = point[0] + movex
+          point[1] = point[1] + movey
+          points.push point
+        element.attr 'points', JSON.stringify points
+        element.attr 'd', line points
+
+        # # movex = element.x+movepoint[0]-downpoint[0]-snapdx
+        # # movey = element.y+movepoint[1]-downpoint[1]-snapdy
+        # # #element.attr "transform", "translate(#{movex},#{movey}) scale(#{element.scalex ? 1},#{element.scaley ? 1})"
+        # # element.attr "transform", "translate(#{movex},#{movey}) scale(1,1)"
+        # movex = movepoint[0]-downpoint[0]-snapdx
+        # movey = movepoint[1]-downpoint[1]-snapdy
+        # #element.attr "transform", "translate(#{movex},#{movey}) scale(#{element.scalex ? 1},#{element.scaley ? 1})"
+        # element.attr "transform", "translate(#{movex},#{movey}) scale(1,1)"
                 
   svg.on 'mouseup', ->
     return unless downpoint
@@ -693,13 +724,13 @@ edit_mode = ->
         #element.attr 'y', posy
         # point補整
         points = []
-        for point in JSON.parse(element.attr('points'))
+        for point in JSON.parse(element.attr('origpoints'))
           point[0] = zoomorigx + (point[0]-zoomorigx) * scalex
           point[1] = zoomorigy + (point[1]-zoomorigy) * scaley
           points.push point
         element.attr 'points', JSON.stringify points
         element.attr 'd', line points
-        element.attr "transform", "translate(0,0) scale(1,1)"
+        #element.attr "transform", "translate(0,0) scale(1,1)"
       
     if moving
       moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
@@ -711,6 +742,15 @@ edit_mode = ->
           for snappoint in element.snappoints
             snappoint[0] += moved[0]
             snappoint[1] += moved[1]
+
+        points = []
+        for point in JSON.parse(element.attr('origpoints'))
+          point[0] += moved[0]
+          point[1] += moved[1]
+          points.push point
+        element.attr 'points', JSON.stringify points
+        element.attr 'd', line points
+        # element.attr "transform", "translate(0,0) scale(1,1)"
 
     moving = false
     downpoint = null

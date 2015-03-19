@@ -618,12 +618,18 @@ draw_mode = function() {
 };
 
 edit_mode = function() {
+  var element, _i, _len;
   mode = 'edit';
   deletestate = 0;
   shakepoint = downpoint;
   template.selectAll("*").remove();
   bgrect.attr("fill", "#c0c0c0");
+  for (_i = 0, _len = selected.length; _i < _len; _i++) {
+    element = selected[_i];
+    element.attr('origpoints', element.attr('points'));
+  }
   svg.on('mousedown', function() {
+    var _j, _len1, _results;
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
     movepoint = downpoint;
@@ -631,10 +637,16 @@ edit_mode = function() {
     moved = null;
     totaldist = 0;
     deletestate = 0;
-    return shakepoint = downpoint;
+    shakepoint = downpoint;
+    _results = [];
+    for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
+      element = selected[_j];
+      _results.push(element.attr('origpoints', element.attr('points')));
+    }
+    return _results;
   });
   svg.on('mousemove', function() {
-    var d, dd, element, movetime, movex, movey, newelements, oldmovepoint, point, posx, posy, refpoint, refpoints, scalex, scaley, snappoint, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _m, _n, _o, _p, _q, _ref, _ref1, _ref2, _ref3, _results;
+    var d, dd, movetime, movex, movey, newelements, oldmovepoint, point, refpoint, refpoints, scalex, scaley, snappoint, _j, _k, _l, _len1, _len10, _len11, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1, _ref2, _ref3, _results, _s, _t;
     if (!downpoint) {
       return;
     }
@@ -649,13 +661,20 @@ edit_mode = function() {
         sizesquare.attr({
           d: "M" + (movepoint[0] - 10) + "," + (movepoint[1] - 10) + "L" + (movepoint[0] - 10) + "," + (movepoint[1] + 10) + "L" + (movepoint[0] + 10) + "," + (movepoint[1] + 10) + "L" + (movepoint[0] + 10) + "," + (movepoint[1] - 10) + "Z"
         });
-        for (_i = 0, _len = selected.length; _i < _len; _i++) {
-          element = selected[_i];
+        for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
+          element = selected[_j];
           scalex = (movepoint[0] - zoomorigx) / (zoomx - zoomorigx);
           scaley = (movepoint[1] - zoomorigy) / (zoomy - zoomorigy);
-          posx = zoomorigx + (element.x - zoomorigx) * scalex;
-          posy = zoomorigy + (element.y - zoomorigy) * scaley;
-          element.attr("transform", "translate(" + posx + "," + posy + ") scale(" + scalex + "," + scaley + ")");
+          points = [];
+          _ref = JSON.parse(element.attr('origpoints'));
+          for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
+            point = _ref[_k];
+            point[0] = zoomorigx + (point[0] - zoomorigx) * scalex;
+            point[1] = zoomorigy + (point[1] - zoomorigy) * scaley;
+            points.push(point);
+          }
+          element.attr('points', JSON.stringify(points));
+          element.attr('d', line(points));
         }
       }
       return;
@@ -683,14 +702,14 @@ edit_mode = function() {
         case 3:
           if (shakepoint[0] - movepoint[0] > 30 && movetime - downtime < 2000) {
             newelements = [];
-            for (_j = 0, _len1 = elements.length; _j < _len1; _j++) {
-              element = elements[_j];
+            for (_l = 0, _len3 = elements.length; _l < _len3; _l++) {
+              element = elements[_l];
               if (__indexOf.call(selected, element) < 0) {
                 newelements.push(element);
               }
             }
-            for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
-              element = selected[_k];
+            for (_m = 0, _len4 = selected.length; _m < _len4; _m++) {
+              element = selected[_m];
               element.remove();
             }
             selected = [];
@@ -704,29 +723,29 @@ edit_mode = function() {
       if (totaldist > 200) {
         points = [];
         refpoints = [];
-        for (_l = 0, _len3 = elements.length; _l < _len3; _l++) {
-          element = elements[_l];
+        for (_n = 0, _len5 = elements.length; _n < _len5; _n++) {
+          element = elements[_n];
           if (element.snappoints) {
             if (__indexOf.call(selected, element) >= 0) {
-              _ref = element.snappoints;
-              for (_m = 0, _len4 = _ref.length; _m < _len4; _m++) {
-                snappoint = _ref[_m];
+              _ref1 = element.snappoints;
+              for (_o = 0, _len6 = _ref1.length; _o < _len6; _o++) {
+                snappoint = _ref1[_o];
                 points.push([snappoint[0] + movepoint[0] - downpoint[0], snappoint[1] + movepoint[1] - downpoint[1]]);
               }
             } else {
-              _ref1 = element.snappoints;
-              for (_n = 0, _len5 = _ref1.length; _n < _len5; _n++) {
-                snappoint = _ref1[_n];
+              _ref2 = element.snappoints;
+              for (_p = 0, _len7 = _ref2.length; _p < _len7; _p++) {
+                snappoint = _ref2[_p];
                 refpoints.push([snappoint[0], snappoint[1]]);
               }
             }
           }
         }
         d = 10000000;
-        for (_o = 0, _len6 = points.length; _o < _len6; _o++) {
-          point = points[_o];
-          for (_p = 0, _len7 = refpoints.length; _p < _len7; _p++) {
-            refpoint = refpoints[_p];
+        for (_q = 0, _len8 = points.length; _q < _len8; _q++) {
+          point = points[_q];
+          for (_r = 0, _len9 = refpoints.length; _r < _len9; _r++) {
+            refpoint = refpoints[_r];
             dd = dist(point, refpoint);
             if (dd < d) {
               d = dd;
@@ -741,25 +760,34 @@ edit_mode = function() {
         snapdy = 0;
       }
       _results = [];
-      for (_q = 0, _len8 = selected.length; _q < _len8; _q++) {
-        element = selected[_q];
-        movex = element.x + movepoint[0] - downpoint[0] - snapdx;
-        movey = element.y + movepoint[1] - downpoint[1] - snapdy;
-        _results.push(element.attr("transform", "translate(" + movex + "," + movey + ") scale(" + ((_ref2 = element.scalex) != null ? _ref2 : 1) + "," + ((_ref3 = element.scaley) != null ? _ref3 : 1) + ")"));
+      for (_s = 0, _len10 = selected.length; _s < _len10; _s++) {
+        element = selected[_s];
+        movex = movepoint[0] - downpoint[0] - snapdx;
+        movey = movepoint[1] - downpoint[1] - snapdy;
+        points = [];
+        _ref3 = JSON.parse(element.attr('origpoints'));
+        for (_t = 0, _len11 = _ref3.length; _t < _len11; _t++) {
+          point = _ref3[_t];
+          point[0] = point[0] + movex;
+          point[1] = point[1] + movey;
+          points.push(point);
+        }
+        element.attr('points', JSON.stringify(points));
+        _results.push(element.attr('d', line(points)));
       }
       return _results;
     }
   });
   return svg.on('mouseup', function() {
-    var element, f, origx, origy, point, posx, posy, scalex, scaley, snappoint, uptime, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _ref, _ref1;
+    var f, origx, origy, point, posx, posy, scalex, scaley, snappoint, uptime, _j, _k, _l, _len1, _len2, _len3, _len4, _len5, _len6, _m, _n, _o, _ref, _ref1, _ref2;
     if (!downpoint) {
       return;
     }
     d3.event.preventDefault();
     uppoint = d3.mouse(this);
     if (zooming) {
-      for (_i = 0, _len = selected.length; _i < _len; _i++) {
-        element = selected[_i];
+      for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
+        element = selected[_j];
         scalex = (uppoint[0] - zoomorigx) / (zoomx - zoomorigx);
         scaley = (uppoint[1] - zoomorigy) / (zoomy - zoomorigy);
         posx = zoomorigx + (element.x - zoomorigx) * scalex;
@@ -769,32 +797,41 @@ edit_mode = function() {
         element.scalex = scalex;
         element.scaley = scaley;
         points = [];
-        _ref = JSON.parse(element.attr('points'));
-        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-          point = _ref[_j];
+        _ref = JSON.parse(element.attr('origpoints'));
+        for (_k = 0, _len2 = _ref.length; _k < _len2; _k++) {
+          point = _ref[_k];
           point[0] = zoomorigx + (point[0] - zoomorigx) * scalex;
           point[1] = zoomorigy + (point[1] - zoomorigy) * scaley;
           points.push(point);
         }
         element.attr('points', JSON.stringify(points));
         element.attr('d', line(points));
-        element.attr("transform", "translate(0,0) scale(1,1)");
       }
     }
     if (moving) {
       moved = [uppoint[0] - downpoint[0] - snapdx, uppoint[1] - downpoint[1] - snapdy];
-      for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
-        element = selected[_k];
+      for (_l = 0, _len3 = selected.length; _l < _len3; _l++) {
+        element = selected[_l];
         element.x += moved[0];
         element.y += moved[1];
         if (element.snappoints) {
           _ref1 = element.snappoints;
-          for (_l = 0, _len3 = _ref1.length; _l < _len3; _l++) {
-            snappoint = _ref1[_l];
+          for (_m = 0, _len4 = _ref1.length; _m < _len4; _m++) {
+            snappoint = _ref1[_m];
             snappoint[0] += moved[0];
             snappoint[1] += moved[1];
           }
         }
+        points = [];
+        _ref2 = JSON.parse(element.attr('origpoints'));
+        for (_n = 0, _len5 = _ref2.length; _n < _len5; _n++) {
+          point = _ref2[_n];
+          point[0] += moved[0];
+          point[1] += moved[1];
+          points.push(point);
+        }
+        element.attr('points', JSON.stringify(points));
+        element.attr('d', line(points));
       }
     }
     moving = false;
@@ -808,8 +845,8 @@ edit_mode = function() {
         recogstrokes = [];
         draw_mode();
       } else {
-        for (_m = 0, _len4 = selected.length; _m < _len4; _m++) {
-          element = selected[_m];
+        for (_o = 0, _len6 = selected.length; _o < _len6; _o++) {
+          element = selected[_o];
           element.attr("stroke", element.attr('color'));
           f = element.attr("fill");
           if (f && f !== "none") {
