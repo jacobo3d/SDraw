@@ -271,7 +271,8 @@ clone = function(dx, dy) {
     newselected.push(cloned);
     elements.push(cloned);
   }
-  return selected = newselected;
+  selected = newselected;
+  return showframe();
 };
 
 $('#repeat').on('click', function() {
@@ -283,7 +284,8 @@ $('#repeat').on('click', function() {
 $('#selectall').on('click', function() {
   edit_mode();
   svg.selectAll("*").attr("stroke", "yellow");
-  return selected = elements;
+  selected = elements;
+  return showframe();
 });
 
 candsearch = function() {
@@ -476,7 +478,7 @@ showframe = function() {
     fill: 'none',
     'stroke': '#0000ff',
     'stroke-opacity': 0.5,
-    'stroke-width': 7
+    'stroke-width': 2
   });
   sizesquare = svg.append('path');
   sizesquare.attr({
@@ -505,6 +507,7 @@ hideframe = function() {
 };
 
 draw_mode = function() {
+  hideframe();
   mode = 'draw';
   moved = null;
   duplicated = false;
@@ -668,7 +671,7 @@ edit_mode = function() {
     return _results;
   });
   svg.on('mousemove', function() {
-    var d, dd, movetime, movex, movey, newelements, oldmovepoint, point, refpoint, refpoints, scalex, scaley, snappoint, _j, _k, _l, _len1, _len10, _len11, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1, _ref2, _ref3, _results, _s, _t;
+    var d, dd, movetime, movex, movey, newelements, oldmovepoint, point, refpoint, refpoints, scalex, scaley, snappoint, _j, _k, _l, _len1, _len10, _len11, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1, _ref2, _ref3, _s, _t;
     if (!downpoint) {
       return;
     }
@@ -781,7 +784,6 @@ edit_mode = function() {
         snapdx = 0;
         snapdy = 0;
       }
-      _results = [];
       for (_s = 0, _len10 = selected.length; _s < _len10; _s++) {
         element = selected[_s];
         movex = movepoint[0] - downpoint[0] - snapdx;
@@ -795,9 +797,9 @@ edit_mode = function() {
           points.push(point);
         }
         element.attr('points', JSON.stringify(points));
-        _results.push(element.attr('d', line(points)));
+        element.attr('d', line(points));
       }
-      return _results;
+      return showframe();
     }
   });
   return svg.on('mouseup', function() {
@@ -853,6 +855,7 @@ edit_mode = function() {
         element.attr('points', JSON.stringify(points));
         element.attr('d', line(points));
       }
+      showframe();
     }
     element.attr('origpoints', element.attr('points'));
     moving = false;

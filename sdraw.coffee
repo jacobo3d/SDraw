@@ -234,6 +234,7 @@ clone = (dx, dy) ->
     elements.push cloned
     
   selected = newselected
+  showframe()
 
 #
 # 繰り返し操作サポート
@@ -252,6 +253,7 @@ $('#selectall').on 'click', ->
   svg.selectAll "*"
     .attr "stroke", "yellow"
   selected = elements
+  showframe()
   
 ############################################################################
 #
@@ -399,6 +401,9 @@ setfunc = (element) ->
   ->
     return element
 
+#
+# 拡大/縮小
+#
 zoomorigx = 0
 zoomorigy = 0
 zoomx = 0
@@ -427,7 +432,7 @@ showframe = ->
     fill: 'none'
     'stroke': '#0000ff'
     'stroke-opacity': 0.5
-    'stroke-width': 7
+    'stroke-width': 2
   sizesquare = svg.append 'path'
   sizesquare.attr
     d: "M#{maxx-10},#{maxy-10}L#{maxx-10},#{maxy+10}L#{maxx+10},#{maxy+10}L#{maxx+10},#{maxy-10}Z"
@@ -447,8 +452,11 @@ hideframe = ->
   sizeframe.remove() if sizeframe
   sizesquare.remove() if sizesquare
 
-    
+#
+# 描画モード
+# 
 draw_mode = ->
+  hideframe()
   mode = 'draw'
   moved = null
   duplicated = false
@@ -702,6 +710,7 @@ edit_mode = ->
           points.push point
         element.attr 'points', JSON.stringify points
         element.attr 'd', line points
+      showframe()
 
   svg.on 'mouseup', ->
     return unless downpoint
@@ -744,6 +753,7 @@ edit_mode = ->
           points.push point
         element.attr 'points', JSON.stringify points
         element.attr 'd', line points
+      showframe()
 
     element.attr 'origpoints', (element.attr 'points')
     
