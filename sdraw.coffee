@@ -104,12 +104,6 @@ $('#delete').on 'click', ->
     $('#searchtext').val(query[0..-2]) # 最後の文字を消す
   else
     newelements = []
-    #nselected = selected.length
-    #nelements = elements.length
-    # for element in elements
-    #  newelements.push element unless element in selected
-    #for element in selected
-    #  element.remove()
     for element in elements
       if element in selected
         element.remove()
@@ -118,12 +112,7 @@ $('#delete').on 'click', ->
         
     selected = []
     elements = newelements
-    # debug "#{nelements},  #{nselected}, #{elements.length}"
-    #if elements.length == 0
-    #  draw_mode()
-    # 
-    #else
-    #  alert elements.length        ****** おかしい
+
   draw_mode()
 
 $('#dup').on 'click', ->
@@ -211,29 +200,39 @@ clone = (dx, dy) ->
 
     points = []
     for point in JSON.parse(element.attr('origpoints'))
-      point[0] = point[0] + dx
-      point[1] = point[1] + dy
-      points.push point
+      p = []
+      p[0] = point[0] + dx
+      p[1] = point[1] + dy
+      points.push p
     cloned.attr 'points', JSON.stringify points
-    cloned.attr 'd', line points
+    cloned.attr 'origpoints', JSON.stringify points
+    cloned.attr 'd', line(points)
 
     cloned.text element.text() if nodeName == 'text'
 
     ccloned = cloned
     cloned.on 'mousedown', ->
+      debug "cloned clicked"
       #return unless mode == 'edit'
       clickedElement = setfunc ccloned
       # 編集中にクリックしたものは選択する
       if mode == 'edit'
         ccloned.attr "stroke", "yellow"
         selected.push ccloned unless ccloned in selected
+      #downpoint = [d3.event.pageX, d3.event.pageY]
       downpoint = d3.mouse(this)
       moving = true
       
     cloned.on 'mousemove', selfunc cloned
     
+    cloned.on 'mouseup', ->
+      #downpoint = null
+      #moving = false
+      #clickedElement = null
+      
     newselected.push cloned
     elements.push cloned
+    
   selected = newselected
 
 #
@@ -406,6 +405,8 @@ zoomx = 0
 zoomy = 0
 
 showframe = ->
+  debug "sf-#{selected.length}"
+  hideframe()
   points = []
   for element in selected
     for point in JSON.parse(element.attr('points'))
@@ -416,7 +417,6 @@ showframe = ->
   minx = Math.min x...
   maxy = Math.max y...
   miny = Math.min y...
-  sizeframe.remove() if sizeframe
   sizeframe = svg.append 'path'
   sizeframe.attr
     'x': minx-5
@@ -428,7 +428,6 @@ showframe = ->
     'stroke': '#0000ff'
     'stroke-opacity': 0.5
     'stroke-width': 7
-  sizesquare.remove() if sizesquare
   sizesquare = svg.append 'path'
   sizesquare.attr
     d: "M#{maxx-10},#{maxy-10}L#{maxx-10},#{maxy+10}L#{maxx+10},#{maxy+10}L#{maxx+10},#{maxy-10}Z"
@@ -442,6 +441,12 @@ showframe = ->
     zoomx = downpoint[0]
     zoomy = downpoint[1]
     zooming = true
+    moving = false
+
+hideframe = ->
+  sizeframe.remove() if sizeframe
+  sizesquare.remove() if sizesquare
+
     
 draw_mode = ->
   mode = 'draw'
@@ -460,6 +465,7 @@ draw_mode = ->
   bgrect.attr "fill", "#ffffff"
 
   svg.on 'mousedown', ->
+    debug "dm-mousedown"
     d3.event.preventDefault()
     
     downpoint = d3.mouse(this)
@@ -524,6 +530,7 @@ draw_mode = ->
     , 1500
 
     if clickedElement && uptime-downtime < 300 && dist(uppoint,downpoint) < 20
+      debug "dm-up-300"
       selected = []
       path.remove()      # drawmodeで描いていた線を消す
 
@@ -540,6 +547,7 @@ draw_mode = ->
         element.attr "fill", "yellow"
       selected.push element
       # moving = true !!!!!
+      downpoint = null
       showframe()
       zooming = false
       edit_mode()
@@ -697,6 +705,7 @@ edit_mode = ->
 
   svg.on 'mouseup', ->
     return unless downpoint
+    debug 'e-mouseup'
 
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
@@ -717,6 +726,7 @@ edit_mode = ->
         element.attr 'd', line points
       
     if moving
+      debug 'moving'
       moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
       for element in selected
         element.x += moved[0]
@@ -735,7 +745,10 @@ edit_mode = ->
         element.attr 'points', JSON.stringify points
         element.attr 'd', line points
 
+    element.attr 'origpoints', (element.attr 'points')
+    
     moving = false
+    zooming = false
     downpoint = null
 
     # uptime = new Date()
@@ -746,6 +759,7 @@ edit_mode = ->
         selected = []
         strokes = []
         recogstrokes = []
+        hideframe()
         draw_mode()
       else
         for element in selected
@@ -754,12 +768,12 @@ edit_mode = ->
           if f && f != "none"
             element.attr "fill", element.attr('color')   # 文字の色を戻す
         selected = []
+        hideframe()
         draw_mode() # 選択物がなくなったら描画モードに戻してみる
      
     clickedElement = null
-    zooming = false
-    sizeframe.remove()
-    sizesquare.remove()
+
+    # hideframe()
 
 #
 # 文字/ストローク認識 + 候補表示
