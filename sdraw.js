@@ -210,7 +210,7 @@ pen.on('mousedown', function() {
 });
 
 clone = function(dx, dy) {
-  var attr, ccloned, cloned, e, element, newselected, nodeName, parent, snappoint, _i, _j, _k, _len, _len1, _len2, _ref;
+  var attr, ccloned, cloned, e, element, newselected, nodeName, parent, point, snappoint, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1;
   newselected = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
@@ -238,7 +238,16 @@ clone = function(dx, dy) {
         snappoint[1] += dy;
       }
     }
-    cloned.attr("transform", "translate(" + cloned.x + "," + cloned.y + ") scale(" + cloned.scalex + "," + cloned.scaley + ")");
+    points = [];
+    _ref1 = JSON.parse(element.attr('origpoints'));
+    for (_l = 0, _len3 = _ref1.length; _l < _len3; _l++) {
+      point = _ref1[_l];
+      point[0] = point[0] + dx;
+      point[1] = point[1] + dy;
+      points.push(point);
+    }
+    cloned.attr('points', JSON.stringify(points));
+    cloned.attr('d', line(points));
     if (nodeName === 'text') {
       cloned.text(element.text());
     }
@@ -779,7 +788,7 @@ edit_mode = function() {
     }
   });
   return svg.on('mouseup', function() {
-    var f, origx, origy, point, posx, posy, scalex, scaley, snappoint, uptime, _j, _k, _l, _len1, _len2, _len3, _len4, _len5, _len6, _m, _n, _o, _ref, _ref1, _ref2;
+    var f, point, scalex, scaley, snappoint, uptime, _j, _k, _l, _len1, _len2, _len3, _len4, _len5, _len6, _m, _n, _o, _ref, _ref1, _ref2;
     if (!downpoint) {
       return;
     }
@@ -790,10 +799,6 @@ edit_mode = function() {
         element = selected[_j];
         scalex = (uppoint[0] - zoomorigx) / (zoomx - zoomorigx);
         scaley = (uppoint[1] - zoomorigy) / (zoomy - zoomorigy);
-        posx = zoomorigx + (element.x - zoomorigx) * scalex;
-        posy = zoomorigy + (element.y - zoomorigy) * scaley;
-        origx = element.x;
-        origy = element.y;
         element.scalex = scalex;
         element.scaley = scaley;
         points = [];

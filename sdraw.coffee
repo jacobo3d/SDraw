@@ -208,7 +208,15 @@ clone = (dx, dy) ->
       for snappoint in cloned.snappoints
         snappoint[0] += dx
         snappoint[1] += dy
-    cloned.attr "transform", "translate(#{cloned.x},#{cloned.y}) scale(#{cloned.scalex},#{cloned.scaley})"
+
+    points = []
+    for point in JSON.parse(element.attr('origpoints'))
+      point[0] = point[0] + dx
+      point[1] = point[1] + dy
+      points.push point
+    cloned.attr 'points', JSON.stringify points
+    cloned.attr 'd', line points
+
     cloned.text element.text() if nodeName == 'text'
 
     ccloned = cloned
@@ -603,12 +611,6 @@ edit_mode = ->
         sizesquare.attr
           d: "M#{movepoint[0]-10},#{movepoint[1]-10}L#{movepoint[0]-10},#{movepoint[1]+10}L#{movepoint[0]+10},#{movepoint[1]+10}L#{movepoint[0]+10},#{movepoint[1]-10}Z"
         for element in selected
-          # scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
-          # scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
-          # posx = zoomorigx + (element.x-zoomorigx) * scalex
-          # posy = zoomorigy + (element.y-zoomorigy) * scaley
-          # element.attr "transform", "translate(#{posx},#{posy}) scale(#{scalex},#{scaley})"
-          
           scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
           scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
           points = []
@@ -693,15 +695,6 @@ edit_mode = ->
         element.attr 'points', JSON.stringify points
         element.attr 'd', line points
 
-        # # movex = element.x+movepoint[0]-downpoint[0]-snapdx
-        # # movey = element.y+movepoint[1]-downpoint[1]-snapdy
-        # # #element.attr "transform", "translate(#{movex},#{movey}) scale(#{element.scalex ? 1},#{element.scaley ? 1})"
-        # # element.attr "transform", "translate(#{movex},#{movey}) scale(1,1)"
-        # movex = movepoint[0]-downpoint[0]-snapdx
-        # movey = movepoint[1]-downpoint[1]-snapdy
-        # #element.attr "transform", "translate(#{movex},#{movey}) scale(#{element.scalex ? 1},#{element.scaley ? 1})"
-        # element.attr "transform", "translate(#{movex},#{movey}) scale(1,1)"
-                
   svg.on 'mouseup', ->
     return unless downpoint
 
@@ -712,16 +705,8 @@ edit_mode = ->
       for element in selected
         scalex =  (uppoint[0] - zoomorigx) / (zoomx - zoomorigx)
         scaley =  (uppoint[1] - zoomorigy) / (zoomy - zoomorigy)
-        posx = zoomorigx + (element.x-zoomorigx) * scalex
-        posy = zoomorigy + (element.y-zoomorigy) * scaley
-        origx = element.x
-        origy = element.y
-        #element.x = posx
-        #element.y = posy
         element.scalex = scalex
         element.scaley = scaley
-        #element.attr 'x', posx
-        #element.attr 'y', posy
         # point補整
         points = []
         for point in JSON.parse(element.attr('origpoints'))
@@ -730,7 +715,6 @@ edit_mode = ->
           points.push point
         element.attr 'points', JSON.stringify points
         element.attr 'd', line points
-        #element.attr "transform", "translate(0,0) scale(1,1)"
       
     if moving
       moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
@@ -750,7 +734,6 @@ edit_mode = ->
           points.push point
         element.attr 'points', JSON.stringify points
         element.attr 'd', line points
-        # element.attr "transform", "translate(0,0) scale(1,1)"
 
     moving = false
     downpoint = null
