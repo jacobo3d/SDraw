@@ -63,15 +63,13 @@ recognize = (strokes, points, strokedata...) -> # strokedataは可変個引数
     cands.push [vline, 0]
 
   # 円
-  minx = 1000
-  miny = 1000
-  maxx = -1000
-  maxy = -1000
-  for point in points
-    minx = point[0] if point[0] < minx
-    miny = point[1] if point[1] < miny
-    maxx = point[0] if point[0] > maxx
-    maxy = point[1] if point[1] > maxy
+  x = points.map (e) -> e[0]
+  y = points.map (e) -> e[1]
+  maxx = Math.max x...
+  minx = Math.min x...
+  maxy = Math.max y...
+  miny = Math.min y...
+  
   if nstrokes == 1 && maxx-minx > 50 && maxy-miny > 50 && dist(strokes[0][0], strokes[0][1]) < 40
     rx = (maxx - minx) / 2
     ry = (maxy - miny) / 2

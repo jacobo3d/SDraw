@@ -37,8 +37,13 @@ snapdx = 0
 snapdy = 0
 totaldist = 0
 shakepoint = [0, 0]
+
+sizeframe = null          # 拡大/縮小フレーム
+sizesquare = null
   
 clickedElement = null # クリックされたパスや文字を覚えておく
+
+zooming = false
 
 window.debug = (s) ->
   $('#searchtext').val(s)
@@ -367,6 +372,7 @@ drawPath = (path) ->
     'stroke-width':   linewidth
     'stroke-linecap': "round"
     fill:             "none"
+    points:           JSON.stringify points
   path.x = 0
   path.y = 0
 
@@ -380,11 +386,55 @@ selfunc = (element) ->
       return if moving # 移動中は選択しない
       element.attr "stroke", "yellow"
       selected.push element unless element in selected
+      showframe()
 
 setfunc = (element) ->
   ->
     return element
 
+zoomorigx = 0
+zoomorigy = 0
+zoomx = 0
+zoomy = 0
+
+showframe = ->
+  points = []
+  for element in selected
+    for point in JSON.parse(element.attr('points'))
+      points.push point
+  x = points.map (e) -> e[0]
+  y = points.map (e) -> e[1]
+  maxx = Math.max x...
+  minx = Math.min x...
+  maxy = Math.max y...
+  miny = Math.min y...
+  sizeframe.remove() if sizeframe
+  sizeframe = svg.append 'path'
+  sizeframe.attr
+    'x': minx-5
+    'y': miny-5
+    'width': maxx-minx+10
+    'height': maxy-miny+10
+    d: "M#{minx-5},#{miny-5}L#{minx-5},#{maxy+5}L#{maxx+5},#{maxy+5}L#{maxx+5},#{miny-5}Z"
+    fill: 'none'
+    'stroke': '#0000ff'
+    'stroke-opacity': 0.5
+    'stroke-width': 7
+  sizesquare.remove() if sizesquare
+  sizesquare = svg.append 'path'
+  sizesquare.attr
+    d: "M#{maxx-10},#{maxy-10}L#{maxx-10},#{maxy+10}L#{maxx+10},#{maxy+10}L#{maxx+10},#{maxy-10}Z"
+    fill: '#ff0000'
+    'fill-opacity': 0.5
+    
+  sizesquare.on 'mousedown', ->
+    downpoint = d3.mouse(this)
+    zoomorigx = minx
+    zoomorigy = miny
+    zoomx = downpoint[0]
+    zoomy = downpoint[1]
+    zooming = true
+    
 draw_mode = ->
   mode = 'draw'
   moved = null
@@ -418,6 +468,7 @@ draw_mode = ->
         if f && f != "none"
           element.attr "fill", "yellow"
         selected.push element
+        showframe()
         # moving = true !!!!!
         edit_mode()
     , 500
@@ -431,11 +482,12 @@ draw_mode = ->
     path.on 'mousedown', ->
       # return unless mode == 'edit'
       clickedElement = setfunc ppath
-
+      
       # 編集中にクリックしたものは選択する
       if mode == 'edit'
         ppath.attr "stroke", "yellow"
         selected.push ppath unless ppath in selected
+        showframe()
       
       downpoint = d3.mouse(this)
       moving = true
@@ -467,7 +519,7 @@ draw_mode = ->
       selected = []
       path.remove()      # drawmodeで描いていた線を消す
 
-      ##### pathを消す
+      # pathを消す
       newelements = []
       for element in elements
         newelements.push element unless element == path
@@ -480,6 +532,8 @@ draw_mode = ->
         element.attr "fill", "yellow"
       selected.push element
       # moving = true !!!!!
+      showframe()
+      zooming = false
       edit_mode()
         
     # mouseup時にdrawPathすると端点が汚くなる。
@@ -531,82 +585,122 @@ edit_mode = ->
 
   svg.on 'mousemove', -> # 選択項目移動
     return unless downpoint
-    return unless moving
     oldmovepoint = movepoint
     movepoint = d3.mouse(this)
     movetime = d3.event.timeStamp
-    #
-    # 削除ジェスチャ取得
-    #
-    switch deletestate
-      when 0
-        if movepoint[0] - shakepoint[0] > 30
-          deletestate = 1
-          shakepoint = movepoint
-      when 1
-        if shakepoint[0] - movepoint[0] > 30
-          deletestate = 2
-          shakepoint = movepoint
-      when 2
-        if movepoint[0] - shakepoint[0] > 30
-          deletestate = 3
-          shakepoint = movepoint
-      when 3
-        if shakepoint[0] - movepoint[0] > 30 && movetime - downtime < 2000
-          # 削除!
-          newelements = []
-          for element in elements
-            newelements.push element unless element in selected
-          for element in selected
-            element.remove()
-          selected = []
-          elements = newelements
-          draw_mode()
-    
-    totaldist += dist movepoint, oldmovepoint
-    #
-    # スナッピング処理
-    #
-    # d = dist movepoint, downpoint
-    snapdx = 0
-    snapdy = 0
-    if totaldist > 200
-      points = []     # 移動オブジェクトの端点リスト
-      refpoints = []  # それ以外のオブジェクトの端点リスト
-      for element in elements
-        if element.snappoints # 謎...
-          if element in selected
-            for snappoint in element.snappoints
-              points.push [snappoint[0]+movepoint[0]-downpoint[0], snappoint[1]+movepoint[1]-downpoint[1]]
-          else
-            for snappoint in element.snappoints
-              refpoints.push [snappoint[0], snappoint[1]]
-      #  
-      # 他のオブジェクトにスナッピング
-      # 
-      d = 10000000
-      for point in points
-        for refpoint in refpoints
-          dd = dist point, refpoint
-          if dd < d
-            d = dd
-            snapdx = point[0] - refpoint[0]
-            snapdy = point[1] - refpoint[1]
 
-    if Math.abs(snapdx) > 50 || Math.abs (snapdy) > 50 # 遠いときはスナップしない
+    if zooming
+      if downpoint
+        sizeframe.attr
+          d: "M#{zoomorigx-5},#{zoomorigy-5}L#{zoomorigx-5},#{movepoint[1]+5}L#{movepoint[0]+5},#{movepoint[1]+5}L#{movepoint[0]+5},#{zoomorigy-5}Z"
+        sizesquare.attr
+          d: "M#{movepoint[0]-10},#{movepoint[1]-10}L#{movepoint[0]-10},#{movepoint[1]+10}L#{movepoint[0]+10},#{movepoint[1]+10}L#{movepoint[0]+10},#{movepoint[1]-10}Z"
+        for element in selected
+          # element.x, element.scalex
+          scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
+          scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
+          posx = zoomorigx + (element.x-zoomorigx) * scalex
+          posy = zoomorigy + (element.y-zoomorigy) * scaley
+          element.attr "transform", "translate(#{posx},#{posy}) scale(#{scalex},#{scaley})"
+      return
+
+    if moving
+      #
+      # 削除ジェスチャ取得
+      #
+      switch deletestate
+        when 0
+          if movepoint[0] - shakepoint[0] > 30
+            deletestate = 1
+            shakepoint = movepoint
+        when 1
+          if shakepoint[0] - movepoint[0] > 30
+            deletestate = 2
+            shakepoint = movepoint
+        when 2
+          if movepoint[0] - shakepoint[0] > 30
+            deletestate = 3
+            shakepoint = movepoint
+        when 3
+          if shakepoint[0] - movepoint[0] > 30 && movetime - downtime < 2000
+            # 削除!
+            newelements = []
+            for element in elements
+              newelements.push element unless element in selected
+            for element in selected
+              element.remove()
+            selected = []
+            elements = newelements
+            draw_mode()
+      
+      totaldist += dist movepoint, oldmovepoint
+      #
+      # スナッピング処理
+      #
+      # d = dist movepoint, downpoint
       snapdx = 0
       snapdy = 0
-    for element in selected
-      movex = element.x+movepoint[0]-downpoint[0]-snapdx
-      movey = element.y+movepoint[1]-downpoint[1]-snapdy
-      element.attr "transform", "translate(#{movex},#{movey}) scale(#{element.scalex ? 1},#{element.scaley ? 1})"
-      #alert element.attr('scalex')
-              
+      if totaldist > 200
+        points = []     # 移動オブジェクトの端点リスト
+        refpoints = []  # それ以外のオブジェクトの端点リスト
+        for element in elements
+          if element.snappoints # 謎...
+            if element in selected
+              for snappoint in element.snappoints
+                points.push [snappoint[0]+movepoint[0]-downpoint[0], snappoint[1]+movepoint[1]-downpoint[1]]
+            else
+              for snappoint in element.snappoints
+                refpoints.push [snappoint[0], snappoint[1]]
+        #  
+        # 他のオブジェクトにスナッピング
+        # 
+        d = 10000000
+        for point in points
+          for refpoint in refpoints
+            dd = dist point, refpoint
+            if dd < d
+              d = dd
+              snapdx = point[0] - refpoint[0]
+              snapdy = point[1] - refpoint[1]
+  
+      if Math.abs(snapdx) > 50 || Math.abs (snapdy) > 50 # 遠いときはスナップしない
+        snapdx = 0
+        snapdy = 0
+      for element in selected
+        movex = element.x+movepoint[0]-downpoint[0]-snapdx
+        movey = element.y+movepoint[1]-downpoint[1]-snapdy
+        element.attr "transform", "translate(#{movex},#{movey}) scale(#{element.scalex ? 1},#{element.scaley ? 1})"
+                
   svg.on 'mouseup', ->
     return unless downpoint
 
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
+
+    if zooming
+      for element in selected
+        scalex =  (uppoint[0] - zoomorigx) / (zoomx - zoomorigx)
+        scaley =  (uppoint[1] - zoomorigy) / (zoomy - zoomorigy)
+        posx = zoomorigx + (element.x-zoomorigx) * scalex
+        posy = zoomorigy + (element.y-zoomorigy) * scaley
+        origx = element.x
+        origy = element.y
+        #element.x = posx
+        #element.y = posy
+        element.scalex = scalex
+        element.scaley = scaley
+        #element.attr 'x', posx
+        #element.attr 'y', posy
+        # point補整
+        points = []
+        for point in JSON.parse(element.attr('points'))
+          point[0] = zoomorigx + (point[0]-zoomorigx) * scalex
+          point[1] = zoomorigy + (point[1]-zoomorigy) * scaley
+          points.push point
+        element.attr 'points', JSON.stringify points
+        element.attr 'd', line points
+        element.attr "transform", "translate(0,0) scale(1,1)"
+      
     if moving
       moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
       for element in selected
@@ -640,6 +734,9 @@ edit_mode = ->
         draw_mode() # 選択物がなくなったら描画モードに戻してみる
      
     clickedElement = null
+    zooming = false
+    sizeframe.remove()
+    sizesquare.remove()
 
 #
 # 文字/ストローク認識 + 候補表示
