@@ -855,13 +855,11 @@ recognition = (recogStrokes) ->
           snappoint[1] *= scaleyy
           snappoint[0] += xx
           snappoint[1] += yy
-          copiedElement.attr "stroke-width", linewidth / scalexx
+          copiedElement.attr "stroke-width", linewidth
         copiedElement.x = xx
         copiedElement.y = yy
         copiedElement.attr 'stroke', linecolor
         copiedElement.attr 'color', linecolor
-        scalexx = 1
-        scaleyy = 1
         points = JSON.parse(copiedElement.attr('points')).map (point) ->
           z = [xx + point[0] * scalexx, yy + point[1] * scaleyy]
         copiedElement.attr 'points', JSON.stringify points
