@@ -40,6 +40,7 @@ data.push
     stroke: '#000000'
     fill: 'none'
     'stroke-width': 5
+    name: 'polyline'
     points: JSON.stringify [[10, 10], [10, 80], [80, 80]]
     
 #
@@ -97,6 +98,8 @@ data.push
     stroke: '#000000'
     fill: 'none'
     'stroke-width': 5
+    name: 'polygon'
+    points: JSON.stringify [[10, 10], [10, 80], [80, 80], [80, 10]]
     
 data.push
   strokes: [
@@ -114,6 +117,8 @@ data.push
     stroke: '#000000'
     fill: 'none'
     'stroke-width': 5
+    name: 'polygon'
+    points: JSON.stringify [[10, 10], [10, 80], [160, 80], [160, 10]]
     
 #
 # 矩形波

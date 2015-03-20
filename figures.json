@@ -51,6 +51,7 @@
   {
     "attr": {
       "points": "[[10,10],[10,80],[80,80]]",
+      "name": "polyline",
       "stroke-width": 5,
       "fill": "none",
       "stroke": "#000000",
@@ -178,6 +179,8 @@
   },
   {
     "attr": {
+      "points": "[[10,10],[10,80],[80,80],[80,10]]",
+      "name": "polygon",
       "stroke-width": 5,
       "fill": "none",
       "stroke": "#000000",
@@ -247,6 +250,8 @@
   },
   {
     "attr": {
+      "points": "[[10,10],[10,80],[160,80],[160,10]]",
+      "name": "polygon",
       "stroke-width": 5,
       "fill": "none",
       "stroke": "#000000",

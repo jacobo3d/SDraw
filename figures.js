@@ -24,6 +24,7 @@ data.push({
     stroke: '#000000',
     fill: 'none',
     'stroke-width': 5,
+    name: 'polyline',
     points: JSON.stringify([[10, 10], [10, 80], [80, 80]])
   }
 });
@@ -60,7 +61,9 @@ data.push({
     d: "M10,10L10,80L80,80L80,10Z",
     stroke: '#000000',
     fill: 'none',
-    'stroke-width': 5
+    'stroke-width': 5,
+    name: 'polygon',
+    points: JSON.stringify([[10, 10], [10, 80], [80, 80], [80, 10]])
   }
 });
 
@@ -72,7 +75,9 @@ data.push({
     d: "M10,10L10,80L160,80L160,10Z",
     stroke: '#000000',
     fill: 'none',
-    'stroke-width': 5
+    'stroke-width': 5,
+    name: 'polygon',
+    points: JSON.stringify([[10, 10], [10, 80], [160, 80], [160, 10]])
   }
 });
 

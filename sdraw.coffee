@@ -202,7 +202,7 @@ clone = (dx, dy) ->
       [point[0]+dx, point[1]+dy]
     cloned.attr 'points', JSON.stringify points
     cloned.attr 'origpoints', JSON.stringify points
-    cloned.attr 'd', line(points)
+    cloned.attr 'd', elementpath element, points
 
     cloned.text element.text() if nodeName == 'text'
 
@@ -302,18 +302,28 @@ window.line = d3.svg.line()
   .x (d) -> d[0]
   .y (d) -> d[1]
 
+polyline = d3.svg.line()
+  .x (d) -> d[0]
+  .y (d) -> d[1]
+
+polygon = (points) ->
+  s = "M" +
+    points.map (point) ->
+      "#{point[0]},#{point[1]}"
+    .join "L"
+  res = s + "z"
+  res
+  
 elementpath = (element, points) ->
-  if element.attr('name') == 'circle'
-    circlepath points
-    #startx = points[0][0]
-    #starty = points[0][1]
-    #endx = points[1][0]
-    #endy = points[1][1]
-    #rx = points[2][0] - startx
-    #ry = points[3][1] - starty
-    #"M #{startx},#{starty} A #{rx},#{ry} 0 1,1 #{endx},#{endy} A #{rx},#{ry} 0 1,1 #{startx},#{starty} z"
-  else
-    line points
+  switch element.attr 'name'
+    when 'circle'
+      circlepath points
+    when 'polyline'
+      polyline points
+    when 'polygon'
+      polygon points
+    else # なめらかな手書き曲線
+      line points
       
 ############################################################################
 #
@@ -366,7 +376,7 @@ setTemplate("template4", kareobanaTemplate4)
 
 ############################################################################
 ##
-## ユーザによる線画お絵書き
+## ユーザによる手書き線画お絵書き
 ## 
   
 path = null
