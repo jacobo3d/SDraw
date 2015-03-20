@@ -258,7 +258,8 @@ data.push
     stroke: '#000000'
     fill: 'none'
     'stroke-width': 2
-    
+    name: 'lines'
+    points: JSON.stringify [[0, 40], [70, 40], [0, 40], [15, 55], [15, 40], [30, 55], [30, 40], [45, 55], [45, 40], [60, 55], [60, 40], [75, 55]]
 #
 # JSON出力
 #

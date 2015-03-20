@@ -313,7 +313,16 @@ polygon = (points) ->
     .join "L"
   res = s + "z"
   res
-  
+
+lines = (points) ->
+  s = ""
+  points.forEach (entry, ind) ->
+    if ind % 2 == 0
+      s += "M#{entry[0]},#{entry[1]}"
+    else
+      s += "L#{entry[0]},#{entry[1]}"
+  s
+
 elementpath = (element, points) ->
   switch element.attr 'name'
     when 'circle'
@@ -322,6 +331,8 @@ elementpath = (element, points) ->
       polyline points
     when 'polygon'
       polygon points
+    when 'lines'
+      lines points
     else # なめらかな手書き曲線
       line points
       
