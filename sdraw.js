@@ -645,8 +645,6 @@ draw_mode = function() {
     recogstrokes = recogstrokes.concat(splitstroke(points));
     strokes.push([downpoint, uppoint]);
     path.snappoints = [downpoint, uppoint];
-    path.scalex = 1;
-    path.scaley = 1;
     downpoint = null;
     moving = false;
     clickedElement = null;
@@ -830,8 +828,6 @@ edit_mode = function() {
         element = selected[_j];
         scalex = (uppoint[0] - zoomorigx) / (zoomx - zoomorigx);
         scaley = (uppoint[1] - zoomorigy) / (zoomy - zoomorigy);
-        element.scalex = scalex;
-        element.scaley = scaley;
         element.snappoints = element.snappoints.map(function(point) {
           return [zoomorigx + (point[0] - zoomorigx) * scalex, zoomorigy + (point[1] - zoomorigy) * scaley];
         });
@@ -992,9 +988,7 @@ recognition = function(recogStrokes) {
         }
       }
       copiedElement.attr('scalex', scalexx);
-      copiedElement.scalex = scalexx;
       copiedElement.attr('scaley', scaleyy);
-      copiedElement.scaley = scaleyy;
       if (target.innerHTML) {
         copiedElement.text(target.innerHTML);
         text = $('#searchtext').val();

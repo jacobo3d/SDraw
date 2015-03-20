@@ -197,7 +197,6 @@ clone = (dx, dy) ->
       for snappoint in cloned.snappoints
         snappoint[0] += dx
         snappoint[1] += dy
-    # cloned.origsnappoints = cloned.snappoints.concat()
 
     points = JSON.parse(element.attr('origpoints')).map (point) ->
       [point[0]+dx, point[1]+dy]
@@ -586,9 +585,8 @@ draw_mode = ->
     strokes.push [ downpoint, uppoint ]
     
     path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
-    #path.origsnappoints = [ downpoint, uppoint ]
-    path.scalex = 1
-    path.scaley = 1
+    #path.scalex = 1
+    #path.scaley = 1
     downpoint = null
     moving = false # ねんのため
     clickedElement = null
@@ -647,9 +645,6 @@ edit_mode = ->
         for element in selected
           scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
           scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
-
-          #element.snappoints = element.origsnappoints.map (point) ->
-          #  [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
 
           points = JSON.parse(element.attr('origpoints')).map (point) ->
             [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
@@ -738,16 +733,10 @@ edit_mode = ->
       for element in selected
         scalex =  (uppoint[0] - zoomorigx) / (zoomx - zoomorigx)
         scaley =  (uppoint[1] - zoomorigy) / (zoomy - zoomorigy)
-        element.scalex = scalex
-        element.scaley = scaley
-        
-        #element.snappoints = element.origsnappoints.map (point) ->
-        #  [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
-
-        #element.origsnappoints = elements.snappoints.concat()
+        #element.scalex = scalex
+        #element.scaley = scaley
         
         # point補整
-        #element.snappoints = element.origsnappoints.map (point) ->
         element.snappoints = element.snappoints.map (point) ->
           [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
         points = JSON.parse(element.attr('origpoints')).map (point) ->
@@ -875,7 +864,6 @@ recognition = (recogStrokes) ->
           snappoint[0] += xx
           snappoint[1] += yy
           copiedElement.attr "stroke-width", linewidth
-        # copiedElement.origsnappoints = copiedElement.snappoints.concat()
         copiedElement.x = xx
         copiedElement.y = yy
         copiedElement.attr 'stroke', linecolor
@@ -890,9 +878,9 @@ recognition = (recogStrokes) ->
           snappoint[0] += xx
           snappoint[1] += yy
       copiedElement.attr 'scalex', scalexx
-      copiedElement.scalex = scalexx
+      #copiedElement.scalex = scalexx
       copiedElement.attr 'scaley', scaleyy
-      copiedElement.scaley = scaleyy
+      #copiedElement.scaley = scaleyy
       if target.innerHTML
         copiedElement.text target.innerHTML
         text = $('#searchtext').val()
