@@ -89,7 +89,9 @@ data.push({
     d: "M10,60L40,60L40,10L70,10L70,60",
     stroke: '#000000',
     fill: 'none',
-    'stroke-width': 5
+    'stroke-width': 5,
+    name: 'polyline',
+    points: JSON.stringify([[10, 60], [40, 60], [40, 10], [70, 10], [70, 60]])
   }
 });
 
@@ -113,7 +115,9 @@ data.push({
     d: "M0,40L15,40L20,20L30,60L40,20L50,60L60,20L70,60L75,40L90,40",
     stroke: '#000000',
     fill: 'none',
-    'stroke-width': 2
+    'stroke-width': 2,
+    name: 'polyline',
+    points: JSON.stringify([[0, 40], [15, 40], [20, 20], [30, 60], [40, 20], [50, 60], [60, 20], [70, 60], [75, 40], [90, 40]])
   }
 });
 

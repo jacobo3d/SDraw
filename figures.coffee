@@ -121,7 +121,7 @@ data.push
     points: JSON.stringify [[10, 10], [10, 80], [160, 80], [160, 10]]
     
 #
-# 矩形波
+# 矩形波 square wave
 #
 data.push
   strokes: [
@@ -139,6 +139,8 @@ data.push
     stroke: '#000000'
     fill: 'none'
     'stroke-width': 5
+    name: 'polyline'
+    points: JSON.stringify [[10, 60], [40, 60], [40, 10], [70, 10], [70, 60]]
 #
 # AND論理
 #
@@ -187,6 +189,8 @@ data.push
     stroke: '#000000'
     fill: 'none'
     'stroke-width': 2
+    name: 'polyline'
+    points: JSON.stringify [[0, 40], [15, 40], [20, 20], [30, 60], [40, 20], [50, 60], [60, 20], [70, 60], [75, 40],[90, 40]]
     
 data.push
   strokes: [
