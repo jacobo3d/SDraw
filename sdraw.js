@@ -334,15 +334,8 @@ window.line = d3.svg.line().interpolate('cardinal').x(function(d) {
 });
 
 elementpath = function(element, points) {
-  var endx, endy, rx, ry, startx, starty;
   if (element.attr('name') === 'circle') {
-    startx = points[0][0];
-    starty = points[0][1];
-    endx = points[1][0];
-    endy = points[1][1];
-    rx = points[2][0] - startx;
-    ry = points[3][1] - starty;
-    return "M " + startx + "," + starty + " A " + rx + "," + ry + " 0 1,1 " + endx + "," + endy + " A " + rx + "," + ry + " 0 1,1 " + startx + "," + starty + " z";
+    return circlepath(points);
   } else {
     return line(points);
   }

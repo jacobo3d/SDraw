@@ -304,13 +304,14 @@ window.line = d3.svg.line()
 
 elementpath = (element, points) ->
   if element.attr('name') == 'circle'
-    startx = points[0][0]
-    starty = points[0][1]
-    endx = points[1][0]
-    endy = points[1][1]
-    rx = points[2][0] - startx
-    ry = points[3][1] - starty
-    "M #{startx},#{starty} A #{rx},#{ry} 0 1,1 #{endx},#{endy} A #{rx},#{ry} 0 1,1 #{startx},#{starty} z"
+    circlepath points
+    #startx = points[0][0]
+    #starty = points[0][1]
+    #endx = points[1][0]
+    #endy = points[1][1]
+    #rx = points[2][0] - startx
+    #ry = points[3][1] - starty
+    #"M #{startx},#{starty} A #{rx},#{ry} 0 1,1 #{endx},#{endy} A #{rx},#{ry} 0 1,1 #{startx},#{starty} z"
   else
     line points
       

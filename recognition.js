@@ -12,7 +12,7 @@ $(function() {
 });
 
 recognize = function() {
-  var cands, cline, data, endx, endy, entry, height, hline, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, points, rx, ry, size, startx, starty, stroke, strokedata, strokeheight, strokes, strokewidth, totaldist, vline, width, x, x0, x1, y, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _n, _o, _ref, _ref1, _results, _results1, _results2;
+  var cands, data, entry, height, hline, kanji_strokes, kstrokes, maxx, maxy, minx, miny, normalized_strokes, nstrokes, points, size, stroke, strokedata, strokeheight, strokes, strokewidth, totaldist, vline, width, x0, x1, y0, y1, _i, _j, _k, _l, _len, _len1, _len2, _len3, _m, _n, _o, _ref, _ref1, _results, _results1, _results2;
   strokes = arguments[0], points = arguments[1], strokedata = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
   nstrokes = strokes.length;
   _ref = [1000, 1000, 0, 0], minx = _ref[0], miny = _ref[1], maxx = _ref[2], maxy = _ref[3];
@@ -68,38 +68,7 @@ recognize = function() {
     };
     cands.push([vline, 0]);
   }
-  x = points.map(function(e) {
-    return e[0];
-  });
-  y = points.map(function(e) {
-    return e[1];
-  });
-  maxx = Math.max.apply(Math, x);
-  minx = Math.min.apply(Math, x);
-  maxy = Math.max.apply(Math, y);
-  miny = Math.min.apply(Math, y);
-  if (nstrokes === 1 && maxx - minx > 50 && maxy - miny > 50 && dist(strokes[0][0], strokes[0][1]) < 40) {
-    rx = (maxx - minx) / 2;
-    ry = (maxy - miny) / 2;
-    startx = minx - minx;
-    starty = 0;
-    endx = maxx - minx;
-    endy = 0;
-    cline = {
-      strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]],
-      snappoints: [[0, 0], [maxx - minx, 0], [rx, 0]],
-      type: 'path',
-      attr: {
-        d: "M " + startx + "," + starty + " A " + rx + "," + ry + " 0 1,1 " + endx + "," + endy + " A " + rx + "," + ry + " 0 1,1 " + startx + "," + starty + " z",
-        stroke: '#000000',
-        fill: 'none',
-        'stroke-width': 5,
-        points: JSON.stringify([[startx, starty], [endx, endy], [startx + rx, starty - ry], [startx + rx, starty + ry]]),
-        name: 'circle'
-      }
-    };
-    cands.push([cline, 0]);
-  }
+  circlerecog(points, nstrokes, cands);
   for (_k = 0, _len2 = strokedata.length; _k < _len2; _k++) {
     data = strokedata[_k];
     for (_l = 0, _len3 = data.length; _l < _len3; _l++) {
