@@ -197,6 +197,7 @@ clone = (dx, dy) ->
       for snappoint in cloned.snappoints
         snappoint[0] += dx
         snappoint[1] += dy
+    cloned.origsnappoints = cloned.snappoints.concat()
 
     points = JSON.parse(element.attr('origpoints')).map (point) ->
       [point[0]+dx, point[1]+dy]
@@ -588,6 +589,7 @@ draw_mode = ->
     strokes.push [ downpoint, uppoint ]
     
     path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
+    path.origsnappoints = [ downpoint, uppoint ]
     path.scalex = 1
     path.scaley = 1
     downpoint = null
@@ -749,6 +751,8 @@ edit_mode = ->
         #element.origsnappoints = elements.snappoints.concat()
         
         # point補整
+        element.snappoints = element.origsnappoints.map (point) ->
+          [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
         points = JSON.parse(element.attr('origpoints')).map (point) ->
           [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
         element.attr 'points', JSON.stringify points
