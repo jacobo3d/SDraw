@@ -40,6 +40,7 @@ data.push
     stroke: '#000000'
     fill: 'none'
     'stroke-width': 5
+    points: JSON.stringify [[10, 10], [10, 80], [80, 80]]
     
 #
 # 横線

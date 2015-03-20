@@ -817,6 +817,7 @@ recognition = (recogStrokes) ->
         for point in stroke
           xx = point[0] if point[0] < xx
           yy = point[1] if point[1] < yy
+      debug "xx=#{xx}, yy=#{yy}"
       #
       # Strokesを消す
       #
@@ -837,21 +838,22 @@ recognition = (recogStrokes) ->
       copiedElement.attr 'y', yy
       copiedElement.attr 'font-size', fontsize
       copiedElement.attr 'stroke-width', linewidth if target.nodeName != 'text'
-      # if copiedElement.property("nodeName") == 'path'
       if target.nodeName == 'path'
-        debug 'path'
-        # copiedElement.attr "transform", "translate(#{xx},#{yy}) scale(#{scalexx},#{scaleyy})"
         for snappoint in copiedElement.snappoints
           snappoint[0] *= scalexx
           snappoint[1] *= scaleyy
           snappoint[0] += xx
           snappoint[1] += yy
           copiedElement.attr "stroke-width", linewidth / scalexx
-          debug linewidth / scalexx
         copiedElement.x = xx
         copiedElement.y = yy
         copiedElement.attr 'stroke', linecolor
         copiedElement.attr 'color', linecolor
+        scalexx = 1
+        scaleyy = 1
+        points = JSON.parse(copiedElement.attr('points')).map (point) ->
+          z = [xx + point[0] * scalexx, yy + point[1] * scaleyy]
+        copiedElement.attr 'd', elementpath copiedElement, points
 
       if target.nodeName == 'text'
         for snappoint in copiedElement.snappoints

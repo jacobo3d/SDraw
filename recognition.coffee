@@ -77,7 +77,17 @@ recognize = (strokes, points, strokedata...) -> # strokedataは可変個引数
     starty = 0 # miny + ry - miny
     endx = maxx - minx
     endy = 0 # ry # starty - miny
-    #alert "M #{startx},#{starty} A #{rx},#{ry} 0 1,1 #{endx},#{endy} A #{rx},#{ry} 0 1,1 #{startx},#{starty} z"
+
+    #circlepath = (points) ->
+    #  startx = points[0][0]
+    #  starty = points[0][1]
+    #  endx = points[1][0]
+    #  endy = points[1][1]
+    #  rx = points[2][0] - startx
+    #  ry = points[3][1] - starty
+    #  "M #{startx},#{starty} A #{rx},#{ry} 0 1,1 #{endx},#{endy} A #{rx},#{ry} 0 1,1 #{startx},#{starty} z"
+      
+    # points = [[startx, starty], [endx, endy], [startx+rx, starty-ry], [startx+rx, starty+ry]]
     cline = 
       strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]]
       snappoints: [[0, 0], [maxx-minx, 0], [rx, 0]]
@@ -85,9 +95,11 @@ recognize = (strokes, points, strokedata...) -> # strokedataは可変個引数
       attr:
         #      始点    半径 rot l swee 終点
         d: "M #{startx},#{starty} A #{rx},#{ry} 0 1,1 #{endx},#{endy} A #{rx},#{ry} 0 1,1 #{startx},#{starty} z",
+        # d: circlepath points
         stroke: '#000000'
         fill: 'none'
         'stroke-width': 5
+        # points: JSON.stringify points
         points: JSON.stringify [[startx, starty], [endx, endy], [startx+rx, starty-ry], [startx+rx, starty+ry]]
         name: 'circle'
     cands.push [cline, 0]

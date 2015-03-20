@@ -914,6 +914,7 @@ recognition = function(recogStrokes) {
           }
         }
       }
+      debug("xx=" + xx + ", yy=" + yy);
       (function() {
         _results = [];
         for (var _k = 0, _ref2 = strokes.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; 0 <= _ref2 ? _k++ : _k--){ _results.push(_k); }
@@ -941,7 +942,6 @@ recognition = function(recogStrokes) {
         copiedElement.attr('stroke-width', linewidth);
       }
       if (target.nodeName === 'path') {
-        debug('path');
         _ref4 = copiedElement.snappoints;
         for (_m = 0, _len3 = _ref4.length; _m < _len3; _m++) {
           snappoint = _ref4[_m];
@@ -950,12 +950,18 @@ recognition = function(recogStrokes) {
           snappoint[0] += xx;
           snappoint[1] += yy;
           copiedElement.attr("stroke-width", linewidth / scalexx);
-          debug(linewidth / scalexx);
         }
         copiedElement.x = xx;
         copiedElement.y = yy;
         copiedElement.attr('stroke', linecolor);
         copiedElement.attr('color', linecolor);
+        scalexx = 1;
+        scaleyy = 1;
+        points = JSON.parse(copiedElement.attr('points')).map(function(point) {
+          var z;
+          return z = [xx + point[0] * scalexx, yy + point[1] * scaleyy];
+        });
+        copiedElement.attr('d', elementpath(copiedElement, points));
       }
       if (target.nodeName === 'text') {
         _ref5 = copiedElement.snappoints;

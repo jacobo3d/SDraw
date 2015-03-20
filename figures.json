@@ -50,6 +50,7 @@
   },
   {
     "attr": {
+      "points": "[[10,10],[10,80],[80,80]]",
       "stroke-width": 5,
       "fill": "none",
       "stroke": "#000000",
