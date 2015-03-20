@@ -198,12 +198,8 @@ clone = (dx, dy) ->
         snappoint[0] += dx
         snappoint[1] += dy
 
-    points = []
-    for point in JSON.parse(element.attr('origpoints'))
-      p = []
-      p[0] = point[0] + dx
-      p[1] = point[1] + dy
-      points.push p
+    points = JSON.parse(element.attr('origpoints')).map (point) ->
+      [point[0]+dx, point[1]+dy]
     cloned.attr 'points', JSON.stringify points
     cloned.attr 'origpoints', JSON.stringify points
     cloned.attr 'd', line(points)
@@ -235,18 +231,6 @@ clone = (dx, dy) ->
     
   selected = newselected
   showframe()
-
-#
-# 繰り返し操作サポート
-# selected[n] と selected[n+1]が同じものであり、座標だけ違う場合は
-# コピーする
-# ... というのはやめて
-# selectedを単純に複製すればいいかも
-# (OmniGraffle式)
-#
-$('#repeat').on 'click', ->
-  if moved
-    clone moved[0]+30, moved[1]+30
 
 $('#selectall').on 'click', ->
   edit_mode()
@@ -318,6 +302,18 @@ window.line = d3.svg.line()
   .x (d) -> d[0]
   .y (d) -> d[1]
 
+elementpath = (element, points) ->
+  if element.attr('name') == 'circle'
+    startx = points[0][0]
+    starty = points[0][1]
+    endx = points[1][0]
+    endy = points[1][1]
+    rx = points[2][0] - startx
+    ry = points[3][1] - starty
+    "M #{startx},#{starty} A #{rx},#{ry} 0 1,1 #{endx},#{endy} A #{rx},#{ry} 0 1,1 #{startx},#{starty} z"
+  else
+    line points
+      
 ############################################################################
 #
 # 背景テンプレート
@@ -393,6 +389,7 @@ selfunc = (element) ->
     if mode == 'edit'
       return unless downpoint
       return if moving # 移動中は選択しない
+      return if zooming # 拡大/縮小中も選択しない
       element.attr "stroke", "yellow"
       selected.push element unless element in selected
       showframe()
@@ -629,14 +626,11 @@ edit_mode = ->
         for element in selected
           scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
           scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
-          points = []
-          for point in JSON.parse(element.attr('origpoints'))
-            point[0] = zoomorigx + (point[0]-zoomorigx) * scalex
-            point[1] = zoomorigy + (point[1]-zoomorigy) * scaley
-            points.push point
+
+          points = JSON.parse(element.attr('origpoints')).map (point) ->
+            [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
           element.attr 'points', JSON.stringify points
-          element.attr 'd', line points
-      return
+          element.attr 'd', elementpath element, points
 
     if moving
       #
@@ -703,14 +697,12 @@ edit_mode = ->
       for element in selected
         movex = movepoint[0]-downpoint[0]-snapdx
         movey = movepoint[1]-downpoint[1]-snapdy
-        points = []
-        for point in JSON.parse(element.attr('origpoints'))
-          point[0] = point[0] + movex
-          point[1] = point[1] + movey
-          points.push point
+        points = JSON.parse(element.attr('origpoints')).map (point) ->
+          [point[0]+movex, point[1]+movey]
         element.attr 'points', JSON.stringify points
-        element.attr 'd', line points
-      showframe()
+        element.attr 'd', elementpath element, points
+
+       showframe()
 
   svg.on 'mouseup', ->
     return unless downpoint
@@ -726,13 +718,10 @@ edit_mode = ->
         element.scalex = scalex
         element.scaley = scaley
         # point補整
-        points = []
-        for point in JSON.parse(element.attr('origpoints'))
-          point[0] = zoomorigx + (point[0]-zoomorigx) * scalex
-          point[1] = zoomorigy + (point[1]-zoomorigy) * scaley
-          points.push point
+        points = JSON.parse(element.attr('origpoints')).map (point) ->
+          [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
         element.attr 'points', JSON.stringify points
-        element.attr 'd', line points
+        element.attr 'd', elementpath element, points
       
     if moving
       debug 'moving'
@@ -746,13 +735,11 @@ edit_mode = ->
             snappoint[0] += moved[0]
             snappoint[1] += moved[1]
 
-        points = []
-        for point in JSON.parse(element.attr('origpoints'))
-          point[0] += moved[0]
-          point[1] += moved[1]
-          points.push point
+        points = JSON.parse(element.attr('origpoints')).map (point) ->
+          [point[0]+moved[0], point[1]+moved[1]]
         element.attr 'points', JSON.stringify points
-        element.attr 'd', line points
+        element.attr 'd', elementpath element, points
+
       showframe()
 
     element.attr 'origpoints', (element.attr 'points')
@@ -852,13 +839,15 @@ recognition = (recogStrokes) ->
       copiedElement.attr 'stroke-width', linewidth if target.nodeName != 'text'
       # if copiedElement.property("nodeName") == 'path'
       if target.nodeName == 'path'
-        copiedElement.attr "transform", "translate(#{xx},#{yy}) scale(#{scalexx},#{scaleyy})"
+        debug 'path'
+        # copiedElement.attr "transform", "translate(#{xx},#{yy}) scale(#{scalexx},#{scaleyy})"
         for snappoint in copiedElement.snappoints
           snappoint[0] *= scalexx
           snappoint[1] *= scaleyy
           snappoint[0] += xx
           snappoint[1] += yy
-        copiedElement.attr "stroke-width", linewidth / scalexx
+          copiedElement.attr "stroke-width", linewidth / scalexx
+          debug linewidth / scalexx
         copiedElement.x = xx
         copiedElement.y = yy
         copiedElement.attr 'stroke', linecolor

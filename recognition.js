@@ -93,7 +93,9 @@ recognize = function() {
         d: "M " + startx + "," + starty + " A " + rx + "," + ry + " 0 1,1 " + endx + "," + endy + " A " + rx + "," + ry + " 0 1,1 " + startx + "," + starty + " z",
         stroke: '#000000',
         fill: 'none',
-        'stroke-width': 5
+        'stroke-width': 5,
+        points: JSON.stringify([[startx, starty], [endx, endy], [startx + rx, starty - ry], [startx + rx, starty + ry]]),
+        name: 'circle'
       }
     };
     cands.push([cline, 0]);

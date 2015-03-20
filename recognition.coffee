@@ -84,11 +84,12 @@ recognize = (strokes, points, strokedata...) -> # strokedataは可変個引数
       type: 'path'
       attr:
         #      始点    半径 rot l swee 終点
-        # d: "M 25,100 A 75,75 0 1,1 175,100 A 75,75 0 1,1 25,100 z",
         d: "M #{startx},#{starty} A #{rx},#{ry} 0 1,1 #{endx},#{endy} A #{rx},#{ry} 0 1,1 #{startx},#{starty} z",
         stroke: '#000000'
         fill: 'none'
         'stroke-width': 5
+        points: JSON.stringify [[startx, starty], [endx, endy], [startx+rx, starty-ry], [startx+rx, starty+ry]]
+        name: 'circle'
     cands.push [cline, 0]
 
   #
