@@ -853,6 +853,7 @@ recognition = (recogStrokes) ->
         scaleyy = 1
         points = JSON.parse(copiedElement.attr('points')).map (point) ->
           z = [xx + point[0] * scalexx, yy + point[1] * scaleyy]
+        copiedElement.attr 'points', JSON.stringify points
         copiedElement.attr 'd', elementpath copiedElement, points
 
       if target.nodeName == 'text'

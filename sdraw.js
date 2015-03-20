@@ -961,6 +961,7 @@ recognition = function(recogStrokes) {
           var z;
           return z = [xx + point[0] * scalexx, yy + point[1] * scaleyy];
         });
+        copiedElement.attr('points', JSON.stringify(points));
         copiedElement.attr('d', elementpath(copiedElement, points));
       }
       if (target.nodeName === 'text') {
