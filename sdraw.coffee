@@ -649,6 +649,9 @@ edit_mode = ->
           scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
           scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
 
+          element.snappoints = element.origsnappoints.map (point) ->
+            [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
+
           points = JSON.parse(element.attr('origpoints')).map (point) ->
             [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
           element.attr 'points', JSON.stringify points
@@ -739,6 +742,12 @@ edit_mode = ->
         scaley =  (uppoint[1] - zoomorigy) / (zoomy - zoomorigy)
         element.scalex = scalex
         element.scaley = scaley
+        
+        #element.snappoints = element.origsnappoints.map (point) ->
+        #  [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
+
+        #element.origsnappoints = elements.snappoints.concat()
+        
         # point補整
         points = JSON.parse(element.attr('origpoints')).map (point) ->
           [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
@@ -867,6 +876,7 @@ recognition = (recogStrokes) ->
           snappoint[0] += xx
           snappoint[1] += yy
           copiedElement.attr "stroke-width", linewidth
+        copiedElement.origsnappoints = copiedElement.snappoints.concat()
         copiedElement.x = xx
         copiedElement.y = yy
         copiedElement.attr 'stroke', linecolor
