@@ -89,7 +89,7 @@ data.push({
     d: "M10,60L40,60L40,10L70,10L70,60",
     stroke: '#000000',
     fill: 'none',
-    'stroke-width': 5,
+    'stroke-width': 2,
     name: 'polyline',
     points: JSON.stringify([[10, 60], [40, 60], [40, 10], [70, 10], [70, 60]])
   }

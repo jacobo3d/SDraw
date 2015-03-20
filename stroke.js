@@ -2,15 +2,17 @@
 var ipoint, splitstroke;
 
 splitstroke = function(points) {
-  var d, i, ind, p0, p1, pre, slow, splitstrokes;
+  var d, p0, p1, pre, slow, splitstrokes, t;
+  if (!points || points.length === 0) {
+    return [];
+  }
   splitstrokes = [];
   pre = points[0];
-  i = 0;
-  ind = 0;
+  t = 0;
   slow = true;
   while (true) {
-    p0 = ipoint(points, i * 100);
-    p1 = ipoint(points, (i + 1) * 100);
+    p0 = ipoint(points, t);
+    p1 = ipoint(points, t + 100);
     d = dist(p0, p1);
     if (d > 10) {
       slow = false;
@@ -22,12 +24,13 @@ splitstroke = function(points) {
       }
     }
     if (p1[2] < 0) {
-      if (splitstrokes.length === 0) {
-        splitstrokes = [[points[0], p0]];
-      }
       break;
     }
-    i += 1;
+    t += 100;
+    debug(t);
+  }
+  if (splitstrokes.length === 0) {
+    splitstrokes = [[points[0], p0]];
   }
   return splitstrokes;
 };
@@ -36,14 +39,17 @@ ipoint = function(points, t) {
   var ind, p1, p2, plen, torig, x, y;
   torig = points[0][2];
   plen = points.length;
-  if (t === 0 || plen === 1) {
+  if (t === 0 || plen < 2) {
     return [points[0][0], points[0][1], 0];
   }
   if (points[plen - 1][2] - torig < t) {
     return [points[plen - 1][0], points[plen - 1][1], -1];
   }
   ind = 0;
-  while (true) {
+  if (!points[ind]) {
+    alert("ZZZZZZ");
+  }
+  while (points[ind]) {
     if (points[ind][2] - torig >= t) {
       break;
     }

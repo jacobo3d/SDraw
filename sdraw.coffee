@@ -187,17 +187,17 @@ clone = (dx, dy) ->
     for e in attr
       cloned.attr e.nodeName, e.value
     element.attr 'stroke', linecolor # コピー元の色を戻す
-    cloned.x = element.x + dx
-    cloned.y = element.y + dy
-    cloned.scalex = element.scalex
-    cloned.scaley = element.scaley
+    #cloned.x = element.x + dx
+    #cloned.y = element.y + dy
+    #cloned.scalex = element.scalex
+    #cloned.scaley = element.scaley
     if element.snappoints
       cloned.snappoints = element.snappoints.map (point) ->
         point.concat() # 複製を作る
       for snappoint in cloned.snappoints
         snappoint[0] += dx
         snappoint[1] += dy
-    cloned.origsnappoints = cloned.snappoints.concat()
+    # cloned.origsnappoints = cloned.snappoints.concat()
 
     points = JSON.parse(element.attr('origpoints')).map (point) ->
       [point[0]+dx, point[1]+dy]
@@ -209,7 +209,6 @@ clone = (dx, dy) ->
 
     ccloned = cloned
     cloned.on 'mousedown', ->
-      debug "cloned clicked"
       #return unless mode == 'edit'
       clickedElement = setfunc ccloned
       # 編集中にクリックしたものは選択する
@@ -234,11 +233,12 @@ clone = (dx, dy) ->
   showframe()
 
 $('#selectall').on 'click', ->
-  edit_mode()
   svg.selectAll "*"
     .attr "stroke", "yellow"
   selected = elements
+  debug elements.length
   showframe()
+  edit_mode()
   
 ############################################################################
 #
@@ -430,7 +430,6 @@ zoomx = 0
 zoomy = 0
 
 showframe = ->
-  debug "sf-#{selected.length}"
   hideframe()
   points = []
   for element in selected
@@ -493,7 +492,6 @@ draw_mode = ->
   bgrect.attr "fill", "#ffffff"
 
   svg.on 'mousedown', ->
-    debug "dm-mousedown"
     d3.event.preventDefault()
     
     downpoint = d3.mouse(this)
@@ -558,7 +556,6 @@ draw_mode = ->
     , 1500
 
     if clickedElement && uptime-downtime < 300 && dist(uppoint,downpoint) < 20
-      debug "dm-up-300"
       selected = []
       path.remove()      # drawmodeで描いていた線を消す
 
@@ -589,7 +586,7 @@ draw_mode = ->
     strokes.push [ downpoint, uppoint ]
     
     path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
-    path.origsnappoints = [ downpoint, uppoint ]
+    #path.origsnappoints = [ downpoint, uppoint ]
     path.scalex = 1
     path.scaley = 1
     downpoint = null
@@ -651,8 +648,8 @@ edit_mode = ->
           scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
           scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
 
-          element.snappoints = element.origsnappoints.map (point) ->
-            [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
+          #element.snappoints = element.origsnappoints.map (point) ->
+          #  [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
 
           points = JSON.parse(element.attr('origpoints')).map (point) ->
             [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
@@ -733,7 +730,6 @@ edit_mode = ->
 
   svg.on 'mouseup', ->
     return unless downpoint
-    debug 'e-mouseup'
 
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
@@ -751,7 +747,8 @@ edit_mode = ->
         #element.origsnappoints = elements.snappoints.concat()
         
         # point補整
-        element.snappoints = element.origsnappoints.map (point) ->
+        #element.snappoints = element.origsnappoints.map (point) ->
+        element.snappoints = element.snappoints.map (point) ->
           [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
         points = JSON.parse(element.attr('origpoints')).map (point) ->
           [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
@@ -759,7 +756,6 @@ edit_mode = ->
         element.attr 'd', elementpath element, points
       
     if moving
-      debug 'moving'
       moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
       for element in selected
         element.x += moved[0]
@@ -852,7 +848,6 @@ recognition = (recogStrokes) ->
         for point in stroke
           xx = point[0] if point[0] < xx
           yy = point[1] if point[1] < yy
-      debug "xx=#{xx}, yy=#{yy}"
       #
       # Strokesを消す
       #
@@ -880,7 +875,7 @@ recognition = (recogStrokes) ->
           snappoint[0] += xx
           snappoint[1] += yy
           copiedElement.attr "stroke-width", linewidth
-        copiedElement.origsnappoints = copiedElement.snappoints.concat()
+        # copiedElement.origsnappoints = copiedElement.snappoints.concat()
         copiedElement.x = xx
         copiedElement.y = yy
         copiedElement.attr 'stroke', linecolor

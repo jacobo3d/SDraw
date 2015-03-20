@@ -323,7 +323,7 @@
     "attr": {
       "points": "[[10,60],[40,60],[40,10],[70,10],[70,60]]",
       "name": "polyline",
-      "stroke-width": 5,
+      "stroke-width": 2,
       "fill": "none",
       "stroke": "#000000",
       "d": "M10,60L40,60L40,10L70,10L70,60"

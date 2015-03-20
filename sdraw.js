@@ -223,10 +223,6 @@ clone = function(dx, dy) {
       cloned.attr(e.nodeName, e.value);
     }
     element.attr('stroke', linecolor);
-    cloned.x = element.x + dx;
-    cloned.y = element.y + dy;
-    cloned.scalex = element.scalex;
-    cloned.scaley = element.scaley;
     if (element.snappoints) {
       cloned.snappoints = element.snappoints.map(function(point) {
         return point.concat();
@@ -238,7 +234,6 @@ clone = function(dx, dy) {
         snappoint[1] += dy;
       }
     }
-    cloned.origsnappoints = cloned.snappoints.concat();
     points = JSON.parse(element.attr('origpoints')).map(function(point) {
       return [point[0] + dx, point[1] + dy];
     });
@@ -250,7 +245,6 @@ clone = function(dx, dy) {
     }
     ccloned = cloned;
     cloned.on('mousedown', function() {
-      debug("cloned clicked");
       clickedElement = setfunc(ccloned);
       if (mode === 'edit') {
         ccloned.attr("stroke", "yellow");
@@ -271,10 +265,11 @@ clone = function(dx, dy) {
 };
 
 $('#selectall').on('click', function() {
-  edit_mode();
   svg.selectAll("*").attr("stroke", "yellow");
   selected = elements;
-  return showframe();
+  debug(elements.length);
+  showframe();
+  return edit_mode();
 });
 
 candsearch = function() {
@@ -482,7 +477,6 @@ zoomy = 0;
 
 showframe = function() {
   var element, maxx, maxy, minx, miny, point, x, y, _i, _j, _len, _len1, _ref;
-  debug("sf-" + selected.length);
   hideframe();
   points = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
@@ -556,7 +550,6 @@ draw_mode = function() {
   bgrect.attr("fill", "#ffffff");
   svg.on('mousedown', function() {
     var ppath;
-    debug("dm-mousedown");
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
     downtime = d3.event.timeStamp;
@@ -626,7 +619,6 @@ draw_mode = function() {
       });
     }, 1500);
     if (clickedElement && uptime - downtime < 300 && dist(uppoint, downpoint) < 20) {
-      debug("dm-up-300");
       selected = [];
       path.remove();
       newelements = [];
@@ -653,7 +645,6 @@ draw_mode = function() {
     recogstrokes = recogstrokes.concat(splitstroke(points));
     strokes.push([downpoint, uppoint]);
     path.snappoints = [downpoint, uppoint];
-    path.origsnappoints = [downpoint, uppoint];
     path.scalex = 1;
     path.scaley = 1;
     downpoint = null;
@@ -726,9 +717,6 @@ edit_mode = function() {
           element = selected[_j];
           scalex = (movepoint[0] - zoomorigx) / (zoomx - zoomorigx);
           scaley = (movepoint[1] - zoomorigy) / (zoomy - zoomorigy);
-          element.snappoints = element.origsnappoints.map(function(point) {
-            return [zoomorigx + (point[0] - zoomorigx) * scalex, zoomorigy + (point[1] - zoomorigy) * scaley];
-          });
           points = JSON.parse(element.attr('origpoints')).map(function(point) {
             return [zoomorigx + (point[0] - zoomorigx) * scalex, zoomorigy + (point[1] - zoomorigy) * scaley];
           });
@@ -835,7 +823,6 @@ edit_mode = function() {
     if (!downpoint) {
       return;
     }
-    debug('e-mouseup');
     d3.event.preventDefault();
     uppoint = d3.mouse(this);
     if (zooming) {
@@ -845,7 +832,7 @@ edit_mode = function() {
         scaley = (uppoint[1] - zoomorigy) / (zoomy - zoomorigy);
         element.scalex = scalex;
         element.scaley = scaley;
-        element.snappoints = element.origsnappoints.map(function(point) {
+        element.snappoints = element.snappoints.map(function(point) {
           return [zoomorigx + (point[0] - zoomorigx) * scalex, zoomorigy + (point[1] - zoomorigy) * scaley];
         });
         points = JSON.parse(element.attr('origpoints')).map(function(point) {
@@ -856,7 +843,6 @@ edit_mode = function() {
       }
     }
     if (moving) {
-      debug('moving');
       moved = [uppoint[0] - downpoint[0] - snapdx, uppoint[1] - downpoint[1] - snapdy];
       for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
         element = selected[_k];
@@ -950,7 +936,6 @@ recognition = function(recogStrokes) {
           }
         }
       }
-      debug("xx=" + xx + ", yy=" + yy);
       (function() {
         _results = [];
         for (var _k = 0, _ref2 = strokes.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; 0 <= _ref2 ? _k++ : _k--){ _results.push(_k); }
@@ -987,7 +972,6 @@ recognition = function(recogStrokes) {
           snappoint[1] += yy;
           copiedElement.attr("stroke-width", linewidth);
         }
-        copiedElement.origsnappoints = copiedElement.snappoints.concat();
         copiedElement.x = xx;
         copiedElement.y = yy;
         copiedElement.attr('stroke', linecolor);
