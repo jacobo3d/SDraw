@@ -24,7 +24,6 @@ splitstroke = (points)->
       #  splitstrokes = [[points[0], p0]]
       break
     t += 100
-    debug t
   if splitstrokes.length == 0 # インチキ
     splitstrokes = [[points[0], p0]]
   splitstrokes

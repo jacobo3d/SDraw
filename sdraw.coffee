@@ -202,21 +202,7 @@ clone = (dx, dy) ->
 
     cloned.text element.text() if nodeName == 'text'
 
-    ccloned = cloned
-    cloned.on 'mousedown', ->
-      target = d3.event.target
-      
-      #return unless mode == 'edit'
-      clickedElement = setfunc ccloned
-      # 編集中にクリックしたものは選択する
-      if mode == 'edit'
-        ccloned.attr "stroke", "yellow"
-        selected.push ccloned unless ccloned in selected
-        #target.attr "stroke", "yellow"
-        #selected.push target unless target in selected
-      #downpoint = [d3.event.pageX, d3.event.pageY]
-      downpoint = d3.mouse(this)
-      moving = true
+    cloned.on 'mousedown', clickfunc cloned
       
     cloned.on 'mousemove', selfunc cloned
     
@@ -235,7 +221,6 @@ $('#selectall').on 'click', ->
   svg.selectAll "*"
     .attr "stroke", "yellow"
   selected = elements
-  debug elements.length
   showframe()
   edit_mode()
   
@@ -420,6 +405,16 @@ setfunc = (element) ->
   ->
     return element
 
+clickfunc = (element) -> # 要素がおクリックされたとき呼ばれる関数
+  ->
+    clickedElement = setfunc element
+    if mode == 'edit'
+      element.attr "stroke", "yellow"
+      selected.push element unless element in selected
+      showframe()
+    downpoint = d3.mouse(this)
+    moving = true
+
 #
 # 拡大/縮小
 #
@@ -517,19 +512,7 @@ draw_mode = ->
     elements.push path
     points = [ downpoint ]
 
-    ppath = path
-    path.on 'mousedown', ->
-      # return unless mode == 'edit'
-      clickedElement = setfunc ppath
-      
-      # 編集中にクリックしたものは選択する
-      if mode == 'edit'
-        ppath.attr "stroke", "yellow"
-        selected.push ppath unless ppath in selected
-        showframe()
-      
-      downpoint = d3.mouse(this)
-      moving = true
+    path.on 'mousedown', clickfunc path
         
     # マウスが横切ったら選択する
     path.on 'mousemove', selfunc path  # クロージャ

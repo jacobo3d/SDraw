@@ -27,7 +27,6 @@ splitstroke = function(points) {
       break;
     }
     t += 100;
-    debug(t);
   }
   if (splitstrokes.length === 0) {
     splitstrokes = [[points[0], p0]];
