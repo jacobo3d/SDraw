@@ -122,28 +122,6 @@ $('#dup').on 'click', ->
     clone 30, 30
   duplicated = true
 
-$('#line1').on 'click', ->
-  draw_mode()
-  linewidth = 4
-  fontsize = 30
-$('#line2').on 'click', ->
-  draw_mode()
-  linewidth = 10
-  fontsize = 50
-$('#line3').on 'click', ->
-  draw_mode()
-  linewidth = 20
-  fontsize = 80
-$('#color1').on 'click', ->
-  draw_mode()
-  linecolor = '#ffffff'
-$('#color2').on 'click', ->
-  draw_mode()
-  linecolor = '#808080'
-$('#color3').on 'click', ->
-  draw_mode()
-  linecolor = '#000000'
-
 pen =  d3.select "#pen"
 pen.on 'mousedown', ->
   downpoint = d3.mouse(this)
@@ -207,9 +185,6 @@ clone = (dx, dy) ->
     cloned.on 'mousemove', selfunc cloned
     
     cloned.on 'mouseup', ->
-      #downpoint = null
-      #moving = false
-      #clickedElement = null
       
     newselected.push cloned
     elements.push cloned
@@ -798,6 +773,7 @@ recognition = (recogStrokes) ->
     # candElement.attr 'fill', 'black'
     candElement.attr 'color', 'black'
 
+    alert cand.scalex
     scalexx = cand.scalex ? 1
     scaleyy = cand.scaley ? 1
     candselfunc = ->
@@ -813,12 +789,11 @@ recognition = (recogStrokes) ->
       #
       # 文字認識に使った最初のストローク位置を得る
       #
-      xx = 1000
-      yy = 1000
-      for stroke in recogStrokes
-        for point in stroke
-          xx = point[0] if point[0] < xx
-          yy = point[1] if point[1] < yy
+      x = flatten(recogStrokes).map (p) -> p[0]
+      xx = Math.min x...
+      y = flatten(recogStrokes).map (p) -> p[1]
+      yy = Math.min y...
+
       #
       # Strokesを消す
       #
@@ -835,8 +810,6 @@ recognition = (recogStrokes) ->
         copiedElement.attr attr.nodeName, attr.value
         if attr.nodeName == 'snappoints'
           copiedElement.snappoints = JSON.parse(attr.value)
-      copiedElement.attr 'x', xx  # コピー先の位置
-      copiedElement.attr 'y', yy
       copiedElement.attr 'font-size', fontsize
       copiedElement.attr 'stroke-width', linewidth if target.nodeName != 'text'
       if target.nodeName == 'path'

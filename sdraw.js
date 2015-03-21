@@ -136,39 +136,6 @@ $('#dup').on('click', function() {
   return duplicated = true;
 });
 
-$('#line1').on('click', function() {
-  draw_mode();
-  linewidth = 4;
-  return fontsize = 30;
-});
-
-$('#line2').on('click', function() {
-  draw_mode();
-  linewidth = 10;
-  return fontsize = 50;
-});
-
-$('#line3').on('click', function() {
-  draw_mode();
-  linewidth = 20;
-  return fontsize = 80;
-});
-
-$('#color1').on('click', function() {
-  draw_mode();
-  return linecolor = '#ffffff';
-});
-
-$('#color2').on('click', function() {
-  draw_mode();
-  return linecolor = '#808080';
-});
-
-$('#color3').on('click', function() {
-  draw_mode();
-  return linecolor = '#000000';
-});
-
 pen = d3.select("#pen");
 
 pen.on('mousedown', function() {
@@ -900,33 +867,28 @@ recognition = function(recogStrokes) {
       candElement.text(cand.text);
     }
     candElement.attr('color', 'black');
+    alert(cand.scalex);
     scalexx = (_ref = cand.scalex) != null ? _ref : 1;
     scaleyy = (_ref1 = cand.scaley) != null ? _ref1 : 1;
     candselfunc = function() {
-      var attr, copiedElement, point, snappoint, stroke, target, text, xx, yy, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _n, _ref2, _ref3, _ref4, _ref5, _results;
+      var attr, copiedElement, snappoint, target, text, x, xx, y, yy, _i, _j, _k, _l, _len, _len1, _len2, _ref2, _ref3, _ref4, _ref5, _results;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       target = d3.event.target;
       if (target.nodeName === 'svg') {
         target = target.childNodes[0];
       }
-      xx = 1000;
-      yy = 1000;
-      for (_i = 0, _len = recogStrokes.length; _i < _len; _i++) {
-        stroke = recogStrokes[_i];
-        for (_j = 0, _len1 = stroke.length; _j < _len1; _j++) {
-          point = stroke[_j];
-          if (point[0] < xx) {
-            xx = point[0];
-          }
-          if (point[1] < yy) {
-            yy = point[1];
-          }
-        }
-      }
+      x = flatten(recogStrokes).map(function(p) {
+        return p[0];
+      });
+      xx = Math.min.apply(Math, x);
+      y = flatten(recogStrokes).map(function(p) {
+        return p[1];
+      });
+      yy = Math.min.apply(Math, y);
       (function() {
         _results = [];
-        for (var _k = 0, _ref2 = strokes.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; 0 <= _ref2 ? _k++ : _k--){ _results.push(_k); }
+        for (var _i = 0, _ref2 = strokes.length; 0 <= _ref2 ? _i < _ref2 : _i > _ref2; 0 <= _ref2 ? _i++ : _i--){ _results.push(_i); }
         return _results;
       }).apply(this).forEach(function(i) {
         var element;
@@ -937,23 +899,21 @@ recognition = function(recogStrokes) {
       copiedElement.x = 0;
       copiedElement.y = 0;
       _ref3 = target.attributes;
-      for (_l = 0, _len2 = _ref3.length; _l < _len2; _l++) {
-        attr = _ref3[_l];
+      for (_j = 0, _len = _ref3.length; _j < _len; _j++) {
+        attr = _ref3[_j];
         copiedElement.attr(attr.nodeName, attr.value);
         if (attr.nodeName === 'snappoints') {
           copiedElement.snappoints = JSON.parse(attr.value);
         }
       }
-      copiedElement.attr('x', xx);
-      copiedElement.attr('y', yy);
       copiedElement.attr('font-size', fontsize);
       if (target.nodeName !== 'text') {
         copiedElement.attr('stroke-width', linewidth);
       }
       if (target.nodeName === 'path') {
         _ref4 = copiedElement.snappoints;
-        for (_m = 0, _len3 = _ref4.length; _m < _len3; _m++) {
-          snappoint = _ref4[_m];
+        for (_k = 0, _len1 = _ref4.length; _k < _len1; _k++) {
+          snappoint = _ref4[_k];
           snappoint[0] *= scalexx;
           snappoint[1] *= scaleyy;
           snappoint[0] += xx;
@@ -973,8 +933,8 @@ recognition = function(recogStrokes) {
       }
       if (target.nodeName === 'text') {
         _ref5 = copiedElement.snappoints;
-        for (_n = 0, _len4 = _ref5.length; _n < _len4; _n++) {
-          snappoint = _ref5[_n];
+        for (_l = 0, _len2 = _ref5.length; _l < _len2; _l++) {
+          snappoint = _ref5[_l];
           snappoint[0] += xx;
           snappoint[1] += yy;
         }
