@@ -457,7 +457,7 @@ setfunc = function(element) {
 
 clickfunc = function(element) {
   return function() {
-    clickedElement = setfunc(element);
+    clickedElement = element;
     if (mode === 'edit') {
       element.attr("stroke", "yellow");
       if (__indexOf.call(selected, element) < 0) {
@@ -564,7 +564,7 @@ draw_mode = function() {
       if (clickedElement) {
         selected = [];
         path.remove();
-        element = clickedElement();
+        element = clickedElement;
         element.attr("stroke", "yellow");
         f = element.attr("fill");
         if (f && f !== "none") {
@@ -619,7 +619,7 @@ draw_mode = function() {
         }
       }
       elements = newelements;
-      element = clickedElement();
+      element = clickedElement;
       element.attr("stroke", "yellow");
       f = element.attr("fill");
       if (f && f !== "none") {
@@ -903,7 +903,7 @@ recognition = function(recogStrokes) {
     scalexx = (_ref = cand.scalex) != null ? _ref : 1;
     scaleyy = (_ref1 = cand.scaley) != null ? _ref1 : 1;
     candselfunc = function() {
-      var attr, ce, copiedElement, point, snappoint, stroke, target, text, xx, yy, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _n, _ref2, _ref3, _ref4, _ref5, _results;
+      var attr, copiedElement, point, snappoint, stroke, target, text, xx, yy, _i, _j, _k, _l, _len, _len1, _len2, _len3, _len4, _m, _n, _ref2, _ref3, _ref4, _ref5, _results;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       target = d3.event.target;
@@ -988,15 +988,7 @@ recognition = function(recogStrokes) {
       }
       elements.push(copiedElement);
       copiedElement.on('mousemove', selfunc(copiedElement));
-      ce = copiedElement;
-      copiedElement.on('mousedown', function() {
-        clickedElement = setfunc(ce);
-        ce.attr("stroke", "yellow");
-        if (__indexOf.call(selected, ce) < 0) {
-          selected.push(ce);
-        }
-        return moving = true;
-      });
+      copiedElement.on('mousedown', clickfunc(copiedElement));
       strokes = [];
       return recogstrokes = [];
     };

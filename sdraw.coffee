@@ -407,7 +407,8 @@ setfunc = (element) ->
 
 clickfunc = (element) -> # 要素がおクリックされたとき呼ばれる関数
   ->
-    clickedElement = setfunc element
+    # clickedElement = setfunc element
+    clickedElement = element
     if mode == 'edit'
       element.attr "stroke", "yellow"
       selected.push element unless element in selected
@@ -496,7 +497,7 @@ draw_mode = ->
       if clickedElement  # pathなどをクリックしてた場合は移動モードにする
         selected = []
         path.remove()      # drawmodeで描いていた線を消す
-        element = clickedElement()
+        element = clickedElement # ()
         element.attr "stroke", "yellow"
         f = element.attr "fill"
         if f && f != "none"
@@ -547,7 +548,7 @@ draw_mode = ->
         newelements.push element unless element == path
       elements = newelements
       
-      element = clickedElement()
+      element = clickedElement # ()
       element.attr "stroke", "yellow"
       f = element.attr "fill"
       if f && f != "none"
@@ -870,12 +871,7 @@ recognition = (recogStrokes) ->
       # マウスが横切ったら選択する
       copiedElement.on 'mousemove', selfunc copiedElement
 
-      ce = copiedElement
-      copiedElement.on 'mousedown', ->
-        clickedElement = setfunc ce # copiedElement
-        ce.attr "stroke", "yellow"
-        selected.push ce unless ce in selected
-        moving = true
+      copiedElement.on 'mousedown', clickfunc copiedElement
         
       strokes = []
       recogstrokes = []
