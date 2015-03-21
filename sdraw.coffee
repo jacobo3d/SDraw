@@ -393,10 +393,7 @@ clickfunc = (element) -> # 要素がクリックされたとき呼ばれる関�
 #
 # 拡大/縮小
 #
-zoomorigx = 0
-zoomorigy = 0
-zoomx = 0
-zoomy = 0
+zoomorig = [0, 0]
 
 showframe = -> # 拡大/縮小用の枠表示
   hideframe()
@@ -425,10 +422,7 @@ showframe = -> # 拡大/縮小用の枠表示
     
   sizesquare.on 'mousedown', ->
     downpoint = d3.mouse(this)
-    zoomorigx = minx
-    zoomorigy = miny
-    zoomx = downpoint[0]
-    zoomy = downpoint[1]
+    zoomorig = [minx, miny]
     zooming = true
     moving = false
 
@@ -591,11 +585,13 @@ edit_mode = ->
 
     if zooming
       if downpoint
-        scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
-        scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
+        scale = [
+          (movepoint[0] - zoomorig[0]) / (downpoint[0] - zoomorig[0])
+          (movepoint[1] - zoomorig[1]) / (downpoint[1] - zoomorig[1])
+        ]
         for element in selected
           mpoints = JSON.parse(element.attr('origpoints')).map (point) ->
-            [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
+            [zoomorig[0] + (point[0]-zoomorig[0]) * scale[0], zoomorig[1] + (point[1]-zoomorig[1]) * scale[1]]
           element.attr 'points', JSON.stringify mpoints
           element.attr 'd', elementpath element, mpoints
         showframe()
@@ -679,13 +675,15 @@ edit_mode = ->
     uppoint = d3.mouse(this)
 
     if zooming
-      scalex =  (uppoint[0] - zoomorigx) / (zoomx - zoomorigx)
-      scaley =  (uppoint[1] - zoomorigy) / (zoomy - zoomorigy)
+      scale = [
+        (uppoint[0] - zoomorig[0]) / (downpoint[0] - zoomorig[0])
+        (uppoint[1] - zoomorig[1]) / (downpoint[1] - zoomorig[1])
+      ]
       for element in selected
         element.snappoints = element.snappoints.map (point) ->
-          [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
+          [zoomorig[0] + (point[0]-zoomorig[0]) * scale[0], zoomorig[1] + (point[1]-zoomorig[1]) * scale[1]]
         upoints = JSON.parse(element.attr('origpoints')).map (point) ->
-          [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
+          [zoomorig[0] + (point[0]-zoomorig[0]) * scale[0], zoomorig[1] + (point[1]-zoomorig[1]) * scale[1]]
         element.attr 'points', JSON.stringify upoints
         element.attr 'origpoints', JSON.stringify upoints
         element.attr 'd', elementpath element, upoints
