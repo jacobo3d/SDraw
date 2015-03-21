@@ -412,10 +412,6 @@ showframe = -> # 拡大/縮小用の枠表示
   miny = Math.min y...
   sizeframe = svg.append 'path'
   sizeframe.attr
-    'x': minx-5
-    'y': miny-5
-    'width': maxx-minx+10
-    'height': maxy-miny+10
     d: "M#{minx-5},#{miny-5}L#{minx-5},#{maxy+5}L#{maxx+5},#{maxy+5}L#{maxx+5},#{miny-5}Z"
     fill: 'none'
     'stroke': '#0000ff'
