@@ -541,8 +541,10 @@ draw_mode = ->
     strokes.push [ downpoint, uppoint ]
     
     path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
+
     downpoint = null
-    moving = false # ねんのため
+    moving = false
+    zooming = false
     clickedElement = null
 
     recognition recogstrokes
@@ -702,10 +704,10 @@ edit_mode = ->
         element.attr 'd', elementpath element, upoints
 
     element.attr 'origpoints', (element.attr 'points')
-    
+
+    downpoint = null
     moving = false
     zooming = false
-    downpoint = null
 
     uptime = d3.event.timeStamp
     if uptime - downtime < 300 && !clickedElement
@@ -806,8 +808,6 @@ recognition = (recogStrokes) ->
         for snappoint in copiedElement.snappoints
           snappoint[0] += minx
           snappoint[1] += miny
-      copiedElement.attr 'scalex', scalex
-      copiedElement.attr 'scaley', scaley
       if target.innerHTML
         copiedElement.text target.innerHTML
         text = $('#searchtext').val()
@@ -823,7 +823,6 @@ recognition = (recogStrokes) ->
       recogstrokes = []
 
     candElement.on 'mousedown', candselfunc
-    #if cand.type == 'path'
     if ! cand.text
       candsvg.on 'mousedown', candselfunc
 
