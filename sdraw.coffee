@@ -23,8 +23,10 @@ points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
 recogstrokes = []
 moving = false    # 選択要素を移動中かどうか
+zooming = false   # 拡大/縮小操作中かどうか
 moved = null      # 移動操作したときの移動量 (繰り返しに使う)
 duplicated = false # 複製操作の直後にtrueになる
+
 linewidth = 10
 fontsize = 50
 linecolor = '#000000'
@@ -32,6 +34,9 @@ linecolor = '#000000'
 modetimeout = null    # 長押しで編集モードにするため
 resettimeout = null   # 時間がたつと候補リセット
 downtime = null
+uptime = null
+movetime = null
+
 deletestate = 0 # 振ると削除するため
 snapdx = 0
 snapdy = 0
@@ -43,10 +48,7 @@ sizesquare = null
   
 clickedElement = null # クリックされたパスや文字を覚えておく
 
-zooming = false
-
-window.debug = (s) ->
-  $('#searchtext').val(s)
+window.debug = (s) ->  $('#searchtext').val(s)
       
 # SVGElement.getScreenCTM() とか使うべきなのかも
 
@@ -396,7 +398,7 @@ zoomorigy = 0
 zoomx = 0
 zoomy = 0
 
-showframe = ->
+showframe = -> # 拡大/縮小用の枠表示
   hideframe()
   fpoints = []
   for element in selected
@@ -500,7 +502,7 @@ draw_mode = ->
     uppoint.push uptime
     clearTimeout modetimeout if modetimeout
     clearTimeout resettimeout if resettimeout
-    resettimeout = setTimeout -> # 2秒じっとしていると候補を消す
+    resettimeout = setTimeout -> # 1.5秒じっとしていると候補を消す
       strokes = []
       recogstrokes = []
       points = []
