@@ -187,10 +187,6 @@ clone = (dx, dy) ->
     for e in attr
       cloned.attr e.nodeName, e.value
     element.attr 'stroke', linecolor # コピー元の色を戻す
-    #cloned.x = element.x + dx
-    #cloned.y = element.y + dy
-    #cloned.scalex = element.scalex
-    #cloned.scaley = element.scaley
     if element.snappoints
       cloned.snappoints = element.snappoints.map (point) ->
         point.concat() # 複製を作る
@@ -198,22 +194,26 @@ clone = (dx, dy) ->
         snappoint[0] += dx
         snappoint[1] += dy
 
-    points = JSON.parse(element.attr('origpoints')).map (point) ->
+    cpoints = JSON.parse(element.attr('origpoints')).map (point) ->
       [point[0]+dx, point[1]+dy]
-    cloned.attr 'points', JSON.stringify points
-    cloned.attr 'origpoints', JSON.stringify points
-    cloned.attr 'd', elementpath element, points
+    cloned.attr 'points', JSON.stringify cpoints
+    cloned.attr 'origpoints', JSON.stringify cpoints
+    cloned.attr 'd', elementpath element, cpoints
 
     cloned.text element.text() if nodeName == 'text'
 
     ccloned = cloned
     cloned.on 'mousedown', ->
+      target = d3.event.target
+      
       #return unless mode == 'edit'
       clickedElement = setfunc ccloned
       # 編集中にクリックしたものは選択する
       if mode == 'edit'
         ccloned.attr "stroke", "yellow"
         selected.push ccloned unless ccloned in selected
+        #target.attr "stroke", "yellow"
+        #selected.push target unless target in selected
       #downpoint = [d3.event.pageX, d3.event.pageY]
       downpoint = d3.mouse(this)
       moving = true
@@ -430,12 +430,12 @@ zoomy = 0
 
 showframe = ->
   hideframe()
-  points = []
+  fpoints = []
   for element in selected
     for point in JSON.parse(element.attr('points'))
-      points.push point
-  x = points.map (e) -> e[0]
-  y = points.map (e) -> e[1]
+      fpoints.push point
+  x = fpoints.map (e) -> e[0]
+  y = fpoints.map (e) -> e[1]
   maxx = Math.max x...
   minx = Math.min x...
   maxy = Math.max y...
@@ -585,8 +585,6 @@ draw_mode = ->
     strokes.push [ downpoint, uppoint ]
     
     path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
-    #path.scalex = 1
-    #path.scaley = 1
     downpoint = null
     moving = false # ねんのため
     clickedElement = null
@@ -646,10 +644,10 @@ edit_mode = ->
           scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
           scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
 
-          points = JSON.parse(element.attr('origpoints')).map (point) ->
+          mpoints = JSON.parse(element.attr('origpoints')).map (point) ->
             [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
-          element.attr 'points', JSON.stringify points
-          element.attr 'd', elementpath element, points
+          element.attr 'points', JSON.stringify mpoints
+          element.attr 'd', elementpath element, mpoints
 
     if moving
       #
@@ -688,13 +686,13 @@ edit_mode = ->
       snapdx = 0
       snapdy = 0
       if totaldist > 200
-        points = []     # 移動オブジェクトの端点リスト
+        mpoints = []     # 移動オブジェクトの端点リスト
         refpoints = []  # それ以外のオブジェクトの端点リスト
         for element in elements
           if element.snappoints # 謎...
             if element in selected
               for snappoint in element.snappoints
-                points.push [snappoint[0]+movepoint[0]-downpoint[0], snappoint[1]+movepoint[1]-downpoint[1]]
+                mpoints.push [snappoint[0]+movepoint[0]-downpoint[0], snappoint[1]+movepoint[1]-downpoint[1]]
             else
               for snappoint in element.snappoints
                 refpoints.push [snappoint[0], snappoint[1]]
@@ -702,7 +700,7 @@ edit_mode = ->
         # 他のオブジェクトにスナッピング
         # 
         d = 10000000
-        for point in points
+        for point in mpoints
           for refpoint in refpoints
             dd = dist point, refpoint
             if dd < d
@@ -716,10 +714,10 @@ edit_mode = ->
       for element in selected
         movex = movepoint[0]-downpoint[0]-snapdx
         movey = movepoint[1]-downpoint[1]-snapdy
-        points = JSON.parse(element.attr('origpoints')).map (point) ->
+        mpoints = JSON.parse(element.attr('origpoints')).map (point) ->
           [point[0]+movex, point[1]+movey]
-        element.attr 'points', JSON.stringify points
-        element.attr 'd', elementpath element, points
+        element.attr 'points', JSON.stringify mpoints
+        element.attr 'd', elementpath element, mpoints
 
        showframe()
 
@@ -733,16 +731,15 @@ edit_mode = ->
       for element in selected
         scalex =  (uppoint[0] - zoomorigx) / (zoomx - zoomorigx)
         scaley =  (uppoint[1] - zoomorigy) / (zoomy - zoomorigy)
-        #element.scalex = scalex
-        #element.scaley = scaley
         
         # point補整
         element.snappoints = element.snappoints.map (point) ->
           [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
-        points = JSON.parse(element.attr('origpoints')).map (point) ->
+        upoints = JSON.parse(element.attr('origpoints')).map (point) ->
           [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
-        element.attr 'points', JSON.stringify points
-        element.attr 'd', elementpath element, points
+        element.attr 'points', JSON.stringify upoints
+        element.attr 'origpoints', JSON.stringify upoints
+        element.attr 'd', elementpath element, upoints
       
     if moving
       moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
@@ -755,10 +752,11 @@ edit_mode = ->
             snappoint[0] += moved[0]
             snappoint[1] += moved[1]
 
-        points = JSON.parse(element.attr('origpoints')).map (point) ->
+        upoints = JSON.parse(element.attr('origpoints')).map (point) ->
           [point[0]+moved[0], point[1]+moved[1]]
-        element.attr 'points', JSON.stringify points
-        element.attr 'd', elementpath element, points
+        element.attr 'points', JSON.stringify upoints
+        element.attr 'origpoints', JSON.stringify upoints
+        element.attr 'd', elementpath element, upoints
 
       showframe()
 
@@ -878,9 +876,7 @@ recognition = (recogStrokes) ->
           snappoint[0] += xx
           snappoint[1] += yy
       copiedElement.attr 'scalex', scalexx
-      #copiedElement.scalex = scalexx
       copiedElement.attr 'scaley', scaleyy
-      #copiedElement.scaley = scaleyy
       if target.innerHTML
         copiedElement.text target.innerHTML
         text = $('#searchtext').val()

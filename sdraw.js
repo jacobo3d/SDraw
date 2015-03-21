@@ -210,7 +210,7 @@ pen.on('mousedown', function() {
 });
 
 clone = function(dx, dy) {
-  var attr, ccloned, cloned, e, element, newselected, nodeName, parent, snappoint, _i, _j, _k, _len, _len1, _len2, _ref;
+  var attr, ccloned, cloned, cpoints, e, element, newselected, nodeName, parent, snappoint, _i, _j, _k, _len, _len1, _len2, _ref;
   newselected = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
@@ -234,17 +234,19 @@ clone = function(dx, dy) {
         snappoint[1] += dy;
       }
     }
-    points = JSON.parse(element.attr('origpoints')).map(function(point) {
+    cpoints = JSON.parse(element.attr('origpoints')).map(function(point) {
       return [point[0] + dx, point[1] + dy];
     });
-    cloned.attr('points', JSON.stringify(points));
-    cloned.attr('origpoints', JSON.stringify(points));
-    cloned.attr('d', elementpath(element, points));
+    cloned.attr('points', JSON.stringify(cpoints));
+    cloned.attr('origpoints', JSON.stringify(cpoints));
+    cloned.attr('d', elementpath(element, cpoints));
     if (nodeName === 'text') {
       cloned.text(element.text());
     }
     ccloned = cloned;
     cloned.on('mousedown', function() {
+      var target;
+      target = d3.event.target;
       clickedElement = setfunc(ccloned);
       if (mode === 'edit') {
         ccloned.attr("stroke", "yellow");
@@ -476,21 +478,21 @@ zoomx = 0;
 zoomy = 0;
 
 showframe = function() {
-  var element, maxx, maxy, minx, miny, point, x, y, _i, _j, _len, _len1, _ref;
+  var element, fpoints, maxx, maxy, minx, miny, point, x, y, _i, _j, _len, _len1, _ref;
   hideframe();
-  points = [];
+  fpoints = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
     element = selected[_i];
     _ref = JSON.parse(element.attr('points'));
     for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
       point = _ref[_j];
-      points.push(point);
+      fpoints.push(point);
     }
   }
-  x = points.map(function(e) {
+  x = fpoints.map(function(e) {
     return e[0];
   });
-  y = points.map(function(e) {
+  y = fpoints.map(function(e) {
     return e[1];
   });
   maxx = Math.max.apply(Math, x);
@@ -696,7 +698,7 @@ edit_mode = function() {
     return _results;
   });
   svg.on('mousemove', function() {
-    var d, dd, movetime, movex, movey, newelements, oldmovepoint, point, refpoint, refpoints, scalex, scaley, snappoint, _j, _k, _l, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1;
+    var d, dd, movetime, movex, movey, mpoints, newelements, oldmovepoint, point, refpoint, refpoints, scalex, scaley, snappoint, _j, _k, _l, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1;
     if (!downpoint) {
       return;
     }
@@ -715,11 +717,11 @@ edit_mode = function() {
           element = selected[_j];
           scalex = (movepoint[0] - zoomorigx) / (zoomx - zoomorigx);
           scaley = (movepoint[1] - zoomorigy) / (zoomy - zoomorigy);
-          points = JSON.parse(element.attr('origpoints')).map(function(point) {
+          mpoints = JSON.parse(element.attr('origpoints')).map(function(point) {
             return [zoomorigx + (point[0] - zoomorigx) * scalex, zoomorigy + (point[1] - zoomorigy) * scaley];
           });
-          element.attr('points', JSON.stringify(points));
-          element.attr('d', elementpath(element, points));
+          element.attr('points', JSON.stringify(mpoints));
+          element.attr('d', elementpath(element, mpoints));
         }
       }
     }
@@ -765,7 +767,7 @@ edit_mode = function() {
       snapdx = 0;
       snapdy = 0;
       if (totaldist > 200) {
-        points = [];
+        mpoints = [];
         refpoints = [];
         for (_m = 0, _len4 = elements.length; _m < _len4; _m++) {
           element = elements[_m];
@@ -774,7 +776,7 @@ edit_mode = function() {
               _ref = element.snappoints;
               for (_n = 0, _len5 = _ref.length; _n < _len5; _n++) {
                 snappoint = _ref[_n];
-                points.push([snappoint[0] + movepoint[0] - downpoint[0], snappoint[1] + movepoint[1] - downpoint[1]]);
+                mpoints.push([snappoint[0] + movepoint[0] - downpoint[0], snappoint[1] + movepoint[1] - downpoint[1]]);
               }
             } else {
               _ref1 = element.snappoints;
@@ -786,8 +788,8 @@ edit_mode = function() {
           }
         }
         d = 10000000;
-        for (_p = 0, _len7 = points.length; _p < _len7; _p++) {
-          point = points[_p];
+        for (_p = 0, _len7 = mpoints.length; _p < _len7; _p++) {
+          point = mpoints[_p];
           for (_q = 0, _len8 = refpoints.length; _q < _len8; _q++) {
             refpoint = refpoints[_q];
             dd = dist(point, refpoint);
@@ -807,17 +809,17 @@ edit_mode = function() {
         element = selected[_r];
         movex = movepoint[0] - downpoint[0] - snapdx;
         movey = movepoint[1] - downpoint[1] - snapdy;
-        points = JSON.parse(element.attr('origpoints')).map(function(point) {
+        mpoints = JSON.parse(element.attr('origpoints')).map(function(point) {
           return [point[0] + movex, point[1] + movey];
         });
-        element.attr('points', JSON.stringify(points));
-        element.attr('d', elementpath(element, points));
+        element.attr('points', JSON.stringify(mpoints));
+        element.attr('d', elementpath(element, mpoints));
       }
       return showframe();
     }
   });
   return svg.on('mouseup', function() {
-    var f, scalex, scaley, snappoint, uptime, _j, _k, _l, _len1, _len2, _len3, _len4, _m, _ref;
+    var f, scalex, scaley, snappoint, upoints, uptime, _j, _k, _l, _len1, _len2, _len3, _len4, _m, _ref;
     if (!downpoint) {
       return;
     }
@@ -831,11 +833,12 @@ edit_mode = function() {
         element.snappoints = element.snappoints.map(function(point) {
           return [zoomorigx + (point[0] - zoomorigx) * scalex, zoomorigy + (point[1] - zoomorigy) * scaley];
         });
-        points = JSON.parse(element.attr('origpoints')).map(function(point) {
+        upoints = JSON.parse(element.attr('origpoints')).map(function(point) {
           return [zoomorigx + (point[0] - zoomorigx) * scalex, zoomorigy + (point[1] - zoomorigy) * scaley];
         });
-        element.attr('points', JSON.stringify(points));
-        element.attr('d', elementpath(element, points));
+        element.attr('points', JSON.stringify(upoints));
+        element.attr('origpoints', JSON.stringify(upoints));
+        element.attr('d', elementpath(element, upoints));
       }
     }
     if (moving) {
@@ -852,11 +855,12 @@ edit_mode = function() {
             snappoint[1] += moved[1];
           }
         }
-        points = JSON.parse(element.attr('origpoints')).map(function(point) {
+        upoints = JSON.parse(element.attr('origpoints')).map(function(point) {
           return [point[0] + moved[0], point[1] + moved[1]];
         });
-        element.attr('points', JSON.stringify(points));
-        element.attr('d', elementpath(element, points));
+        element.attr('points', JSON.stringify(upoints));
+        element.attr('origpoints', JSON.stringify(upoints));
+        element.attr('d', elementpath(element, upoints));
       }
       showframe();
     }
