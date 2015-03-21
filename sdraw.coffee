@@ -42,8 +42,7 @@ modetimeout = null    # 長押しで編集モードにするため
 resettimeout = null   # 時間がたつと候補リセット
 
 deletestate = 0 # 振ると削除するため
-snapdx = 0
-snapdy = 0
+snapd = []      # スナッピングするときの移動値
 totaldist = 0
 shakepoint = [0, 0]
 zoomorig = [0, 0]     # 拡大/縮小するときの原点
@@ -628,8 +627,7 @@ edit_mode = ->
       #
       # スナッピング処理
       #
-      snapdx = 0
-      snapdy = 0
+      snapd = [0, 0]
       if totaldist > 200
         mpoints = []     # 移動オブジェクトの端点リスト
         refpoints = []  # それ以外のオブジェクトの端点リスト
@@ -650,17 +648,17 @@ edit_mode = ->
             dd = dist point, refpoint
             if dd < d
               d = dd
-              snapdx = point[0] - refpoint[0]
-              snapdy = point[1] - refpoint[1]
+              snapd = [point[0] - refpoint[0], point[1] - refpoint[1]]
   
-      if Math.abs(snapdx) > 50 || Math.abs (snapdy) > 50 # 遠いときはスナップしない
-        snapdx = 0
-        snapdy = 0
+      if Math.abs(snapd[0]) > 50 || Math.abs (snapd[1]) > 50 # 遠いときはスナップしない
+        snapd = [0, 0]
       for element in selected
-        movex = movepoint[0]-downpoint[0]-snapdx
-        movey = movepoint[1]-downpoint[1]-snapdy
+        move = [
+          movepoint[0]-downpoint[0]-snapd[0]
+          movepoint[1]-downpoint[1]-snapd[1]
+        ]
         mpoints = JSON.parse(element.attr('origpoints')).map (point) ->
-          [point[0]+movex, point[1]+movey]
+          [point[0]+move[0], point[1]+move[0]]
         element.attr 'points', JSON.stringify mpoints
         element.attr 'd', elementpath element, mpoints
 
@@ -687,7 +685,7 @@ edit_mode = ->
         element.attr 'd', elementpath element, upoints
       
     if moving
-      moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
+      moved = [uppoint[0]-downpoint[0]-snapd[0], uppoint[1]-downpoint[1]-snapd[1]]
       for element in selected
         element.snappoints = element.snappoints.map (point) ->
           [point[0] + moved[0], point[1] + moved[1]]
