@@ -13,15 +13,22 @@
 body = d3.select "body" # body = d3.select("body").style({margin:0, padding:0}), etc.
 svg =  d3.select "svg"
 bgrect = svg.append 'rect'
+sizeframe = null          # 拡大/縮小フレーム
+sizesquare = null
 
 downpoint = null  # mousedown時の座標
 movepoint = null
 uppoint = null
-elements = []     # 描画された要素列
+downtime = null
+uptime = null
+movetime = null
+
+elements = []     # 描画されたすべての要素列
 selected = []     # 選択された要素列
 points = []       # ストローク座標列
 strokes = []      # 始点と終点の組の列
 recogstrokes = []
+
 moving = false    # 選択要素を移動中かどうか
 zooming = false   # 拡大/縮小操作中かどうか
 moved = null      # 移動操作したときの移動量 (繰り返しに使う)
@@ -33,25 +40,18 @@ linecolor = '#000000'
 
 modetimeout = null    # 長押しで編集モードにするため
 resettimeout = null   # 時間がたつと候補リセット
-downtime = null
-uptime = null
-movetime = null
 
 deletestate = 0 # 振ると削除するため
 snapdx = 0
 snapdy = 0
 totaldist = 0
 shakepoint = [0, 0]
+zoomorig = [0, 0]     # 拡大/縮小するときの原点
 
-sizeframe = null          # 拡大/縮小フレーム
-sizesquare = null
-  
 clickedElement = null # クリックされたパスや文字を覚えておく
 
 window.debug = (s) ->  $('#searchtext').val(s)
       
-# SVGElement.getScreenCTM() とか使うべきなのかも
-
 window.browserWidth = ->
   window.innerWidth || document.body.clientWidth
 
@@ -205,7 +205,7 @@ $('#selectall').on 'click', ->
 #
 # 画像検索
 #
-candsearch = -> 
+imagesearch = -> 
   query = $('#searchtext').val()
   if query.length > 0
     # flickr_search query, (data) ->   # Flickr検索
@@ -244,9 +244,9 @@ candsearch = ->
 
           image.on 'mouseup', ->
 
-$('#searchbutton').on 'click', candsearch
+$('#searchbutton').on 'click', imagesearch
 $('#searchtext').on 'keydown', (e) ->
-  candsearch() if e.keyCode == 13
+  imagesearch() if e.keyCode == 13
 
 ############################################################################
 #
@@ -260,11 +260,11 @@ $('#searchtext').on 'keydown', (e) ->
 #
 
 window.line = d3.svg.line()
-  .interpolate 'cardinal'  # 指定した点を通る
+  .interpolate 'cardinal'  # 指定した点を通るスプライン
   .x (d) -> d[0]
   .y (d) -> d[1]
 
-polyline = d3.svg.line()
+polyline = d3.svg.line()  # 普通のポリライン
   .x (d) -> d[0]
   .y (d) -> d[1]
 
@@ -380,7 +380,7 @@ setfunc = (element) ->
   ->
     return element
 
-clickfunc = (element) -> # 要素がクリックされたとき呼ばれる関数
+clickfunc = (element) -> # 要素がクリックされたとき呼ばれる関数 クロージャ利用
   ->
     clickedElement = element
     if mode == 'edit'
@@ -393,7 +393,6 @@ clickfunc = (element) -> # 要素がクリックされたとき呼ばれる関�
 #
 # 拡大/縮小
 #
-zoomorig = [0, 0]
 
 showframe = -> # 拡大/縮小用の枠表示
   hideframe()
@@ -629,7 +628,6 @@ edit_mode = ->
       #
       # スナッピング処理
       #
-      # d = dist movepoint, downpoint
       snapdx = 0
       snapdy = 0
       if totaldist > 200
