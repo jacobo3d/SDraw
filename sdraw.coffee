@@ -360,8 +360,6 @@ drawPath = (path) ->
     'stroke-linecap': "round"
     fill:             "none"
     points:           JSON.stringify points
-  path.x = 0
-  path.y = 0
 
 #
 # 描画エレメントを選択状態にする関数を返す関数
@@ -803,8 +801,6 @@ recognition = (recogStrokes) ->
       # 候補情報をコピーして描画領域に貼り付ける
       #
       copiedElement = svg.append target.nodeName # "text", "path", etc.
-      #copiedElement.x = 0
-      #copiedElement.y = 0
       for attr in target.attributes
         copiedElement.attr attr.nodeName, attr.value
         if attr.nodeName == 'snappoints'

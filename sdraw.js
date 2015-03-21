@@ -383,7 +383,7 @@ setTemplate("template4", kareobanaTemplate4);
 path = null;
 
 drawPath = function(path) {
-  path.attr({
+  return path.attr({
     d: line(points),
     stroke: path.attr('color'),
     'stroke-width': linewidth,
@@ -391,8 +391,6 @@ drawPath = function(path) {
     fill: "none",
     points: JSON.stringify(points)
   });
-  path.x = 0;
-  return path.y = 0;
 };
 
 selfunc = function(element) {
