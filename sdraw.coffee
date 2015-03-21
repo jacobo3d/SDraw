@@ -773,9 +773,8 @@ recognition = (recogStrokes) ->
     # candElement.attr 'fill', 'black'
     candElement.attr 'color', 'black'
 
-    alert cand.scalex
-    scalexx = cand.scalex ? 1
-    scaleyy = cand.scaley ? 1
+    scalex = cand.scalex ? 1
+    scaley = cand.scaley ? 1
     candselfunc = ->
       d3.event.preventDefault()
       downpoint = d3.mouse(this)
@@ -790,9 +789,9 @@ recognition = (recogStrokes) ->
       # 文字認識に使った最初のストローク位置を得る
       #
       x = flatten(recogStrokes).map (p) -> p[0]
-      xx = Math.min x...
+      minx = Math.min x...
       y = flatten(recogStrokes).map (p) -> p[1]
-      yy = Math.min y...
+      miny = Math.min y...
 
       #
       # Strokesを消す
@@ -804,8 +803,8 @@ recognition = (recogStrokes) ->
       # 候補情報をコピーして描画領域に貼り付ける
       #
       copiedElement = svg.append target.nodeName # "text", "path", etc.
-      copiedElement.x = 0
-      copiedElement.y = 0
+      #copiedElement.x = 0
+      #copiedElement.y = 0
       for attr in target.attributes
         copiedElement.attr attr.nodeName, attr.value
         if attr.nodeName == 'snappoints'
@@ -814,32 +813,29 @@ recognition = (recogStrokes) ->
       copiedElement.attr 'stroke-width', linewidth if target.nodeName != 'text'
       if target.nodeName == 'path'
         for snappoint in copiedElement.snappoints
-          snappoint[0] *= scalexx
-          snappoint[1] *= scaleyy
-          snappoint[0] += xx
-          snappoint[1] += yy
+          snappoint[0] *= scalex
+          snappoint[1] *= scaley
+          snappoint[0] += minx
+          snappoint[1] += miny
           copiedElement.attr "stroke-width", linewidth
-        copiedElement.x = xx
-        copiedElement.y = yy
         copiedElement.attr 'stroke', linecolor
         copiedElement.attr 'color', linecolor
         points = JSON.parse(copiedElement.attr('points')).map (point) ->
-          z = [xx + point[0] * scalexx, yy + point[1] * scaleyy]
+          z = [minx + point[0] * scalex, miny + point[1] * scaley]
         copiedElement.attr 'points', JSON.stringify points
         copiedElement.attr 'd', elementpath copiedElement, points
 
       if target.nodeName == 'text'
         for snappoint in copiedElement.snappoints
-          snappoint[0] += xx
-          snappoint[1] += yy
-      copiedElement.attr 'scalex', scalexx
-      copiedElement.attr 'scaley', scaleyy
+          snappoint[0] += minx
+          snappoint[1] += miny
+      copiedElement.attr 'scalex', scalex
+      copiedElement.attr 'scaley', scaley
       if target.innerHTML
         copiedElement.text target.innerHTML
         text = $('#searchtext').val()
         $('#searchtext').val text + target.innerHTML
       elements.push copiedElement
-      ## copiedElement.snappoints = target.snappoints ########!!!!!!
       
       # マウスが横切ったら選択する
       copiedElement.on 'mousemove', selfunc copiedElement

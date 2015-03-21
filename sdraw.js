@@ -854,7 +854,7 @@ recognition = function(recogStrokes) {
   var cands;
   cands = recognize(recogStrokes, points, window.figuredata);
   return [0, 1, 2, 3, 4, 5, 6, 7].forEach(function(i) {
-    var cand, candElement, candselfunc, candsvg, scalexx, scaleyy, _ref, _ref1;
+    var cand, candElement, candselfunc, candsvg, scalex, scaley, _ref, _ref1;
     cand = cands[i];
     candsvg = d3.select("#cand" + i);
     candsvg.selectAll("*").remove();
@@ -867,11 +867,10 @@ recognition = function(recogStrokes) {
       candElement.text(cand.text);
     }
     candElement.attr('color', 'black');
-    alert(cand.scalex);
-    scalexx = (_ref = cand.scalex) != null ? _ref : 1;
-    scaleyy = (_ref1 = cand.scaley) != null ? _ref1 : 1;
+    scalex = (_ref = cand.scalex) != null ? _ref : 1;
+    scaley = (_ref1 = cand.scaley) != null ? _ref1 : 1;
     candselfunc = function() {
-      var attr, copiedElement, snappoint, target, text, x, xx, y, yy, _i, _j, _k, _l, _len, _len1, _len2, _ref2, _ref3, _ref4, _ref5, _results;
+      var attr, copiedElement, minx, miny, snappoint, target, text, x, y, _i, _j, _k, _l, _len, _len1, _len2, _ref2, _ref3, _ref4, _ref5, _results;
       d3.event.preventDefault();
       downpoint = d3.mouse(this);
       target = d3.event.target;
@@ -881,11 +880,11 @@ recognition = function(recogStrokes) {
       x = flatten(recogStrokes).map(function(p) {
         return p[0];
       });
-      xx = Math.min.apply(Math, x);
+      minx = Math.min.apply(Math, x);
       y = flatten(recogStrokes).map(function(p) {
         return p[1];
       });
-      yy = Math.min.apply(Math, y);
+      miny = Math.min.apply(Math, y);
       (function() {
         _results = [];
         for (var _i = 0, _ref2 = strokes.length; 0 <= _ref2 ? _i < _ref2 : _i > _ref2; 0 <= _ref2 ? _i++ : _i--){ _results.push(_i); }
@@ -896,8 +895,6 @@ recognition = function(recogStrokes) {
         return element.remove();
       });
       copiedElement = svg.append(target.nodeName);
-      copiedElement.x = 0;
-      copiedElement.y = 0;
       _ref3 = target.attributes;
       for (_j = 0, _len = _ref3.length; _j < _len; _j++) {
         attr = _ref3[_j];
@@ -914,19 +911,17 @@ recognition = function(recogStrokes) {
         _ref4 = copiedElement.snappoints;
         for (_k = 0, _len1 = _ref4.length; _k < _len1; _k++) {
           snappoint = _ref4[_k];
-          snappoint[0] *= scalexx;
-          snappoint[1] *= scaleyy;
-          snappoint[0] += xx;
-          snappoint[1] += yy;
+          snappoint[0] *= scalex;
+          snappoint[1] *= scaley;
+          snappoint[0] += minx;
+          snappoint[1] += miny;
           copiedElement.attr("stroke-width", linewidth);
         }
-        copiedElement.x = xx;
-        copiedElement.y = yy;
         copiedElement.attr('stroke', linecolor);
         copiedElement.attr('color', linecolor);
         points = JSON.parse(copiedElement.attr('points')).map(function(point) {
           var z;
-          return z = [xx + point[0] * scalexx, yy + point[1] * scaleyy];
+          return z = [minx + point[0] * scalex, miny + point[1] * scaley];
         });
         copiedElement.attr('points', JSON.stringify(points));
         copiedElement.attr('d', elementpath(copiedElement, points));
@@ -935,12 +930,12 @@ recognition = function(recogStrokes) {
         _ref5 = copiedElement.snappoints;
         for (_l = 0, _len2 = _ref5.length; _l < _len2; _l++) {
           snappoint = _ref5[_l];
-          snappoint[0] += xx;
-          snappoint[1] += yy;
+          snappoint[0] += minx;
+          snappoint[1] += miny;
         }
       }
-      copiedElement.attr('scalex', scalexx);
-      copiedElement.attr('scaley', scaleyy);
+      copiedElement.attr('scalex', scalex);
+      copiedElement.attr('scaley', scaley);
       if (target.innerHTML) {
         copiedElement.text(target.innerHTML);
         text = $('#searchtext').val();
