@@ -378,9 +378,8 @@ setfunc = (element) ->
   ->
     return element
 
-clickfunc = (element) -> # 要素がおクリックされたとき呼ばれる関数
+clickfunc = (element) -> # 要素がクリックされたとき呼ばれる関数
   ->
-    # clickedElement = setfunc element
     clickedElement = element
     if mode == 'edit'
       element.attr "stroke", "yellow"
@@ -470,7 +469,7 @@ draw_mode = ->
       if clickedElement  # pathなどをクリックしてた場合は移動モードにする
         selected = []
         path.remove()      # drawmodeで描いていた線を消す
-        element = clickedElement # ()
+        element = clickedElement
         element.attr "stroke", "yellow"
         f = element.attr "fill"
         if f && f != "none"
@@ -521,7 +520,7 @@ draw_mode = ->
         newelements.push element unless element == path
       elements = newelements
       
-      element = clickedElement # ()
+      element = clickedElement
       element.attr "stroke", "yellow"
       f = element.attr "fill"
       if f && f != "none"
@@ -574,7 +573,6 @@ edit_mode = ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
     movepoint = downpoint
-    # downtime = new Date()
     downtime = d3.event.timeStamp
     moved = null
     totaldist = 0
@@ -593,18 +591,14 @@ edit_mode = ->
 
     if zooming
       if downpoint
-        sizeframe.attr
-          d: "M#{zoomorigx-5},#{zoomorigy-5}L#{zoomorigx-5},#{movepoint[1]+5}L#{movepoint[0]+5},#{movepoint[1]+5}L#{movepoint[0]+5},#{zoomorigy-5}Z"
-        sizesquare.attr
-          d: "M#{movepoint[0]-10},#{movepoint[1]-10}L#{movepoint[0]-10},#{movepoint[1]+10}L#{movepoint[0]+10},#{movepoint[1]+10}L#{movepoint[0]+10},#{movepoint[1]-10}Z"
+        scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
+        scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
         for element in selected
-          scalex =  (movepoint[0] - zoomorigx) / (zoomx - zoomorigx)
-          scaley =  (movepoint[1] - zoomorigy) / (zoomy - zoomorigy)
-
           mpoints = JSON.parse(element.attr('origpoints')).map (point) ->
             [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
           element.attr 'points', JSON.stringify mpoints
           element.attr 'd', elementpath element, mpoints
+        showframe()
 
     if moving
       #
@@ -713,7 +707,6 @@ edit_mode = ->
     zooming = false
     downpoint = null
 
-    # uptime = new Date()
     uptime = d3.event.timeStamp
     if uptime - downtime < 300 && !clickedElement
       duplicated = false

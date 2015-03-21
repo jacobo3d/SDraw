@@ -660,22 +660,17 @@ edit_mode = function() {
     movetime = d3.event.timeStamp;
     if (zooming) {
       if (downpoint) {
-        sizeframe.attr({
-          d: "M" + (zoomorigx - 5) + "," + (zoomorigy - 5) + "L" + (zoomorigx - 5) + "," + (movepoint[1] + 5) + "L" + (movepoint[0] + 5) + "," + (movepoint[1] + 5) + "L" + (movepoint[0] + 5) + "," + (zoomorigy - 5) + "Z"
-        });
-        sizesquare.attr({
-          d: "M" + (movepoint[0] - 10) + "," + (movepoint[1] - 10) + "L" + (movepoint[0] - 10) + "," + (movepoint[1] + 10) + "L" + (movepoint[0] + 10) + "," + (movepoint[1] + 10) + "L" + (movepoint[0] + 10) + "," + (movepoint[1] - 10) + "Z"
-        });
+        scalex = (movepoint[0] - zoomorigx) / (zoomx - zoomorigx);
+        scaley = (movepoint[1] - zoomorigy) / (zoomy - zoomorigy);
         for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
           element = selected[_j];
-          scalex = (movepoint[0] - zoomorigx) / (zoomx - zoomorigx);
-          scaley = (movepoint[1] - zoomorigy) / (zoomy - zoomorigy);
           mpoints = JSON.parse(element.attr('origpoints')).map(function(point) {
             return [zoomorigx + (point[0] - zoomorigx) * scalex, zoomorigy + (point[1] - zoomorigy) * scaley];
           });
           element.attr('points', JSON.stringify(mpoints));
           element.attr('d', elementpath(element, mpoints));
         }
+        showframe();
       }
     }
     if (moving) {
