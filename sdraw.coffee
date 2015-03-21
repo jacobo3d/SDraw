@@ -219,7 +219,7 @@ candsearch = ->
             width: 120
             height: 120
             preserveAspectRatio: "meet"
-        candimage.x = 0
+        candimage.x = 0 # たぶん不要
         candimage.y = 0
         candimage.on 'click', ->
           image = svg.append 'image'
@@ -685,11 +685,9 @@ edit_mode = ->
     uppoint = d3.mouse(this)
 
     if zooming
+      scalex =  (uppoint[0] - zoomorigx) / (zoomx - zoomorigx)
+      scaley =  (uppoint[1] - zoomorigy) / (zoomy - zoomorigy)
       for element in selected
-        scalex =  (uppoint[0] - zoomorigx) / (zoomx - zoomorigx)
-        scaley =  (uppoint[1] - zoomorigy) / (zoomy - zoomorigy)
-        
-        # point補整
         element.snappoints = element.snappoints.map (point) ->
           [zoomorigx + (point[0]-zoomorigx) * scalex, zoomorigy + (point[1]-zoomorigy) * scaley]
         upoints = JSON.parse(element.attr('origpoints')).map (point) ->
@@ -701,21 +699,13 @@ edit_mode = ->
     if moving
       moved = [uppoint[0]-downpoint[0]-snapdx, uppoint[1]-downpoint[1]-snapdy]
       for element in selected
-        element.x += moved[0]
-        element.y += moved[1]
-
-        if element.snappoints
-          for snappoint in element.snappoints
-            snappoint[0] += moved[0]
-            snappoint[1] += moved[1]
-
+        element.snappoints = element.snappoints.map (point) ->
+          [point[0] + moved[0], point[1] + moved[1]]
         upoints = JSON.parse(element.attr('origpoints')).map (point) ->
           [point[0]+moved[0], point[1]+moved[1]]
         element.attr 'points', JSON.stringify upoints
         element.attr 'origpoints', JSON.stringify upoints
         element.attr 'd', elementpath element, upoints
-
-      showframe()
 
     element.attr 'origpoints', (element.attr 'points')
     
@@ -744,8 +734,6 @@ edit_mode = ->
         draw_mode() # 選択物がなくなったら描画モードに戻してみる
      
     clickedElement = null
-
-    # hideframe()
 
 #
 # 文字/ストローク認識 + 候補表示

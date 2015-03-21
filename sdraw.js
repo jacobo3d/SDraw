@@ -772,17 +772,17 @@ edit_mode = function() {
     }
   });
   return svg.on('mouseup', function() {
-    var f, scalex, scaley, snappoint, upoints, uptime, _j, _k, _l, _len1, _len2, _len3, _len4, _m, _ref;
+    var f, scalex, scaley, upoints, uptime, _j, _k, _l, _len1, _len2, _len3;
     if (!downpoint) {
       return;
     }
     d3.event.preventDefault();
     uppoint = d3.mouse(this);
     if (zooming) {
+      scalex = (uppoint[0] - zoomorigx) / (zoomx - zoomorigx);
+      scaley = (uppoint[1] - zoomorigy) / (zoomy - zoomorigy);
       for (_j = 0, _len1 = selected.length; _j < _len1; _j++) {
         element = selected[_j];
-        scalex = (uppoint[0] - zoomorigx) / (zoomx - zoomorigx);
-        scaley = (uppoint[1] - zoomorigy) / (zoomy - zoomorigy);
         element.snappoints = element.snappoints.map(function(point) {
           return [zoomorigx + (point[0] - zoomorigx) * scalex, zoomorigy + (point[1] - zoomorigy) * scaley];
         });
@@ -798,16 +798,9 @@ edit_mode = function() {
       moved = [uppoint[0] - downpoint[0] - snapdx, uppoint[1] - downpoint[1] - snapdy];
       for (_k = 0, _len2 = selected.length; _k < _len2; _k++) {
         element = selected[_k];
-        element.x += moved[0];
-        element.y += moved[1];
-        if (element.snappoints) {
-          _ref = element.snappoints;
-          for (_l = 0, _len3 = _ref.length; _l < _len3; _l++) {
-            snappoint = _ref[_l];
-            snappoint[0] += moved[0];
-            snappoint[1] += moved[1];
-          }
-        }
+        element.snappoints = element.snappoints.map(function(point) {
+          return [point[0] + moved[0], point[1] + moved[1]];
+        });
         upoints = JSON.parse(element.attr('origpoints')).map(function(point) {
           return [point[0] + moved[0], point[1] + moved[1]];
         });
@@ -815,7 +808,6 @@ edit_mode = function() {
         element.attr('origpoints', JSON.stringify(upoints));
         element.attr('d', elementpath(element, upoints));
       }
-      showframe();
     }
     element.attr('origpoints', element.attr('points'));
     moving = false;
@@ -831,8 +823,8 @@ edit_mode = function() {
         hideframe();
         draw_mode();
       } else {
-        for (_m = 0, _len4 = selected.length; _m < _len4; _m++) {
-          element = selected[_m];
+        for (_l = 0, _len3 = selected.length; _l < _len3; _l++) {
+          element = selected[_l];
           element.attr("stroke", element.attr('color'));
           f = element.attr("fill");
           if (f && f !== "none") {
