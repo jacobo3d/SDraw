@@ -42,7 +42,7 @@ modetimeout = null    # 長押しで編集モードにするため
 resettimeout = null   # 時間がたつと候補リセット
 
 deletestate = 0 # 振ると削除するため
-snapd = []      # スナッピングするときの移動値
+snapd = [0, 0]      # スナッピングするときの移動値
 totaldist = 0
 shakepoint = [0, 0]
 zoomorig = [0, 0]     # 拡大/縮小するときの原点
