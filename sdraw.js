@@ -788,9 +788,6 @@ edit_mode = function() {
       }
     }
     element.attr('origpoints', element.attr('points'));
-    downpoint = null;
-    moving = false;
-    zooming = false;
     uptime = d3.event.timeStamp;
     if (uptime - downtime < 300 && !clickedElement) {
       duplicated = false;
@@ -814,6 +811,9 @@ edit_mode = function() {
         draw_mode();
       }
     }
+    downpoint = null;
+    moving = false;
+    zooming = false;
     return clickedElement = null;
   });
 };

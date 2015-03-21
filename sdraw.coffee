@@ -697,10 +697,6 @@ edit_mode = ->
 
     element.attr 'origpoints', (element.attr 'points')
 
-    downpoint = null
-    moving = false
-    zooming = false
-
     uptime = d3.event.timeStamp
     if uptime - downtime < 300 && !clickedElement
       duplicated = false
@@ -719,9 +715,12 @@ edit_mode = ->
         selected = []
         hideframe()
         draw_mode() # 選択物がなくなったら描画モードに戻してみる
-     
-    clickedElement = null
 
+    downpoint = null
+    moving = false
+    zooming = false
+    clickedElement = null
+    
 #
 # 文字/ストローク認識 + 候補表示
 # 
