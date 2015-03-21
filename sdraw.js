@@ -742,7 +742,7 @@ edit_mode = function() {
         element = selected[_r];
         move = [movepoint[0] - downpoint[0] - snapd[0], movepoint[1] - downpoint[1] - snapd[1]];
         mpoints = JSON.parse(element.attr('origpoints')).map(function(point) {
-          return [point[0] + move[0], point[1] + move[0]];
+          return [point[0] + move[0], point[1] + move[1]];
         });
         element.attr('points', JSON.stringify(mpoints));
         element.attr('d', elementpath(element, mpoints));

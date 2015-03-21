@@ -658,7 +658,7 @@ edit_mode = ->
           movepoint[1]-downpoint[1]-snapd[1]
         ]
         mpoints = JSON.parse(element.attr('origpoints')).map (point) ->
-          [point[0]+move[0], point[1]+move[0]]
+          [point[0]+move[0], point[1]+move[1]]
         element.attr 'points', JSON.stringify mpoints
         element.attr 'd', elementpath element, mpoints
 
