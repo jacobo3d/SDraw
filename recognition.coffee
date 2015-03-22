@@ -41,27 +41,104 @@ recognize = (strokes, points, strokedata...) -> # strokedataは可変個引数
   if nstrokes == 1 && strokewidth > 100 && strokeheight/strokewidth < 0.1
     hline = 
       strokes: [[[0, 0], [80, 0]], [[0, 0], [80, 0]]]
-      snappoints: [[10, 40], [strokewidth, 40]]
+      snappoints: [[0, 0], [strokewidth, 0]]
       type: 'path'
       attr:
         d: "M10,40L#{strokewidth},40",
         stroke: '#000000'
         fill: 'none'
         'stroke-width': 5
+        name: 'lines'
+        points: JSON.stringify [[0, 0], [strokewidth, 0]]
     cands.push [hline, 0]
+    
+    register = 
+      strokes: [
+        [[0, 40], [15, 40]]
+        [[15, 40], [20, 20]]
+        [[20, 20], [30, 60]]
+        [[30, 60], [40, 20]]
+        [[40, 20], [50, 60]]
+        [[50, 60], [60, 20]]
+        [[60, 20], [70, 60]]
+        [[70, 60], [75, 40]]
+        [[75, 40], [90, 40]]
+      ]
+      snappoints: [
+        [0, 40], [90, 40]
+      ]
+      type: 'path'
+      attr:
+        d: "M0,40L15,40L20,20L30,60L40,20L50,60L60,20L70,60L75,40L90,40"
+        stroke: '#000000'
+        fill: 'none'
+        'stroke-width': 2
+        name: 'polyline'
+        points: JSON.stringify [
+          [0, 40],
+          [(15 * strokewidth) / 90, 40]
+          [(20 * strokewidth) / 90, 20]
+          [(30 * strokewidth) / 90, 60]
+          [(40 * strokewidth) / 90, 20]
+          [(50 * strokewidth) / 90, 60]
+          [(60 * strokewidth) / 90, 20]
+          [(70 * strokewidth) / 90, 60]
+          [(75 * strokewidth) / 90, 40]
+          [(90 * strokewidth) / 90, 40]
+        ]
+    cands.push [register, 1]
+        
   # 縦一直線
   if nstrokes == 1 && strokeheight > 100 && strokewidth/strokeheight < 0.1
     vline = 
       strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]]
-      snappoints: [[40, 10], [40, strokeheight]]
+      snappoints: [[0, 0], [0, strokeheight]]
       type: 'path'
       attr:
         d: "M40,10L40,#{strokeheight}",
         stroke: '#000000'
         fill: 'none'
-        'stroke-width': 5
+        'stroke-width': 2
+        name: 'lines'
+        points: JSON.stringify [[0, 0], [0, strokeheight]]
     cands.push [vline, 0]
 
+    register =
+      strokes: [
+        [[40, 0], [40, 15]]
+        [[40, 15], [60, 20]]
+        [[60, 20], [20, 30]]
+        [[20, 30], [60, 40]]
+        [[60, 40], [20, 50]]
+        [[20, 50], [60, 60]]
+        [[60, 60], [20, 70]]
+        [[20, 70], [40, 75]]
+        [[40, 75], [40, 90]]
+      ]
+      snappoints: [
+        [40, 0], [40, strokeheight]
+      ]
+      type: 'path'
+      attr:
+        d: "M40,0L40,15L60,20L20,30L60,40L20,50L60,60L20,70L40,75L40,90"
+        stroke: '#000000'
+        fill: 'none'
+        'stroke-width': 2
+        name: 'polyline'
+        points: JSON.stringify [
+          [40, (strokeheight * 0) / 90]
+          [40, (strokeheight * 15) / 90]
+          [60, (strokeheight * 20) / 90]
+          [20, (strokeheight * 30) / 90]
+          [60, (strokeheight * 40) / 90]
+          [20, (strokeheight * 50) / 90]
+          [60, (strokeheight * 60) / 90]
+          [20, (strokeheight * 70) / 90]
+          [40, (strokeheight * 75) / 90]
+          [40, (strokeheight * 90) / 90]
+        ]
+    cands.push [register, 1]
+        
   # 円の認識
   circlerecog points, nstrokes, cands
 

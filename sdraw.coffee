@@ -529,7 +529,6 @@ draw_mode = ->
 
     recogstrokes = recogstrokes.concat(splitstroke(points))
     strokes.push [ downpoint, uppoint ]
-    
     path.snappoints = [ downpoint, uppoint ] # スナッピングする点のリスト
 
     downpoint = null

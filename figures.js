@@ -11,7 +11,9 @@ data.push({
     d: "M10,10L80,80M80,10L10,80",
     stroke: '#000000',
     fill: 'none',
-    'stroke-width': 5
+    'stroke-width': 5,
+    name: 'lines',
+    points: JSON.stringify([[10, 10], [80, 80], [10, 80], [80, 10]])
   }
 });
 
@@ -26,30 +28,6 @@ data.push({
     'stroke-width': 5,
     name: 'polyline',
     points: JSON.stringify([[10, 10], [10, 80], [80, 80]])
-  }
-});
-
-data.push({
-  strokes: [[[0, 0], [80, 0]], [[0, 0], [80, 0]]],
-  snappoints: [[10, 40], [80, 40]],
-  type: 'path',
-  attr: {
-    d: "M10,40L80,40",
-    stroke: '#000000',
-    fill: 'none',
-    'stroke-width': 5
-  }
-});
-
-data.push({
-  strokes: [[[10, 10], [10, 80]], [[10, 10], [10, 80]]],
-  snappoints: [[40, 10], [40, 80]],
-  type: 'path',
-  attr: {
-    d: "M40,10L40,80",
-    stroke: '#000000',
-    fill: 'none',
-    'stroke-width': 5
   }
 });
 
