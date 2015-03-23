@@ -493,6 +493,7 @@ hideframe = function() {
 };
 
 draw_mode = function() {
+  var draw_mousedown, draw_mousemove;
   hideframe();
   mode = 'draw';
   moved = null;
@@ -505,11 +506,7 @@ draw_mode = function() {
     return element.attr("stroke", element.attr('color'));
   });
   bgrect.attr("fill", "#ffffff");
-  svg.on('touchstart', function() {
-    downpoint = d3.mouse(this);
-    return alert(downpoint);
-  });
-  svg.on('mousedown', function() {
+  draw_mousedown = function() {
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
     downtime = d3.event.timeStamp;
@@ -540,7 +537,7 @@ draw_mode = function() {
     path.on('mousedown', clickfunc(path));
     path.on('mousemove', selfunc(path));
     return path.on('mouseup', function() {});
-  });
+  };
   svg.on('mouseup', function() {
     var element, f, newelements, _i, _len;
     if (!downpoint) {
@@ -599,7 +596,9 @@ draw_mode = function() {
     clickedElement = null;
     return recognition(recogstrokes);
   });
-  return svg.on('mousemove', function() {
+  svg.on('mousedown', draw_mousedown);
+  svg.on('touchstart', draw_mousedown);
+  draw_mousemove = function() {
     if (!downpoint) {
       return;
     }
@@ -612,7 +611,9 @@ draw_mode = function() {
     d3.event.preventDefault();
     points.push(movepoint);
     return drawPath(path);
-  });
+  };
+  svg.on('mousemove', draw_mousemove);
+  return svg.on('touchmove', draw_mousemove);
 };
 
 edit_mode = function() {

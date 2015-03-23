@@ -448,11 +448,7 @@ draw_mode = ->
     
   bgrect.attr "fill", "#ffffff"
 
-  svg.on 'touchstart', ->
-    downpoint = d3.mouse(this)
-    alert downpoint
-    
-  svg.on 'mousedown', ->
+  draw_mousedown = ->    
     d3.event.preventDefault()
     
     downpoint = d3.mouse(this)
@@ -541,8 +537,11 @@ draw_mode = ->
     clickedElement = null
 
     recognition recogstrokes
+    
+  svg.on 'mousedown', draw_mousedown
+  svg.on 'touchstart', draw_mousedown
 
-  svg.on 'mousemove', ->
+  draw_mousemove = ->
     return unless downpoint
     movepoint = d3.mouse(this)
     movetime = d3.event.timeStamp
@@ -551,6 +550,9 @@ draw_mode = ->
     d3.event.preventDefault()
     points.push movepoint
     drawPath path
+    
+  svg.on 'mousemove', draw_mousemove
+  svg.on 'touchmove', draw_mousemove
 
 edit_mode = ->
   mode = 'edit'
