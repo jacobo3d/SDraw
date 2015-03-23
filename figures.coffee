@@ -23,7 +23,10 @@ data.push
     fill: 'none'
     'stroke-width': 5
     name: 'lines'
-    points: JSON.stringify [[10, 10], [80, 80], [10, 80], [80, 10]]
+    points: JSON.stringify [
+      [10, 10], [80, 80]
+      [10, 80], [80, 10]
+    ]
 
 #
 # 座標 (L字)
@@ -43,7 +46,11 @@ data.push
     fill: 'none'
     'stroke-width': 5
     name: 'polyline'
-    points: JSON.stringify [[10, 10], [10, 80], [80, 80]]
+    points: JSON.stringify [
+      [10, 10]
+      [10, 80]
+      [80, 80]
+    ]
     
 #
 # 横線
@@ -102,7 +109,12 @@ data.push
     fill: 'none'
     'stroke-width': 5
     name: 'polygon'
-    points: JSON.stringify [[10, 10], [10, 80], [80, 80], [80, 10]]
+    points: JSON.stringify [
+      [10, 10]
+      [10, 80]
+      [80, 80]
+      [80, 10]
+    ]
     
 data.push
   strokes: [
@@ -121,7 +133,12 @@ data.push
     fill: 'none'
     'stroke-width': 5
     name: 'polygon'
-    points: JSON.stringify [[10, 10], [10, 80], [160, 80], [160, 10]]
+    points: JSON.stringify [
+      [10, 10]
+      [10, 80]
+      [160, 80]
+      [160, 10]
+    ]
     
 #
 # 矩形波 square wave
@@ -143,7 +160,13 @@ data.push
     fill: 'none'
     'stroke-width': 2
     name: 'polyline'
-    points: JSON.stringify [[10, 60], [40, 60], [40, 10], [70, 10], [70, 60]]
+    points: JSON.stringify [
+      [10, 60]
+      [40, 60]
+      [40, 10]
+      [70, 10]
+      [70, 60]
+    ]
 #
 # AND論理
 #
@@ -193,8 +216,19 @@ data.push
     fill: 'none'
     'stroke-width': 2
     name: 'polyline'
-    points: JSON.stringify [[0, 40], [15, 40], [20, 20], [30, 60], [40, 20], [50, 60], [60, 20], [70, 60], [75, 40], [90, 40]]
-    
+    points: JSON.stringify [
+      [0, 40]
+      [15, 40]
+      [20, 20]
+      [30, 60]
+      [40, 20]
+      [50, 60]
+      [60, 20]
+      [70, 60]
+      [75, 40]
+      [90, 40]
+    ]
+        
 data.push
   strokes: [
     [[40, 0], [40, 15]]
@@ -240,7 +274,15 @@ data.push
     fill: 'none'
     'stroke-width': 2
     name: 'lines'
-    points: JSON.stringify [[35, 18], [35, 62], [46, 18], [46, 62], [15, 40], [35, 40], [46, 18], [65, 18], [65, 18], [65, 5], [46, 62], [65, 62], [65, 62], [65, 75]]
+    points: JSON.stringify [
+      [35, 18], [35, 62]
+      [46, 18], [46, 62]
+      [15, 40], [35, 40]
+      [46, 18], [65, 18]
+      [65, 18], [65, 5]
+      [46, 62], [65, 62]
+      [65, 62], [65, 75]
+    ]
     
 #
 # グランド
@@ -264,7 +306,14 @@ data.push
     fill: 'none'
     'stroke-width': 2
     name: 'lines'
-    points: JSON.stringify [[0, 40], [70, 40], [0, 40], [15, 55], [15, 40], [30, 55], [30, 40], [45, 55], [45, 40], [60, 55], [60, 40], [75, 55]]
+    points: JSON.stringify [
+      [0, 40], [70, 40]
+      [0, 40], [15, 55]
+      [15, 40], [30, 55]
+      [30, 40], [45, 55]
+      [45, 40], [60, 55]
+      [60, 40], [75, 55]
+    ]
 #
 # JSON出力
 #
