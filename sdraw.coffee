@@ -482,7 +482,10 @@ draw_mode = ->
     
     path.on 'mouseup', ->
 
-  svg.on 'mouseup', ->
+  svg.on 'mousedown', draw_mousedown
+  svg.on 'touchstart', draw_mousedown
+  
+  draw_mouseup = ->
     return unless downpoint
     d3.event.preventDefault()
     uppoint = d3.mouse(this)
@@ -538,8 +541,8 @@ draw_mode = ->
 
     recognition recogstrokes
     
-  svg.on 'mousedown', draw_mousedown
-  svg.on 'touchstart', draw_mousedown
+  svg.on 'mouseup', draw_mouseup
+  svg.on 'touchend', draw_mouseup
 
   draw_mousemove = ->
     return unless downpoint

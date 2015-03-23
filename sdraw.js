@@ -493,7 +493,7 @@ hideframe = function() {
 };
 
 draw_mode = function() {
-  var draw_mousedown, draw_mousemove;
+  var draw_mousedown, draw_mousemove, draw_mouseup;
   hideframe();
   mode = 'draw';
   moved = null;
@@ -538,7 +538,9 @@ draw_mode = function() {
     path.on('mousemove', selfunc(path));
     return path.on('mouseup', function() {});
   };
-  svg.on('mouseup', function() {
+  svg.on('mousedown', draw_mousedown);
+  svg.on('touchstart', draw_mousedown);
+  draw_mouseup = function() {
     var element, f, newelements, _i, _len;
     if (!downpoint) {
       return;
@@ -595,9 +597,9 @@ draw_mode = function() {
     zooming = false;
     clickedElement = null;
     return recognition(recogstrokes);
-  });
-  svg.on('mousedown', draw_mousedown);
-  svg.on('touchstart', draw_mousedown);
+  };
+  svg.on('mouseup', draw_mouseup);
+  svg.on('touchend', draw_mouseup);
   draw_mousemove = function() {
     if (!downpoint) {
       return;
