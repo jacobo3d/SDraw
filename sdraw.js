@@ -619,7 +619,7 @@ draw_mode = function() {
 };
 
 edit_mode = function() {
-  var element, _i, _len;
+  var edit_mousedown, edit_mousemove, edit_mouseup, element, _i, _len;
   mode = 'edit';
   deletestate = 0;
   shakepoint = downpoint;
@@ -629,7 +629,7 @@ edit_mode = function() {
     element = selected[_i];
     element.attr('origpoints', element.attr('points'));
   }
-  svg.on('mousedown', function() {
+  edit_mousedown = function() {
     var _j, _len1, _results;
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
@@ -645,8 +645,10 @@ edit_mode = function() {
       _results.push(element.attr('origpoints', element.attr('points')));
     }
     return _results;
-  });
-  svg.on('mousemove', function() {
+  };
+  svg.on('mousedown', edit_mousedown);
+  svg.on('touchdown', edit_mousedown);
+  edit_mousemove = function() {
     var d, dd, move, mpoints, newelements, oldmovepoint, point, refpoint, refpoints, scale, snappoint, _j, _k, _l, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1;
     if (!downpoint) {
       return;
@@ -756,8 +758,10 @@ edit_mode = function() {
       }
       return showframe();
     }
-  });
-  return svg.on('mouseup', function() {
+  };
+  svg.on('mousemove', edit_mousemove);
+  svg.on('touchmove', edit_mousemove);
+  edit_mouseup = function() {
     var f, scale, upoints, _j, _k, _l, _len1, _len2, _len3;
     if (!downpoint) {
       return;
@@ -822,7 +826,9 @@ edit_mode = function() {
     moving = false;
     zooming = false;
     return clickedElement = null;
-  });
+  };
+  svg.on('mouseup', edit_mouseup);
+  return svg.on('touchup', edit_mouseup);
 };
 
 recognition = function(recogStrokes) {

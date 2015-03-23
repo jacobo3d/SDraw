@@ -569,7 +569,7 @@ edit_mode = ->
   for element in selected
     element.attr 'origpoints', (element.attr 'points')
 
-  svg.on 'mousedown', ->
+  edit_mousedown = ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
     movepoint = downpoint
@@ -581,9 +581,11 @@ edit_mode = ->
     
     for element in selected
       element.attr 'origpoints', (element.attr 'points')
-    
+      
+  svg.on 'mousedown', edit_mousedown
+  svg.on 'touchdown', edit_mousedown
 
-  svg.on 'mousemove', -> # 選択項目移動
+  edit_mousemove = -> # 選択項目移動
     return unless downpoint
     oldmovepoint = movepoint
     movepoint = d3.mouse(this)
@@ -672,7 +674,10 @@ edit_mode = ->
 
        showframe()
 
-  svg.on 'mouseup', ->
+  svg.on 'mousemove', edit_mousemove
+  svg.on 'touchmove', edit_mousemove
+  
+  edit_mouseup = ->
     return unless downpoint
 
     d3.event.preventDefault()
@@ -729,6 +734,8 @@ edit_mode = ->
     zooming = false
     clickedElement = null
     
+  svg.on 'mouseup', edit_mouseup
+  svg.on 'touchup', edit_mouseup
 #
 # 文字/ストローク認識 + 候補表示
 # 
