@@ -583,7 +583,7 @@ edit_mode = ->
       element.attr 'origpoints', (element.attr 'points')
       
   svg.on 'mousedown', edit_mousedown
-  svg.on 'touchdown', edit_mousedown
+  svg.on 'touchstart', edit_mousedown
 
   edit_mousemove = -> # 選択項目移動
     return unless downpoint
@@ -735,7 +735,7 @@ edit_mode = ->
     clickedElement = null
     
   svg.on 'mouseup', edit_mouseup
-  svg.on 'touchup', edit_mouseup
+  svg.on 'touchend', edit_mouseup
 #
 # 文字/ストローク認識 + 候補表示
 # 
