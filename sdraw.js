@@ -641,6 +641,7 @@ edit_mode = function() {
     var _j, _len1, _results;
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
+    debug(downpoint);
     movepoint = downpoint;
     downtime = d3.event.timeStamp;
     moved = null;

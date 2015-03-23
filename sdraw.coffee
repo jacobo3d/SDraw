@@ -581,6 +581,7 @@ edit_mode = ->
   edit_mousedown = ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
+    debug downpoint
     movepoint = downpoint
     downtime = d3.event.timeStamp
     moved = null
