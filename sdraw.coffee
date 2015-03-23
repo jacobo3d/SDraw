@@ -448,6 +448,9 @@ draw_mode = ->
     
   bgrect.attr "fill", "#ffffff"
 
+  svg.on 'touchstart', ->
+    alert 'touchstart'
+    
   svg.on 'mousedown', ->
     d3.event.preventDefault()
     

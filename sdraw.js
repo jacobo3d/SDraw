@@ -505,6 +505,9 @@ draw_mode = function() {
     return element.attr("stroke", element.attr('color'));
   });
   bgrect.attr("fill", "#ffffff");
+  svg.on('touchstart', function() {
+    return alert('touchstart');
+  });
   svg.on('mousedown', function() {
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
