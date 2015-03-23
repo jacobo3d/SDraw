@@ -599,6 +599,7 @@ edit_mode = ->
     return unless downpoint
     oldmovepoint = movepoint
     movepoint = d3.mouse(this)
+    debug movepoint
     movetime = d3.event.timeStamp
 
     if zooming

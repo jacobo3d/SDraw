@@ -664,6 +664,7 @@ edit_mode = function() {
     }
     oldmovepoint = movepoint;
     movepoint = d3.mouse(this);
+    debug(movepoint);
     movetime = d3.event.timeStamp;
     if (zooming) {
       if (downpoint) {
