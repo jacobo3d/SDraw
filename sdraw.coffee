@@ -449,7 +449,8 @@ draw_mode = ->
   bgrect.attr "fill", "#ffffff"
 
   svg.on 'touchstart', ->
-    alert 'touchstart'
+    downpoint = d3.mouse(this)
+    alert downpoint
     
   svg.on 'mousedown', ->
     d3.event.preventDefault()
