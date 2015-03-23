@@ -215,8 +215,11 @@ clone = function(dx, dy) {
       cloned.text(element.text());
     }
     cloned.on('mousedown', clickfunc(cloned));
+    cloned.on('touchstart', clickfunc(cloned));
     cloned.on('mousemove', selfunc(cloned));
+    cloned.on('touchmove', selfunc(cloned));
     cloned.on('mouseup', function() {});
+    cloned.on('touchend', function() {});
     newselected.push(cloned);
     elements.push(cloned);
   }
@@ -440,7 +443,7 @@ clickfunc = function(element) {
 };
 
 showframe = function() {
-  var element, fpoints, maxx, maxy, minx, miny, point, x, y, _i, _j, _len, _len1, _ref;
+  var element, fpoints, maxx, maxy, minx, miny, point, sizesquare_mousedown, x, y, _i, _j, _len, _len1, _ref;
   hideframe();
   fpoints = [];
   for (_i = 0, _len = selected.length; _i < _len; _i++) {
@@ -475,12 +478,14 @@ showframe = function() {
     fill: '#ff0000',
     'fill-opacity': 0.5
   });
-  return sizesquare.on('mousedown', function() {
+  sizesquare_mousedown = function() {
     downpoint = d3.mouse(this);
     zoomorig = [minx, miny];
     zooming = true;
     return moving = false;
-  });
+  };
+  sizesquare.on('mousedown', sizesquare_mousedown);
+  return sizesquare.on('touchstart', sizesquare_mousedown);
 };
 
 hideframe = function() {
@@ -535,8 +540,11 @@ draw_mode = function() {
     elements.push(path);
     points = [downpoint];
     path.on('mousedown', clickfunc(path));
+    path.on('touchstart', clickfunc(path));
     path.on('mousemove', selfunc(path));
-    return path.on('mouseup', function() {});
+    path.on('touchmove', selfunc(path));
+    path.on('mouseup', function() {});
+    return path.on('touchend', function() {});
   };
   svg.on('mousedown', draw_mousedown);
   svg.on('touchstart', draw_mousedown);
@@ -647,7 +655,7 @@ edit_mode = function() {
     return _results;
   };
   svg.on('mousedown', edit_mousedown);
-  svg.on('touchdown', edit_mousedown);
+  svg.on('touchstart', edit_mousedown);
   edit_mousemove = function() {
     var d, dd, move, mpoints, newelements, oldmovepoint, point, refpoint, refpoints, scale, snappoint, _j, _k, _l, _len1, _len2, _len3, _len4, _len5, _len6, _len7, _len8, _len9, _m, _n, _o, _p, _q, _r, _ref, _ref1;
     if (!downpoint) {
@@ -828,7 +836,7 @@ edit_mode = function() {
     return clickedElement = null;
   };
   svg.on('mouseup', edit_mouseup);
-  return svg.on('touchup', edit_mouseup);
+  return svg.on('touchend', edit_mouseup);
 };
 
 recognition = function(recogStrokes) {
@@ -922,7 +930,9 @@ recognition = function(recogStrokes) {
       }
       elements.push(copiedElement);
       copiedElement.on('mousemove', selfunc(copiedElement));
+      copiedElement.on('touchmove', selfunc(copiedElement));
       copiedElement.on('mousedown', clickfunc(copiedElement));
+      copiedElement.on('touchstart', clickfunc(copiedElement));
       strokes = [];
       return recogstrokes = [];
     };

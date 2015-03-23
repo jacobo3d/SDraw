@@ -182,10 +182,13 @@ clone = (dx, dy) ->
     cloned.text element.text() if nodeName == 'text'
 
     cloned.on 'mousedown', clickfunc cloned
+    cloned.on 'touchstart', clickfunc cloned
       
     cloned.on 'mousemove', selfunc cloned
+    cloned.on 'touchmove', selfunc cloned
     
     cloned.on 'mouseup', ->
+    cloned.on 'touchend', ->
       
     newselected.push cloned
     elements.push cloned
@@ -418,11 +421,14 @@ showframe = -> # 拡大/縮小用の枠表示
     fill: '#ff0000'
     'fill-opacity': 0.5
     
-  sizesquare.on 'mousedown', ->
+  sizesquare_mousedown = ->
     downpoint = d3.mouse(this)
     zoomorig = [minx, miny]
     zooming = true
     moving = false
+    
+  sizesquare.on 'mousedown', sizesquare_mousedown
+  sizesquare.on 'touchstart', sizesquare_mousedown
 
 hideframe = ->
   sizeframe.remove() if sizeframe
@@ -476,11 +482,14 @@ draw_mode = ->
     points = [ downpoint ]
 
     path.on 'mousedown', clickfunc path
+    path.on 'touchstart', clickfunc path
         
     # マウスが横切ったら選択する
     path.on 'mousemove', selfunc path  # クロージャ
+    path.on 'touchmove', selfunc path  # クロージャ
     
     path.on 'mouseup', ->
+    path.on 'touchend', ->
 
   svg.on 'mousedown', draw_mousedown
   svg.on 'touchstart', draw_mousedown
@@ -822,8 +831,10 @@ recognition = (recogStrokes) ->
       
       # マウスが横切ったら選択する
       copiedElement.on 'mousemove', selfunc copiedElement
+      copiedElement.on 'touchmove', selfunc copiedElement
 
       copiedElement.on 'mousedown', clickfunc copiedElement
+      copiedElement.on 'touchstart', clickfunc copiedElement
         
       strokes = []
       recogstrokes = []
