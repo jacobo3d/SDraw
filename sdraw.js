@@ -350,18 +350,21 @@ timeseed = 0;
 randomTimeout = null;
 
 setTemplate = function(id, template) {
+  var template_mousedown, template_mousemove, template_mouseup;
   d3.select("#" + id).on('click', function() {
     return template.draw();
   });
-  d3.select("#" + id).on('mousedown', function() {
+  template_mousedown = function() {
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
     if (randomTimeout) {
       clearTimeout(randomTimeout);
     }
     return srand(timeseed);
-  });
-  d3.select("#" + id).on('mousemove', function() {
+  };
+  d3.select("#" + id).on('mousedown', template_mousedown);
+  d3.select("#" + id).on('touchstart', template_mousedown);
+  template_mousemove = function() {
     var i, j, x, y, _ref;
     if (downpoint) {
       d3.event.preventDefault();
@@ -371,10 +374,14 @@ setTemplate = function(id, template) {
       j = Math.floor((y - downpoint[1]) / 10);
       return srand(timeseed + i * 100 + j);
     }
-  });
-  return d3.select("#" + id).on('mouseup', function() {
+  };
+  d3.select("#" + id).on('mousemove', template_mousemove);
+  d3.select("#" + id).on('touchmove', template_mousemove);
+  template_mouseup = function() {
     return downpoint = null;
-  });
+  };
+  d3.select("#" + id).on('mouseup', template_mouseup);
+  return d3.select("#" + id).on('touchend', template_mouseup);
 };
 
 setTemplate("template0", meshTemplate);

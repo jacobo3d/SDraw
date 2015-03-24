@@ -323,13 +323,18 @@ randomTimeout = null
 setTemplate = (id, template) ->
   d3.select("##{id}").on 'click', ->
     template.draw()
-  d3.select("##{id}").on 'mousedown', ->
+  
+  template_mousedown = ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
     if randomTimeout
       clearTimeout randomTimeout
     srand(timeseed)
-  d3.select("##{id}").on 'mousemove', ->
+    
+  d3.select("##{id}").on 'mousedown', template_mousedown
+  d3.select("##{id}").on 'touchstart', template_mousedown
+    
+  template_mousemove = ->
     if downpoint
       d3.event.preventDefault()
       [x, y] = d3.mouse(this)
@@ -337,11 +342,18 @@ setTemplate = (id, template) ->
       i = Math.floor((x - downpoint[0]) / 10)
       j = Math.floor((y - downpoint[1]) / 10)
       srand(timeseed + i * 100 + j)
-  d3.select("##{id}").on 'mouseup', ->
+      
+  d3.select("##{id}").on 'mousemove', template_mousemove
+  d3.select("##{id}").on 'touchmove', template_mousemove
+    
+  template_mouseup = ->
     downpoint = null
     #randomTimeout = setTimeout ->
     #  timeseed = Number(new Date()) # 3秒たつと値が変わる
     #, 3000
+    # 
+  d3.select("##{id}").on 'mouseup', template_mouseup
+  d3.select("##{id}").on 'touchend', template_mouseup
 
 setTemplate("template0", meshTemplate)
 setTemplate("template1", parseTemplate)
