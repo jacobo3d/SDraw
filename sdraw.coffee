@@ -323,6 +323,8 @@ randomTimeout = null
 setTemplate = (id, template) ->
   d3.select("##{id}").on 'click', ->
     template.draw()
+  d3.select("##{id}").on 'touchstart', ->
+    template.draw()
   
   template_mousedown = ->
     d3.event.preventDefault()
@@ -593,7 +595,6 @@ edit_mode = ->
   edit_mousedown = ->
     d3.event.preventDefault()
     downpoint = d3.mouse(this)
-    debug downpoint
     movepoint = downpoint
     downtime = d3.event.timeStamp
     moved = null
@@ -611,7 +612,6 @@ edit_mode = ->
     return unless downpoint
     oldmovepoint = movepoint
     movepoint = d3.mouse(this)
-    debug movepoint
     movetime = d3.event.timeStamp
 
     if zooming

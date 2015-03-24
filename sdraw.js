@@ -354,6 +354,9 @@ setTemplate = function(id, template) {
   d3.select("#" + id).on('click', function() {
     return template.draw();
   });
+  d3.select("#" + id).on('touchstart', function() {
+    return template.draw();
+  });
   template_mousedown = function() {
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
@@ -410,6 +413,7 @@ drawPath = function(path) {
 selfunc = function(element) {
   return function() {
     if (mode === 'edit') {
+      debug('selfunc');
       if (!downpoint) {
         return;
       }
@@ -648,7 +652,6 @@ edit_mode = function() {
     var _j, _len1, _results;
     d3.event.preventDefault();
     downpoint = d3.mouse(this);
-    debug(downpoint);
     movepoint = downpoint;
     downtime = d3.event.timeStamp;
     moved = null;
@@ -671,7 +674,6 @@ edit_mode = function() {
     }
     oldmovepoint = movepoint;
     movepoint = d3.mouse(this);
-    debug(movepoint);
     movetime = d3.event.timeStamp;
     if (zooming) {
       if (downpoint) {
