@@ -278,6 +278,13 @@ polygon = (points) ->
   res = s + "z"
   res
 
+andlogic = (points) ->
+  #d: "M40,10a30,30,-90,0,1,0,60 M40,10L10,10L10,70L40,70"
+  r = (points[1][1] - points[0][1]) / 2
+  x = points[0][0]
+  y = points[0][1]
+  s = "M#{x+r},#{y}a#{r},#{r},-90,0,1,0,#{2*r} M#{x+r},#{y}L#{x},#{y}L#{x},#{y+2*r}L#{x+r},#{y+2*r}"
+
 lines = (points) ->
   s = ""
   points.forEach (entry, ind) ->
@@ -297,6 +304,8 @@ elementpath = (element, points) ->
       polygon points
     when 'lines'
       lines points
+    when 'and'
+      andlogic points
     else # なめらかな手書き曲線
       line points
       

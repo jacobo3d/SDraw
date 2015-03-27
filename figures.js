@@ -74,14 +74,16 @@ data.push({
 });
 
 data.push({
-  strokes: [[[0, 0], [80, 80]], [[80, 0], [0, 80]]],
+  strokes: [[[0, 0], [0, 80]]],
   snappoints: [[10, 25], [10, 55], [70, 40]],
   type: 'path',
   attr: {
-    d: "M40,10a30,30,-90,0,1,0,60 M10,10L40,10M10,70L40,70M10,10L10,70",
+    d: "M40,10a30,30,-90,0,1,0,60 M40,10L10,10L10,70L40,70",
     stroke: '#000000',
     fill: 'none',
-    'stroke-width': 5
+    'stroke-width': 2,
+    name: 'and',
+    points: JSON.stringify([[10, 10], [10, 70]])
   }
 });
 
@@ -107,7 +109,9 @@ data.push({
     d: "M40,0L40,15L60,20L20,30L60,40L20,50L60,60L20,70L40,75L40,90",
     stroke: '#000000',
     fill: 'none',
-    'stroke-width': 2
+    'stroke-width': 2,
+    name: 'polyline',
+    points: JSON.stringify([[40, 0], [40, 15], [60, 20], [20, 30], [60, 40], [20, 50], [60, 60], [20, 70], [40, 75], [40, 90]])
   }
 });
 
