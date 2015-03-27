@@ -413,7 +413,6 @@ drawPath = function(path) {
 selfunc = function(element) {
   return function() {
     if (mode === 'edit') {
-      debug('selfunc');
       if (!downpoint) {
         return;
       }
@@ -869,6 +868,12 @@ recognition = function(recogStrokes) {
     candElement.attr('color', 'black');
     scalex = (_ref = cand.scalex) != null ? _ref : 1;
     scaley = (_ref1 = cand.scaley) != null ? _ref1 : 1;
+    if (scalex === Infinity) {
+      scalex = 1;
+    }
+    if (scaley === Infinity) {
+      scaley = 1;
+    }
     candselfunc = function() {
       var attr, copiedElement, minx, miny, snappoint, target, text, x, y, _i, _j, _k, _l, _len, _len1, _len2, _ref2, _ref3, _ref4, _ref5, _results;
       d3.event.preventDefault();

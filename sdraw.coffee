@@ -785,6 +785,8 @@ recognition = (recogStrokes) ->
 
     scalex = cand.scalex ? 1
     scaley = cand.scaley ? 1
+    scalex = 1 if scalex == Infinity
+    scaley = 1 if scaley == Infinity
     candselfunc = ->
       d3.event.preventDefault()
       downpoint = d3.mouse(this)
