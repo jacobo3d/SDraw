@@ -582,7 +582,7 @@ draw_mode = function() {
         candsvg = d3.select("#cand" + i);
         return candsvg.selectAll("*").remove();
       });
-    }, 1500);
+    }, 2500);
     if (clickedElement && uptime - downtime < 300 && dist(uppoint, downpoint) < 20) {
       selected = [];
       path.remove();
