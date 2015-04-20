@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D720446E-EB0F-4F81-A8E6-41E2C9C69E13</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>C752045E28316300CDADBB1CB13EFBE0D510F82D</key>
+		<string>https://github.com/masui/SDraw</string>
+	</dict>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>C752045E28316300CDADBB1CB13EFBE0D510F82D</key>
+		<string>www/</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/masui/SDraw</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C752045E28316300CDADBB1CB13EFBE0D510F82D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C752045E28316300CDADBB1CB13EFBE0D510F82D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>www</string>
+		</dict>
+	</array>
+</dict>
+</plist>

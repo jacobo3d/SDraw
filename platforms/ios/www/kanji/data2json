@@ -1,0 +1,55 @@
+# -*- coding: utf-8 -*-
+#
+# 大昔にPalmの文字認識したとき使ったデータをJSONに変換する
+#
+
+require 'nkf'
+require 'json'
+
+def euc2char(s)
+  NKF.nkf("-w",[s].pack("H*"))
+end
+
+data = []
+
+Dir.open(".").each { |file|
+  if File.file?(file) then
+    if file =~ /^K(.*)\-/ then
+      entry = {}
+      euc = $1
+      text = euc2char(euc)
+      entry['text'] = text
+      entry['snappoints'] = [[0, 0], [50, 0]]
+      strokes = []
+      File.open(file){ |f|
+        stroke = []
+        f.each { |line|
+          line.chomp!
+          a = line.split
+          if a[0] == 'D' then
+            stroke = []
+            stroke.push [a[1], a[2]]
+          elsif a[0] == 'M' then
+            stroke.push [a[1], a[2]]
+          elsif a[0] == 'U' then
+            stroke.push [a[1], a[2]]
+            strokes.push stroke
+            stroke = []
+          end
+        }
+      }
+      entry['strokes'] = strokes
+      # SVG要素
+      entry['type'] = 'text'
+      attr = {}
+      attr['x'] = 10
+      attr['y'] = 80
+      attr['font-size'] = '60px'
+      attr['fill'] = "black"
+      entry['attr'] = attr
+      data.push entry
+    end
+  end
+}
+puts data.to_json
+
