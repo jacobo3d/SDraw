@@ -2,7 +2,7 @@
 # 文字認識
 #
 $ ->
-  $.getJSON "kanji/kanji.json", (data) ->
+  $.getJSON "data/kanji.json", (data) ->
     window.kanjidata = data
   $.getJSON "data/figures.json", (data) ->
     window.figuredata = data
