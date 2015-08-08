@@ -49,7 +49,7 @@ machine:
 #    - bundle exec rake db:create db:schema:load
 #
 ### Customize test commands
-#test:
+test:
 #  override:
 #    - phpunit test/unit-tests # use PHPunit for testing
 #  post:
